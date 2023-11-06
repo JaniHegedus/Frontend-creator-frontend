@@ -5,9 +5,12 @@ import Navbar from "@/app/layout/Navbar";
 import Button from "@/Components/Button";
 import {ToastContainer} from "react-toastify";
 import { AuthProvider } from '../Components/AuthContext';
+import {ModalProvider} from "@/Components/modals/ModalContext";
+import ModalWindow from "@/Components/modals/ModalWindow";
 
 
 export default function RootLayout({ children }: {children: React.ReactNode}) {
+
     const [darkmode, setDarkmode] = useState(true);
     useEffect(() => {
         // Use the key 'theme' to get the stored theme
@@ -36,31 +39,32 @@ export default function RootLayout({ children }: {children: React.ReactNode}) {
     return (
         // @ts-ignore
         <html class={darkmode ? "dark" : ""}>
-        <AuthProvider>
-        <body className="font-sans bg-white text-black dark:bg-slate-900 dark:text-gray-600">
-        <ToastContainer position="top-right" hideProgressBar/>
-        <header className="flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 sticky top-0 z-50">
-            <span className="text-2xl font-bold dark:text-gray-300">Frontend Creator</span>
-            <Navbar />
-        </header>
+            <AuthProvider>
+                <ModalProvider>
+                    <body className="font-sans bg-white text-black dark:bg-slate-900 dark:text-gray-600">
+                    <ToastContainer position="top-right"/>
+                    <header className="flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 sticky top-0 z-50">
+                        <span className="text-2xl font-bold dark:text-gray-300">Frontend Creator</span>
+                        <Navbar />
+                    </header>
+                    <div className="center-content flex justify-center items-center h-[calc(100vh-2rem-60px)]">
+                        {children}
+                    </div>
 
-        <div className="center-content flex justify-center items-center h-[calc(100vh-2rem-60px)]">
-            {children}
-        </div>
-
-        <div className="footer flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 fixed bottom-0 w-full dark:text-gray-300">
-            <span>Hegedüs János 2023 © All rights reserved.</span>
-            <div className="theme-toggle cursor-pointer">
-                <div className="theme-toggle cursor-pointer">
-                    <Button
-                        label={darkmode ? "Light mode" : "Dark mode"}
-                        onClick={toggleDarkMode}
-                    />
-                </div>
-            </div>
-        </div>
-        </body>
-        </AuthProvider>
+                    <div className="footer flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 fixed bottom-0 w-full dark:text-gray-300">
+                        <span>Hegedüs János 2023 © All rights reserved.</span>
+                        <div className="theme-toggle cursor-pointer">
+                            <div className="theme-toggle cursor-pointer">
+                                <Button
+                                    label={darkmode ? "Light mode" : "Dark mode"}
+                                    onClick={toggleDarkMode}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    </body>
+                </ModalProvider>
+            </AuthProvider>
         </html>
     )
 }

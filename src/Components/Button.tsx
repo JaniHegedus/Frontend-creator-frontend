@@ -10,7 +10,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({ label, onClick, className, disabled }) => {
     return (
         <button
-            className={`py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 dark:bg-blue-900 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 focus:ring-opacity-50 ${className}`}
+            className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300"
             onClick={onClick}
             disabled={disabled}
         >

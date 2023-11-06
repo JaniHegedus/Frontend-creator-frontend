@@ -1,0 +1,91 @@
+"use client";
+import { useState } from 'react';
+import axios from 'axios';
+import { useAuth } from "@/Components/AuthContext";
+
+const Login = () => {
+    const [login, setLogin] = useState(''); // This can be email or username.
+    const [password, setPassword] = useState('');
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const { setUser } = useAuth();
+
+    const handleGitHubLogin = () => {
+        const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+        const redirectUri = `http://localhost:3000/auth/github/callback`;
+
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
+    };
+
+    const handleSubmit = async (event:any) => {
+        event.preventDefault();
+        setSuccess('');
+        setError('');
+
+        try {
+            const response = await axios.post(`${backendUrl}/login`, {
+                email: login, // Here we are assuming the 'login' state holds the email.
+                password: password
+            });
+            setSuccess(`Login successful. Welcome ${response.data.username || response.data.email}!`);
+            setUser({ email: response.data.email, username: response.data.username });
+
+            // Redirect to home page or dashboard
+            window.location.href = '/'; // Update this with your dashboard path
+        } catch (err) {
+            setError('Login failed. Please check your credentials and try again.');
+        }
+    };
+
+
+    return (
+        <div className="flex items-center justify-center p-6">
+            <div className="w-full max-w-md">
+                <h1 className="mb-6 text-3xl font-bold text-center text-gray-900 dark:text-white">Login</h1>
+                {success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-700 dark:border-green-900 dark:text-green-200" role="alert">{success}</div>}
+                {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-700 dark:border-red-900 dark:text-red-200" role="alert">{error}</div>}
+                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 dark:bg-gray-800">
+                    <div className="mb-4">
+                        <label htmlFor="login" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email/Username:</label>
+                        <input
+                            type="text"
+                            id="login"
+                            value={login}
+                            onChange={(e) => setLogin(e.target.value)}
+                            placeholder="Email or Username"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password:</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800">
+                            Login
+                        </button>
+                        <button
+                            onClick={handleGitHubLogin} // Add this line to call the GitHub login function
+                            type="button" // This should be 'button' not 'submit' to prevent form submission
+                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-gray-600 dark:hover:bg-gray-800"
+                        >
+                            Login via GitHub
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+
+
+
+};
+
+export default Login;

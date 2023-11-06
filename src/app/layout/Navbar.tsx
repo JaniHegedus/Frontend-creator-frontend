@@ -1,11 +1,50 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 import { useAuth } from '@/Components/AuthContext';
 import Link from "next/link";
 import Button from "@/Components/Button";
+import {useModal} from "@/Components/modals/ModalContext";
+import Login from "@/app/Login/Login";
+import Register from "@/app/Register/Register";
+import ConfirmModal from "@/Components/modals/ConfirmModal";
+
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const Navbar = () => {
     const { user, setUser, userEmail, setUserEmail } = useAuth();
+    const { openModal } = useModal(); // Destructure openModal function
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [isConfirmed, setIsConfirmed] = useState(false);
+
+    const openConfirmModal = () => setIsConfirmModalOpen(true);
+    const closeConfirmModal = () => setIsConfirmModalOpen(false);
+    const handleLoginClick = () => {
+        openModal(<Login/>); // Replace with actual login form component
+    };
+    const handleConfirm = async () => {
+        // Logic to execute when confirmed
+        setIsConfirmed(true);
+        localStorage.removeItem('user');     // Remove the user from local storage
+        localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
+        localStorage.removeItem('token');
+        setUser(null)
+        try {
+            // Call your API endpoint to destroy the session
+            await axios.delete(`${backendUrl}/logout`);
+
+            // Clear user information from context and local storage
+             // Remove the userEmail from local storage
+
+            // After logging out, redirect to the home page or login page
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Logout failed', error);
+            // Optionally, handle errors here (e.g., display an error message)
+        }
+        closeConfirmModal();
+    };
+    const handleRegisterClick = () => {
+        openModal(<Register/>); // Replace with actual register form component
+    };
     return (
         <div className="flex flex-row w-1/3 justify-center">
             <div className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
@@ -27,29 +66,18 @@ const Navbar = () => {
                             <span className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
                                 {user.username} {/* Display the username */}
                             </span>
-                            <Button className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300" label="Logout" onClick={async () => {
-                                try {
-                                    // Call your API endpoint to destroy the session
-                                    await axios.delete(`${backendUrl}/logout`);
-
-                                    // Clear user information from context and local storage
-                                    setUser(null);         // Clear the user from context
-                                    setUserEmail(null);    // Clear the userEmail from context
-                                    localStorage.removeItem('user');     // Remove the user from local storage
-                                    localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
-
-                                    // After logging out, redirect to the home page or login page
-                                    window.location.href = '/Login';
-                                } catch (error) {
-                                    console.error('Logout failed', error);
-                                    // Optionally, handle errors here (e.g., display an error message)
-                                }
-                            }}/>
+                            <Button label="Logout" onClick={openConfirmModal}/>
+                            <ConfirmModal
+                                isOpen={isConfirmModalOpen}
+                                onClose={closeConfirmModal}
+                                onConfirm={handleConfirm}
+                            />
                         </>
                     ) : (
                         <>
-                            <Link className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300" href={"/Login"}>Login</Link>
-                            <Link className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300" href={"/Register"}>Register</Link>
+                            {/* If not logged in, show login and register buttons */}
+                            <Button label="Login" onClick={handleLoginClick} />
+                            <Button label="Register" onClick={handleRegisterClick} />
                         </>
                     ) // If user is null, render nothing
             }
