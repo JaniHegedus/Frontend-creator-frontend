@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
-import ModalWindow from "@/Components/modals/ModalWindow";
+import ModalWindow from "@/Components/Modals/ModalWindow";
 
 interface IModalContext {
     isModalOpen: boolean;

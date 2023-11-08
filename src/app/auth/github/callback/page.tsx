@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
 import jwtDecode from 'jwt-decode'; // Corrected import
-import { useAuth } from "@/Components/AuthContext";
+import { useAuth } from "@/Components/Contexts/AuthContext";
 
 const GitHubCallbackPage = () => {
     const urlParams = new URLSearchParams(window.location.search);

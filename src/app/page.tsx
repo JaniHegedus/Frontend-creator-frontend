@@ -1,7 +1,7 @@
 "use client"
 import 'react-toastify/dist/ReactToastify.css';
-import Button from "@/Components/Button";
-import {useAuth} from "@/Components/AuthContext";
+import Button from "@/Components/Common/Button";
+import {useAuth} from "@/Components/Contexts/AuthContext";
 export default function Home() {
     const { setUser } = useAuth();
     const handleClick = () =>{

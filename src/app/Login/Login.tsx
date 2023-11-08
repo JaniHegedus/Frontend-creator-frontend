@@ -1,7 +1,10 @@
 "use client";
 import { useState } from 'react';
 import axios from 'axios';
-import { useAuth } from "@/Components/AuthContext";
+import { useAuth } from "@/Components/Contexts/AuthContext";
+import Button from "@/Components/Common/Button";
+import {useModal} from "@/Components/Contexts/ModalContext";
+import PasswordReset from "@/app/Recover/PasswordReset";
 
 const Login = () => {
     const [login, setLogin] = useState(''); // This can be email or username.
@@ -9,6 +12,7 @@ const Login = () => {
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const { openModal } = useModal(); // Destructure openModal function
     const { setUser } = useAuth();
 
     const handleGitHubLogin = () => {
@@ -25,20 +29,27 @@ const Login = () => {
 
         try {
             const response = await axios.post(`${backendUrl}/login`, {
-                email: login, // Here we are assuming the 'login' state holds the email.
+                login: login, // Now 'login' can be an email or username.
                 password: password
             });
-            setSuccess(`Login successful. Welcome ${response.data.username || response.data.email}!`);
+
             setUser({ email: response.data.email, username: response.data.username });
 
+            localStorage.setItem('token', response.data.token);
+            console.log(response.data);
+            const { token } = response.data;
+            localStorage.setItem('token', token);
             // Redirect to home page or dashboard
+            setSuccess(`Login successful. Welcome ${response.data.username || response.data.email}!`);
             window.location.href = '/'; // Update this with your dashboard path
         } catch (err) {
             setError('Login failed. Please check your credentials and try again.');
         }
     };
 
-
+    const handleRecovery = () => {
+        openModal(<PasswordReset/>)
+    };
     return (
         <div className="flex items-center justify-center p-6">
             <div className="w-full max-w-md">
@@ -68,13 +79,14 @@ const Login = () => {
                         />
                     </div>
                     <div className="flex items-center justify-between">
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800">
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded focus:outline-none m-3 focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800">
                             Login
                         </button>
+                        <Button label="Recover password" onClick={handleRecovery}/>
                         <button
                             onClick={handleGitHubLogin} // Add this line to call the GitHub login function
                             type="button" // This should be 'button' not 'submit' to prevent form submission
-                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-gray-600 dark:hover:bg-gray-800"
+                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline dark:bg-gray-600 dark:hover:bg-gray-800"
                         >
                             Login via GitHub
                         </button>

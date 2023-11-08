@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import { useAuth } from '@/Components/AuthContext';
+import { useAuth } from '@/Components/Contexts/AuthContext';
 import Link from "next/link";
-import Button from "@/Components/Button";
-import {useModal} from "@/Components/modals/ModalContext";
+import Button from "@/Components/Common/Button";
+import {useModal} from "@/Components/Contexts/ModalContext";
 import Login from "@/app/Login/Login";
 import Register from "@/app/Register/Register";
-import ConfirmModal from "@/Components/modals/ConfirmModal";
+import ConfirmModal from "@/Components/Modals/ConfirmModal";
+import UserProfile from "@/app/Profile/UserProfile";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const Navbar = () => {
@@ -20,19 +21,21 @@ const Navbar = () => {
     const handleLoginClick = () => {
         openModal(<Login/>); // Replace with actual login form component
     };
+    const handleProfileClick = ()=> {
+            openModal(<UserProfile/>)
+    }
     const handleConfirm = async () => {
         // Logic to execute when confirmed
-        setIsConfirmed(true);
-        localStorage.removeItem('user');     // Remove the user from local storage
-        localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
-        localStorage.removeItem('token');
         setUser(null)
         try {
             // Call your API endpoint to destroy the session
             await axios.delete(`${backendUrl}/logout`);
 
             // Clear user information from context and local storage
-             // Remove the userEmail from local storage
+            setIsConfirmed(true);
+            localStorage.removeItem('user');     // Remove the user from local storage
+            localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
+            localStorage.removeItem('token'); // Remove the token from local storage
 
             // After logging out, redirect to the home page or login page
             window.location.href = '/';
@@ -63,9 +66,7 @@ const Navbar = () => {
                 user ?
                     ( // If there is a user object, render the span with the username
                         <>
-                            <span className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
-                                {user.username} {/* Display the username */}
-                            </span>
+                            <Button label={user.username} onClick={handleProfileClick}/>
                             <Button label="Logout" onClick={openConfirmModal}/>
                             <ConfirmModal
                                 isOpen={isConfirmModalOpen}
