@@ -9,7 +9,7 @@ const GitHubCallbackPage = () => {
     const code = urlParams.get('code');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const sent = useRef(false);
-    const { setUser } = useAuth();
+    const { setData } = useAuth();
 
     useEffect(() => {
         const sendCodeToBackend = async () => {
@@ -38,9 +38,13 @@ const GitHubCallbackPage = () => {
                 console.log(userDetails);
 
                 // Now you have your user details, you can set it in your state
-                setUser({
+                setData({
+                    id: userDetails.id,
                     email: userDetails.email,
-                    username: userDetails.username
+                    username: userDetails.username,
+                    github_uid: userDetails.github_uid,
+                    github_nickname: userDetails.github_nickname,
+                    github_repos: userDetails.github_repos
                 });
                 // Redirect user after successful login
                 window.location.href = '/success'; // Redirect to a success page
@@ -57,7 +61,7 @@ const GitHubCallbackPage = () => {
         if (code && !sent.current) {
             sendCodeToBackend();
         }
-    }, [code, backendUrl, setUser]);
+    }, [code, backendUrl, setData]);
 
     return <div>Loading...</div>;
 };

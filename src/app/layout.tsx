@@ -55,14 +55,8 @@ export default function RootLayout({ children }: {children: React.ReactNode})
         // @ts-ignore
         <html class={darkmode ? "dark" : ""}>
             <head>
-                <title>Your Page Title</title>
+                <title>Frontend Creator</title>
                 <link rel="icon" type="image/png" sizes="32x32" href="/Frontend_Creator.png" />
-                {/* Additional sizes as needed */}
-                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-                {/* Apple Touch Icon for iOS devices */}
-                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-                {/* Manifest for PWA */}
-                <link rel="manifest" href="/site.webmanifest" />
             </head>
             <AuthProvider>
                 <ModalProvider>

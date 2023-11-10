@@ -13,7 +13,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const { openModal } = useModal(); // Destructure openModal function
-    const { setUser } = useAuth();
+    const { setData } = useAuth();
 
     const handleGitHubLogin = () => {
         const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
@@ -33,7 +33,8 @@ const Login = () => {
                 password: password
             });
 
-            setUser({ email: response.data.email, username: response.data.username });
+            let userdata = response.data;
+            setData({id:userdata["id"], email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
 
             localStorage.setItem('token', response.data.token);
             console.log(response.data);

@@ -7,7 +7,7 @@ const GitHubConnectCallbackPage = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const sent = useRef(false);
-    const {user, setUser } = useAuth();
+    const {data, setData } = useAuth();
 
     useEffect(() => {
         const connectGitHubAccount = async () => {
@@ -25,7 +25,7 @@ const GitHubConnectCallbackPage = () => {
                 const response = await axios.post(
                     `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github`,
                     // @ts-ignore
-                    { code:code, email:user["email"]},
+                    { code:code, email:data["email"]},
                     {
                         headers: {
                             'Authorization': `Bearer ${authToken}`,
@@ -57,7 +57,7 @@ const GitHubConnectCallbackPage = () => {
         if (code && !sent.current) {
             connectGitHubAccount();
         }
-    }, [code, setUser]);
+    }, [code, setData]);
 
     return <div>Loading...</div>;
 };

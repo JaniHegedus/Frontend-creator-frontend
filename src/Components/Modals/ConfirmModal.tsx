@@ -4,9 +4,10 @@ interface ConfirmModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    message: string;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message }) => {
     if (!isOpen) return null;
 
     const handleConfirm = () => {
@@ -18,7 +19,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm 
         <div className="fixed inset-0 bg-gray-200 dark:bg-gray-800 bg-opacity-50 dark:bg-opacity-90 overflow-y-auto h-full w-full flex justify-center items-center">
             <div className="bg-white dark:bg-gray-900 p-5 rounded-lg shadow-xl max-w-sm mx-auto">
                 <h2 className="text-gray-900 dark:text-white text-lg font-bold mb-4">Are you sure?</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">Do you really want to perform this action? You will need to log in  again.</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">{message}</p>
                 <div className="flex justify-between">
                     <button
                         onClick={onClose}

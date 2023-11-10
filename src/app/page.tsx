@@ -3,12 +3,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from "@/Components/Common/Button";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 export default function Home() {
-    const { setUser } = useAuth();
+    const { setData } = useAuth();
     const handleClick = () =>{
         localStorage.removeItem('user');     // Remove the user from local storage
         localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
         localStorage.removeItem('token');
-        setUser(null)
+        setData(null)
     }
     return (
         <>

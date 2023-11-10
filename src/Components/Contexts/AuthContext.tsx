@@ -2,14 +2,16 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 type AuthContextType = {
-    user: UserType | null; // Now user is of type UserType or null
-    setUser: (userData: UserType | null) => void; // setUser accepts UserType or null
-    userEmail: string | null; // If you still need a separate userEmail property
-    setUserEmail: (email: string | null) => void; // Function to set userEmail
+    data: UserType | null; // Now user is of type UserType or null
+    setData: (userData: UserType | null) => void; // setUser accepts UserType or null
 };
 type UserType = {
-    email: string;
-    username: string;
+    id: (number | undefined | null);
+    email: (string | undefined | null);
+    username: (string | undefined | null);
+    github_uid: (string | null);
+    github_nickname: (string | null);
+    github_repos: (Array<string> | null);
 };
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -31,23 +33,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const savedEmail = localStorage.getItem('userEmail');
         return savedEmail ? savedEmail : null;
     });
-    const [user, setUser] = useState<{ email: string; username: string } | null>(() => {
+    const [data, setData] = useState<{id:number | undefined | null; email: string | undefined | null; username: string | undefined | null; github_uid: string|null; github_nickname:string|null; github_repos: Array<string>|null } | null>(() => {
         // Get the stored user data from localStorage
         const savedUser = localStorage.getItem('user');
-        return savedUser ? JSON.parse(savedUser) : null;
-    });
-    const handleSetUserEmail = (email: string | null) => {
-        setUserEmail(email);
-        // Store the email in localStorage
-        if (email) {
-            localStorage.setItem('userEmail', email);
-        } else {
-            localStorage.removeItem('userEmail');
+        if (!savedUser || savedUser === "undefined") {
+            return null;
         }
-    };
 
-    const handleSetUser = (userData: { email: string; username: string } | null) => {
-        setUser(userData);
+        try {
+            return JSON.parse(savedUser);
+        } catch (e) {
+            console.error("Error parsing savedUser:", e);
+            return null;
+        }
+    });
+
+    const handleSetUser = (userData: {id:number | undefined | null; email: string | undefined | null; username: string | undefined | null; github_uid: string|null; github_nickname:string|null; github_repos: Array<string>|null} | null) => {
+        setData(userData);
         // Store the user data in localStorage
         if (userData) {
             localStorage.setItem('user', JSON.stringify(userData));
@@ -55,13 +57,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.removeItem('user');
         }
     };
-
     return (
         <AuthContext.Provider value={{
-            user,                   // Pass the user state
-            setUser: handleSetUser, // Pass the setUser function you've defined
-            userEmail,              // Pass the userEmail state
-            setUserEmail: handleSetUserEmail, // Pass the setUserEmail function you've defined
+            data,                   // Pass the user state
+            setData: handleSetUser, // Pass the setUser function you've defined
         }}>
             {children}
         </AuthContext.Provider>

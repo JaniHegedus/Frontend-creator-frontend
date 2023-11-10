@@ -11,7 +11,7 @@ import UserProfile from "@/app/Profile/UserProfile";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const Navbar = () => {
-    const { user, setUser, userEmail, setUserEmail } = useAuth();
+    const { data, setData } = useAuth();
     const { openModal } = useModal(); // Destructure openModal function
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(false);
@@ -26,7 +26,7 @@ const Navbar = () => {
     }
     const handleConfirm = async () => {
         // Logic to execute when confirmed
-        setUser(null)
+        setData(null)
         try {
             // Call your API endpoint to destroy the session
             await axios.delete(`${backendUrl}/logout`);
@@ -63,15 +63,16 @@ const Navbar = () => {
                 <Link href="/PageCreator"> Page Creator </Link>
             </div>
             {
-                user ?
+                data ?
                     ( // If there is a user object, render the span with the username
                         <>
-                            <Button label={user.username} onClick={handleProfileClick}/>
+                            <Button label={data.username ? data.username: " "} onClick={handleProfileClick}/>
                             <Button label="Logout" onClick={openConfirmModal}/>
                             <ConfirmModal
                                 isOpen={isConfirmModalOpen}
                                 onClose={closeConfirmModal}
                                 onConfirm={handleConfirm}
+                                message="Do you really want to perform this action? You will need to log in again."
                             />
                         </>
                     ) : (
