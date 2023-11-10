@@ -34,6 +34,7 @@ const Login = () => {
             });
 
             let userdata = response.data;
+            console.log(userdata);
             setData({id:userdata["id"], email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
 
             localStorage.setItem('token', response.data.token);
