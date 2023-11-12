@@ -54,12 +54,12 @@ const GitHubCallbackPage = () => {
 
                 // Redirect with error
                 // @ts-ignore
-                window.location.href = `/?login_error=${encodeURIComponent(err.message)}`;
+                window.location.href = `/?error=${encodeURIComponent(err.message)}`;
             }
         };
 
         if (code && !sent.current) {
-            sendCodeToBackend();
+            sendCodeToBackend().then(r => {});
         }
     }, [code, backendUrl, setData]);
 
