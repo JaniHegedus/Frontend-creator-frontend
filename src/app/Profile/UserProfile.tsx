@@ -54,7 +54,7 @@ const UserProfile = () => {
                 setLoading(false);
             }
         };
-        fetchUserData();
+        fetchUserData().then(() => {});
     }, [setData, token, user]);
     const handleConfirmAccountDelete = async () => {
         // Logic to execute when confirmed
