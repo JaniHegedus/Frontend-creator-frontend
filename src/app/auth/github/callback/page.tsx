@@ -1,8 +1,8 @@
 "use client";
 import axios from 'axios';
-import { useEffect, useRef } from 'react';
-import jwtDecode from 'jwt-decode'; // Corrected import
+import React, { useEffect, useRef } from 'react';
 import { useAuth } from "@/Components/Contexts/AuthContext";
+import Loading from "@/app/layout/Loading";
 
 const GitHubCallbackPage = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -59,22 +59,12 @@ const GitHubCallbackPage = () => {
         };
 
         if (code && !sent.current) {
-            sendCodeToBackend().then(r => {});
+            sendCodeToBackend().then(() => {});
         }
     }, [code, backendUrl, setData]);
 
     return (
-        <div className="container">
-            <div className="sun">
-                <div className="orbit earth">
-                    <div className="globe earth">
-                        <div className="orbit moon">
-                            <div className="globe moon"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Loading/>
     );
 };
 

@@ -7,14 +7,14 @@ import {useModal} from "@/Components/Contexts/ModalContext";
 import Login from "@/app/Login/Login";
 import Register from "@/app/Register/Register";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import UserProfile from "@/app/Profile/UserProfile";
+import PBar from "@/app/layout/ProfileBar";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const Navbar = () => {
     const { data, setData } = useAuth();
     const { openModal } = useModal(); // Destructure openModal function
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-    const [isConfirmed, setIsConfirmed] = useState(false);
+    const [, setIsConfirmed] = useState(false);
 
     const openConfirmModal = () => setIsConfirmModalOpen(true);
     const closeConfirmModal = () => setIsConfirmModalOpen(false);
@@ -22,7 +22,7 @@ const Navbar = () => {
         openModal(<Login/>); // Replace with actual login form component
     };
     const handleProfileClick = ()=> {
-            openModal(<UserProfile/>)
+            openModal(<PBar/>)
     }
     const handleConfirm = async () => {
         // Logic to execute when confirmed

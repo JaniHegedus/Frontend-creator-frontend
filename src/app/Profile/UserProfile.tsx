@@ -6,6 +6,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 import Button from "@/Components/Common/Button";
 import Link from "next/link";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
+import Loading from "@/app/layout/Loading";
 
 const UserProfile = () => {
     const user =useAuth();
@@ -19,8 +20,8 @@ const UserProfile = () => {
     const [loading, setLoading] = useState(true);
     const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
     const [isRemoveConfirmModalOpen, setIsRemoveConfirmModalOpen] = useState(false);
-    const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
-    const [isRemoveConfirmed, setIsRemoveConfirmed] = useState(false);
+    const [, setIsDeleteConfirmed] = useState(false);
+    const [, setIsRemoveConfirmed] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const openDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(true);
@@ -54,7 +55,7 @@ const UserProfile = () => {
             }
         };
         fetchUserData();
-    }, []);
+    }, [setData, token, user]);
     const handleConfirmAccountDelete = async () => {
         // Logic to execute when confirmed
         if (!token) {
@@ -64,7 +65,7 @@ const UserProfile = () => {
         }
         try {
             // You should replace '/userinfo' with the actual endpoint for your user data
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/delete`, {
+            await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/delete`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -94,12 +95,11 @@ const UserProfile = () => {
         };
         try {
             // @ts-ignore
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/modify`, payload, {
+            await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/modify`, payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
             // Update your local user state or do whatever is needed post update
             // @ts-ignore
             setData(prevState => ({ ...prevState, [field]: value }));
@@ -123,17 +123,7 @@ const UserProfile = () => {
 
     if (loading) {
         return (
-            <div className="container">
-                <div className="sun">
-                    <div className="orbit earth">
-                        <div className="globe earth">
-                            <div className="orbit moon">
-                                <div className="globe moon"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Loading/>
         );
     }
 
@@ -147,7 +137,7 @@ const UserProfile = () => {
             setLoading(false);
             return;
         }
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github/remove`,
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github/remove`,
             // @ts-ignore
             {email: user.data?.email},
             {

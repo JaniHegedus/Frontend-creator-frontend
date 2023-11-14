@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import Button from "@/Components/Common/Button";
+
 export default function Home() {
     return (
         <>

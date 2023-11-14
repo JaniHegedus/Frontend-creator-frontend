@@ -11,7 +11,7 @@ const useCsrfToken = () => {
             setCsrfToken(response.data.csrf_token);
         };
 
-        fetchCsrfToken();
+        fetchCsrfToken().then(() => {});
     }, []);
     return csrfToken;
 };

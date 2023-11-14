@@ -1,7 +1,8 @@
 "use client"
 import axios from 'axios';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useAuth } from '@/Components/Contexts/AuthContext';
+import Loading from "@/app/layout/Loading";
 
 const GitHubConnectCallbackPage = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -20,7 +21,7 @@ const GitHubConnectCallbackPage = () => {
             try {
                 const authToken = localStorage.getItem('token');
                 if (!authToken) {
-                    throw new Error('Authentication token is not available.');
+                    new Error('Authentication token is not available.');
                 }
                 const response = await axios.post(
                     `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github`,
@@ -55,22 +56,12 @@ const GitHubConnectCallbackPage = () => {
         };
 
         if (code && !sent.current) {
-            connectGitHubAccount().then(r => {});
+            connectGitHubAccount().then(() => {});
         }
-    }, [code, setData]);
+    }, [code, data, setData]);
 
     return (
-        <div className="container">
-            <div className="sun">
-                <div className="orbit earth">
-                    <div className="globe earth">
-                        <div className="orbit moon">
-                            <div className="globe moon"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Loading/>
     );
 };
 

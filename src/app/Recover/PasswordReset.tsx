@@ -1,11 +1,11 @@
 "use client"
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { NextPage } from 'next';
 
 const PasswordReset: NextPage = () => {
     const [login, setLogin] = useState('');
-    const [message, setMessage] = useState('');
+    const [, setMessage] = useState('');
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;

@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify css file
 import {getAiColors, getAiLabels, getAiTexts, getCode, getHello} from "@/app/api/ApiRequests";
 import Button from "@/Components/Common/Button";

@@ -7,7 +7,6 @@ import {ToastContainer} from "react-toastify";
 import { AuthProvider } from '@/Components/Contexts/AuthContext';
 import {ModalProvider} from "@/Components/Contexts/ModalContext";
 import {NotifyMessage} from "@/Components/Common/ToastNotification/Notification";
-import Head from 'next/head';
 
 export default function RootLayout({ children }: {children: React.ReactNode})
 {
@@ -35,7 +34,6 @@ export default function RootLayout({ children }: {children: React.ReactNode})
     function toggleDarkMode() {
         const html = document.documentElement;
         const currentMode = html.classList.contains('dark');
-        let theme = ""
         if (currentMode) {
             html.classList.remove('dark');
             localStorage.setItem('theme', 'light'); // Use the key 'theme' to store the theme

@@ -2,6 +2,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 import Button from "@/Components/Common/Button";
 import {useAuth} from "@/Components/Contexts/AuthContext";
+
 export default function Home() {
     const { setData } = useAuth();
     const handleClick = () =>{
