@@ -60,7 +60,7 @@ export default function RootLayout({ children }: {children: React.ReactNode})
             </head>
             <AuthProvider>
                 <ModalProvider>
-                    <body className="font-sans bg-white text-black dark:bg-slate-900 dark:text-gray-600">
+                    <body className="font-sans bg-blue-100 text-black dark:bg-slate-900 dark:text-gray-600">
                     <ToastContainer position="top-right"/>
                     <header className="flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 sticky top-0 z-50">
                         <span className="text-2xl font-bold dark:text-gray-300">Frontend Creator</span>

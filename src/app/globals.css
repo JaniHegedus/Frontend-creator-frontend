@@ -28,3 +28,69 @@
     }
   }
 }
+@keyframes orbit {
+  to {
+    transform: rotate(360deg) ;
+  }
+}
+
+.sun {
+  position: absolute;
+  width: 100px; /* Size of the Sun */
+  height: 100px; /* Size of the Sun */
+  background-color: yellow;
+  border-radius: 50%;
+  box-shadow: 10px 10px 30px; /* Sun should be above the orbit path */
+  top: 150px;
+  left: 150px;
+}
+
+.globe.earth {
+  background: aqua;
+  height: 30px;
+  right: 28px;
+  top: 28px;
+  width: 30px;
+}
+.globe.moon {
+  width: 12px;
+  height: 12px;
+  background: white;
+  right: 2px;
+  top: 8px;
+}
+.globe {
+  border-radius: 50%;
+  position: absolute;
+}
+.orbit.earth{
+  position: relative;
+  animation: orbit 10s linear infinite;
+  height: 300px;
+  right : 100px;
+  bottom: 100px;
+  width: 300px;
+}
+.orbit.moon {
+  animation: orbit 2.7s linear infinite;
+  height: 80px;
+  left: -25px;
+  top: -25px;
+  width: 80px;
+}
+.orbit {
+  position: relative;
+  border: solid;
+  border-color: white transparent;
+  border-radius: 50%;
+  border-width: 1px 1px 0 0;
+  box-sizing: border-box;
+  transform: rotate(0deg);
+  transform-origin: center;
+}
+
+.container {
+  height: 400px;
+  width: 400px;
+  position: relative;
+}

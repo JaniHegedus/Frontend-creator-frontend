@@ -122,15 +122,26 @@ const UserProfile = () => {
     };
 
     if (loading) {
-        return <div>Loading user profile...</div>;
+        return (
+            <div className="container">
+                <div className="sun">
+                    <div className="orbit earth">
+                        <div className="globe earth">
+                            <div className="orbit moon">
+                                <div className="globe moon"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
         return <div>Error: {error}</div>;
     }
 
-    const handleConfirmRemoveGithub = async () =>
-    {
+    const handleConfirmRemoveGithub = async () => {
         if (!token) {
             setError('No token found. User is not logged in.');
             setLoading(false);
@@ -138,7 +149,7 @@ const UserProfile = () => {
         }
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github/remove`,
             // @ts-ignore
-            {email:user.data?.email},
+            {email: user.data?.email},
             {
                 headers: {
                     'Authorization': `Bearer ${token}`,

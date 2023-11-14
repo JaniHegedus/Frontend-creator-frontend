@@ -63,7 +63,19 @@ const GitHubCallbackPage = () => {
         }
     }, [code, backendUrl, setData]);
 
-    return <div>Loading...</div>;
+    return (
+        <div className="container">
+            <div className="sun">
+                <div className="orbit earth">
+                    <div className="globe earth">
+                        <div className="orbit moon">
+                            <div className="globe moon"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default GitHubCallbackPage;
