@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import { useAuth } from '@/Components/Contexts/AuthContext';
-import Link from "next/link";
 import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import Login from "@/app/Login/Login";
 import Register from "@/app/Register/Register";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import PBar from "@/app/layout/ProfileBar";
+import NavItem from "@/Components/Common/NavItem";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const Navbar = () => {
@@ -21,9 +21,6 @@ const Navbar = () => {
     const handleLoginClick = () => {
         openModal(<Login/>); // Replace with actual login form component
     };
-    const handleProfileClick = ()=> {
-            openModal(<PBar/>)
-    }
     const handleConfirm = async () => {
         // Logic to execute when confirmed
         setData(null)
@@ -48,25 +45,22 @@ const Navbar = () => {
     const handleRegisterClick = () => {
         openModal(<Register/>); // Replace with actual register form component
     };
+    const menuItems = [
+        { href: "/", Name: "Home"},
+        { href: "/api", Name: "Api"},
+        { href: "/CodeEditor", Name:"Code Editor" },
+        { href: "/PageCreator", Name: "Page Creator"},
+    ];
     return (
         <div className="flex flex-row w-1/3 justify-center">
-            <div className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
-                <Link href="/"> Home </Link>
-            </div>
-            <div className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
-                <Link href="/api"> Api </Link>
-            </div>
-            <div className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
-                <Link href="/CodeEditor"> Code Editor </Link>
-            </div>
-            <div className="flex justify-between items-center py-1 px-2 bg-gray-500 dark:bg-gray-700 sticky top-0 border-2 border-blue-500 dark:border-blue-800 rounded-md mr-3 dark:text-gray-300">
-                <Link href="/PageCreator"> Page Creator </Link>
-            </div>
+            {menuItems.map((item, index) => (
+                <NavItem href={item.href} Name={item.Name} key={index}/>
+            ))}
             {
                 data ?
                     ( // If there is a user object, render the span with the username
                         <>
-                            <Button label={data.username ? data.username: " "} onClick={handleProfileClick}/>
+                            <PBar/>
                             <Button label="Logout" onClick={openConfirmModal}/>
                             <ConfirmModal
                                 isOpen={isConfirmModalOpen}
