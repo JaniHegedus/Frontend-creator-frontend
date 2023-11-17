@@ -6,7 +6,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 import Button from "@/Components/Common/Button";
 import Link from "next/link";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import Loading from "@/app/layout/Loading";
+import Loading from "@/Components/Common/Loading";
 
 const UserProfile = () => {
     const user =useAuth();

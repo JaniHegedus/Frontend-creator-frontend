@@ -1,6 +1,6 @@
 "use client"
 
-import Register from "@/app/Register/Register";
+import Register from "@/Components/UserAuth/Register";
 
 const Home = () => {
 

@@ -1,5 +1,5 @@
 "use client";
-import Login from "@/app/Login/Login";
+import Login from "@/Components/UserAuth/Login";
 
 const Home = () => {
 

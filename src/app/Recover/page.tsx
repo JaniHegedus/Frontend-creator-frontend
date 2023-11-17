@@ -1,6 +1,6 @@
 "use client";
 
-import PasswordReset from "@/app/Recover/PasswordReset";
+import PasswordReset from "@/Components/UserAuth/PasswordReset";
 
 const Home = () => {
 

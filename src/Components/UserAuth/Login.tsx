@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
-import PasswordReset from "@/app/Recover/PasswordReset";
+import PasswordReset from "@/Components/UserAuth/PasswordReset";
 
 const Login = () => {
     const [login, setLogin] = useState(''); // This can be email or username.

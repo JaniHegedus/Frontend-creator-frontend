@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import React, {useEffect, useRef, useState} from 'react';
 import { IEditorProps } from 'react-ace';
-import FileBrowser from "@/Components/Filebrowser";
+import FileBrowser from "@/Components/Features/Filebrowser";
 
 type FileSystemItem = FileItem | FolderItem;
 type FileItem = {

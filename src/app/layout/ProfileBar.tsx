@@ -46,7 +46,7 @@ const PBar = () => {
                     <div className="relative">
                         {/* Dropdown menu */}
                         {isDropdownVisible && (
-                            <div className="absolute right-1 top-10 mt-2" style={{perspective: '1500px'}}>
+                            <div className="absolute right-0.5 top-10 mt-2 bg-blue-400 dark:bg-blue-800" style={{perspective: '1500px'}}>
                                 <ul className="list-none p-0">
                                     {menuItems.map((item, index) => (
                                         <li className="text-black dark:text-gray-400 relative w-60 h-12 mb-2 bg-gray-400 shadow-lg transition-transform duration-500 origin-center-left transform dark:bg-gray-800 hover:bg-blue-400  dark:hover:bg-blue-800"

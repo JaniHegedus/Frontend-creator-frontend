@@ -1,7 +1,7 @@
 "use client";
 
 
-import UserProfile from "@/app/Profile/UserProfile";
+import UserProfile from "@/Components/UserAuth/UserProfile";
 
 const Home = () => {
 

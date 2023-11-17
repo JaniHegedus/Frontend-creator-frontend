@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from "@/Components/Contexts/AuthContext";
-import Loading from "@/app/layout/Loading";
+import Loading from "@/Components/Common/Loading";
 
 const GitHubCallbackPage = () => {
     const urlParams = new URLSearchParams(window.location.search);

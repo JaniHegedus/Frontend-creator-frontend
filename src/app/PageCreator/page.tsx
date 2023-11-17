@@ -1,5 +1,5 @@
 "use client"
-import DesignPage from "@/Components/FrontPageDesigner";
+import DesignPage from "@/Components/Features/FrontPageDesigner";
 
 const Page = () => {
     return (
