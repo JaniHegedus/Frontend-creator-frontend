@@ -169,13 +169,11 @@ const UserProfile = () => {
                                 placeholder="New username"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                             />
-                            <button
+                            <Button
                                 onClick={() => handleUpdateProfile('username', newUsername)}
-                                type="button"
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800 mt-3"
-                            >
-                                Change Username
-                            </button>
+                                label="Change Username"
+                                color={"secondary"}
+                            />
                         </div>
 
                         <div className="mb-4">
@@ -188,13 +186,11 @@ const UserProfile = () => {
                                 placeholder="New email"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                             />
-                            <button
+                            <Button
                                 onClick={() => handleUpdateProfile('email', newEmail)}
-                                type="button"
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800 mt-3"
-                            >
-                                Change Email
-                            </button>
+                                label="Change Email Address"
+                                color={"secondary"}
+                                />
                         </div>
 
                         <div className="mb-4">
@@ -217,7 +213,7 @@ const UserProfile = () => {
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                 required
                             />
-                            <button
+                            <Button
                                 onClick={() => {
                                     if(newPassword==confirmPassword)
                                     {
@@ -228,18 +224,16 @@ const UserProfile = () => {
                                     }
                                 }
                             }
-                                type="button"
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800 mt-3"
-                            >
-                                Change Password
-                            </button>
+                                label="Change Password"
+                                color={"secondary"}
+                                />
                         </div>
 
                         <div className="flex items-center justify-between">
                             {user.data?.github_uid ? (
                                 <>
                                     <p className="text-gray-700 dark:text-white"><Link href={`https://github.com/${user.data?.github_nickname}`}>GitHub</Link> Connected</p>
-                                    <Button label={"Remove"} onClick={openRemoveConfirmModal}/>
+                                    <Button label={"Remove"} onClick={openRemoveConfirmModal} color={"secondary"}/>
                                 </>
                             ) : (
                                 <button
@@ -251,7 +245,7 @@ const UserProfile = () => {
                                 </button>
                             )}
                         </div>
-                        <Button label="Delete Account" onClick={openDeleteConfirmModal}/>
+                        <Button label="Delete Account" onClick={openDeleteConfirmModal} color={"secondary"}/>
                     </form>
                 )}
                 <ConfirmModal

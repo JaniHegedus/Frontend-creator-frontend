@@ -2,7 +2,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify css file
-import {getAiColors, getAiLabels, getAiTexts, getCode, getHello} from "@/app/api/ApiRequests";
+import {getAiColors, getAiLabels, getAiTexts, getCode, getHello} from "@/Components/Features/ApiRequests";
 import Button from "@/Components/Common/Button";
 
 export default function APIPage() {
@@ -47,22 +47,21 @@ export default function APIPage() {
         }
     };
     return (
-        <div className="grid-cols-3">
+        <div className="items-center">
             <h1 className="col-span-3 text-center">API Page</h1>
             <div className="col-span-3 items-center text-center">
-                <Button onClick={handleHelloClick} label={"Hello"} className="m-1" disabled={false}/>
+                <Button onClick={handleHelloClick} label={"Hello"} color="list"/>
             </div>
             <h2 className="col-span-3 text-center">GoogleAI Test</h2>
-            <div>
-                <Button onClick={handleAILabelsClick} label={"Labels"} className="m-1" disabled={false}/>
-                <Button onClick={handleAITextsClick} label={"Texts"} className="m-1" disabled={false}/>
-                <Button onClick={handleAIColorsClick} label={"Colors"} className="m-1" disabled={false}/>
+            <div className="text-center">
+                <Button onClick={handleAILabelsClick} label={"Labels"} color="list"/>
+                <Button onClick={handleAITextsClick} label={"Texts"} color="list"/>
+                <Button onClick={handleAIColorsClick} label={"Colors"} color="list"/>
             </div>
             <h2 className="col-span-3 text-center">OpenAI Test</h2>
             <div className="col-span-3 items-center text-center">
-            <Button onClick={handleAIGenerateClick} label={"GenerateCode"} className="m-1" disabled={false}/>
+                <Button onClick={handleAIGenerateClick} label={"GenerateCode"} color="list"/>
             </div>
-
         </div>
     );
 }
