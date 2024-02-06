@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import {FaLeftLong} from "react-icons/fa6";
 
 // Define types for file and folder structure
-
 type FileSystemItem = FileItem | FolderItem;
 type FileItem = {
     type: 'file';
@@ -13,30 +13,32 @@ type FolderItem = {
     name: string;
     files: Array<FileItem | FolderItem>;
 };
-const fileData: FileSystemItem[] = [
-    {
-        type: 'folder',
-        name: 'Documents',
-        files: [
-            { type: 'file', name: 'resume.docx' },
-            { type: 'file', name: 'cover_letter.docx' },
-        ],
-    },
-    {
-        type: 'folder',
-        name: 'Music',
-        files: [
-            { type: 'file', name: 'song.mp3' },
-        ],
-    },
-    {
-        type: 'file',
-        name: 'photo.jpg',
-    },
-];
 
 const FileBrowser: React.FC<{ files: FileSystemItem[] }> = ({ files }) => {
     const [currentPath, setCurrentPath] = useState<FolderItem[]>([]);
+
+    const getFileIcon = (file: FileItem | FolderItem): string => {
+        if (file.type === 'folder') {
+            return '📁';
+        } else {
+            // Here you can extend the logic to handle different file types
+            const fileExtension = file.name.split('.').pop()?.toLowerCase();
+            switch (fileExtension) {
+                case 'docx':
+                case 'doc':
+                    return '📄'; // Document icon
+                case 'mp3':
+                    return '🎵'; // Music icon
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                    return '🖼️'; // Image icon
+                // Add more cases as needed
+                default:
+                    return '📄'; // Default file icon
+            }
+        }
+    };
 
     const navigateTo = (file: FileSystemItem) => {
         if (file.type === 'folder') {
@@ -56,22 +58,42 @@ const FileBrowser: React.FC<{ files: FileSystemItem[] }> = ({ files }) => {
         currentPath.forEach(path => {
             currentFiles = (currentFiles.find(f => f.type === 'folder' && f.name === path.name) as FolderItem).files;
         });
-        return currentFiles;
+
+        // Sort the files: folders first, then files
+        return currentFiles.sort((a, b) => {
+            if (a.type === 'folder' && b.type !== 'folder') {
+                return -1;
+            }
+            if (a.type !== 'folder' && b.type === 'folder') {
+                return 1;
+            }
+            return a.name.localeCompare(b.name); // Optionally, sort by name
+        });
     };
 
     return (
-        <div>
+        <div className="p-4">
             {currentPath.length > 0 && (
-                <button onClick={navigateUp}>Up</button>
+                <button
+                    onClick={navigateUp}
+                    className="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded focus:outline-none focus:shadow-outline dark:bg-blue-900 dark:hover:bg-blue-600 mt-3"
+                >
+                    <FaLeftLong/>
+                </button>
             )}
-            <ul>
+            <ul className="list-disc pl-5 mt-3">
                 {getCurrentFiles().map((file, index) => (
-                    <li key={index} onClick={() => navigateTo(file)}>
-                        {file.type === 'folder' ? '📁' : '📄'} {file.name}
+                    <li
+                        key={index}
+                        onClick={() => navigateTo(file)}
+                        className="py-2 px-4 bg-gray-300 dark:bg-gray-700 hover:bg-blue-400 dark:hover:bg-blue-800 rounded-md mt-1 cursor-pointer"
+                    >
+                        {getFileIcon(file)} <span className="ml-2 dark:text-white">{file.name}</span>
                     </li>
                 ))}
             </ul>
         </div>
     );
 };
+
 export default FileBrowser;

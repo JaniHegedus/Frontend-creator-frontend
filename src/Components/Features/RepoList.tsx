@@ -1,69 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import {useAuth} from "@/Components/Contexts/AuthContext";
+import { useAuth } from "@/Components/Contexts/AuthContext";
 
 type RepoType = {
     id: number;
     name: string;
-    // ... include other properties you might need
+    full_name: string;
+    clone_url: string;
 };
 
 const RepoList: React.FC = () => {
-    const user = useAuth();
-    const [repoNames, setRepoNames] = useState<string[] | undefined>([]);
-    const [repoFullNames, setRepoFullRepoNames] = useState<string[] | undefined>([]);
-    const [repoCloneURL, setRepoCloneURL] = useState<string[] | undefined>([]);
-    console.log(user.data?.github_repos);
+    const { data: userData } = useAuth();
+    const [repos, setRepos] = useState<RepoType[]>([]);
+
     useEffect(() => {
-        if(user.data?.github_repos){
-            // @ts-ignore
-            const names = user.data?.github_repos.map((repo: RepoType) => repo.name);
-            // @ts-ignore
-            const fullnames = user.data?.github_repos.map((repo: RepoType) => repo.full_name);
-            // @ts-ignore
-            const clone_urls = user.data?.github_repos.map((repo: RepoType) => repo.clone_url);
-            setRepoNames(names);
-            setRepoFullRepoNames(fullnames);
-            setRepoCloneURL(clone_urls);
+        if (userData?.github_repos) {
+            setRepos(userData.github_repos);
         }
-    }, [user.data?.github_repos]);
-    //
+    }, [userData?.github_repos]);
+
     return (
-        <div className="grid grid-cols-3">
-            {user.data?.github_repos ? (
-                <>
-                    <div className="mb-6 font-bold text-center text-gray-900 dark:text-white">
-                        <h1>GitHub Repository Names:</h1>
-                        <ul>
-                            { // @ts-ignore
-                                repoNames.map((name, index) => (
-                            <li key={index}>{name}</li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="mb-6 font-bold text-center text-gray-900 dark:text-white">
-                        <h1>GitHub Repository Full Names:</h1>
-                        <ul>
-                            { // @ts-ignore
-                                repoFullNames.map((name, index) => (
-                                    <li key={index}>{name}</li>
-                                ))}
-                        </ul>
-                    </div>
-                    <div className="mb-6 font-bold text-center text-gray-900 dark:text-white">
-                        <h1>GitHub Repository Links:</h1>
-                        <ul>
-                            { // @ts-ignore
-                                repoCloneURL.map((name, index) => (
-                                    <li key={index}>{name}</li>
-                                ))}
-                        </ul>
-                    </div>
-                </>
-                ) :
-            (<p>
-                No Repos Found
-            </p>)
-            }
+        <div className="overflow-auto h-80vh  lg:w-80vh"> {/* Adjust width as needed */}
+            <ul className="space-y-2">
+                {repos.map((repo, index) => (
+                    <li key={index} className="bg-gray-300 dark:bg-gray-700 hover:bg-blue-400 dark:hover:bg-blue-800 rounded-md py-2 px-4 cursor-pointer flex justify-between items-center">
+                        <a href={repo.clone_url} target="_blank" rel="noopener noreferrer" className="text-gray-900 dark:text-white">
+                            {repo.name}
+                        </a>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                            ({repo.full_name})
+                        </span>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

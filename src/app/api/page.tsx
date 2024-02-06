@@ -4,8 +4,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify css file
 import {getAiColors, getAiLabels, getAiTexts, getCode, getHello} from "@/Components/Features/ApiRequests";
 import Button from "@/Components/Common/Button";
+import {useModal} from "@/Components/Contexts/ModalContext";
+import UploadPage from "@/app/Upload/page";
 
 export default function APIPage() {
+    const { openModal } = useModal(); // Destructure openModal function
     const handleHelloClick = async () => {
         try {
             await getHello(); // Assuming getHello triggers the toast internally
@@ -46,6 +49,9 @@ export default function APIPage() {
             toast.error(error.error); // Fallback toast for any error
         }
     };
+    const upload_Image = async () => {
+        openModal(<UploadPage/>);
+    };
     return (
         <div className="items-center">
             <h1 className="col-span-3 text-center">API Page</h1>
@@ -61,6 +67,9 @@ export default function APIPage() {
             <h2 className="col-span-3 text-center">OpenAI Test</h2>
             <div className="col-span-3 items-center text-center">
                 <Button onClick={handleAIGenerateClick} label={"GenerateCode"} color="list"/>
+            </div>
+            <div className="col-span-3 items-center text-center">
+                <Button onClick={upload_Image} label={"Upload Image"} color="list"/>
             </div>
         </div>
     );

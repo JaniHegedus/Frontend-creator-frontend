@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from "next/link";
-import { FaWrench, FaBriefcase } from 'react-icons/fa';
+import {FaWrench, FaBriefcase, FaFolder} from 'react-icons/fa';
 import Button from "@/Components/Common/Button";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 
@@ -28,6 +28,7 @@ const PBar = () => {
     const menuItems = [
         { icon: <FaWrench />, label: "Change User Info", path: "/Profile" },
         { icon: <FaBriefcase />, label: "Github", path: "/Github" },
+        { icon: <FaFolder/>, label: "My Files", path: "/MyFiles" }
     ];
     const setVisible = () => {
         if (isDropdownVisible) {
