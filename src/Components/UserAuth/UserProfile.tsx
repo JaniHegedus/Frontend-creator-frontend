@@ -30,29 +30,37 @@ const UserProfile = () => {
     const closeRemoveConfirmModal = () => setIsRemoveConfirmModalOpen(false);
 
         useEffect(() => {
-        const fetchUserData = async () => {
-            if (!token) {
-                setError('No token found. User is not logged in.');
-                setLoading(false);
-                return;
-            }
+            const fetchUserData = async () => {
+                if (!token) {
+                    setError('No token found. User is not logged in.');
+                    setLoading(false);
+                    return;
+                }
 
-            try {
-                // You should replace '/userinfo' with the actual endpoint for your user data
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
-                let userdata = response.data;
-                setData({id:userdata["id"],email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
-                // Set the user data on successful fetch
-                console.log(user);
-                setLoading(false);
-            } catch (error) {
-                setError('Failed to fetch user data.');
-                setLoading(false);
-            }
+                try {
+                    // You should replace '/userinfo' with the actual endpoint for your user data
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
+                    let userdata = response.data;
+                    setData({id:userdata["id"],email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
+                    // Set the user data on successful fetch
+                    setLoading(false);
+                } catch (error) {
+                    // @ts-ignore
+                    if(error.response.status ==401)
+                    {
+                        setError('Session Expired You have to log in again.')
+                        setData(null);
+                        setLoading(false);
+                    }
+                    else{
+                        setError('Failed to fetch user data.');
+                        setLoading(false);
+                    }
+                }
         };
         fetchUserData().then(() => {});
     }, [setData, token, user]);

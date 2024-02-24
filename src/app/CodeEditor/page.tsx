@@ -1,5 +1,5 @@
 "use client"
-import CodeEditor from "@/Components/Features/editor";
+import CodeEditor from "@/Components/Features/Steps/editor";
 
 const Page = () => {
     return (

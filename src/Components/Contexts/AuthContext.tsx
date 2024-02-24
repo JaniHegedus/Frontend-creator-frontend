@@ -1,5 +1,4 @@
-// AuthContext.tsx
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, {createContext, useState, useContext, ReactNode, useEffect} from 'react';
 
 type AuthContextType = {
     data: UserType | null; // Now user is of type UserType or null
@@ -28,26 +27,24 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [userEmail, setUserEmail] = useState<string | null>(() => {
-        // Get the stored email from localStorage
+    // Initialize state without localStorage access
+    const [userEmail, setUserEmail] = useState<string | null>(null);
+    const [data, setData] = useState<UserType | null>(null);
+
+    useEffect(() => {
+        // Safely access localStorage after component mounts
         const savedEmail = localStorage.getItem('userEmail');
-        return savedEmail ? savedEmail : null;
-    });
-    const [data, setData] = useState<{id:number | undefined | null; email: string | undefined | null; username: string | undefined | null; github_uid: string|null; github_nickname:string|null; github_repos: Array<string>|null } | null>(() => {
-        // Get the stored user data from localStorage
-        const savedUser = localStorage.getItem('user');
-        if (!savedUser || savedUser === "undefined") {
-            return null;
-        }
+        setUserEmail(savedEmail ? savedEmail : null);
 
-        try {
-            return JSON.parse(savedUser);
-        } catch (e) {
-            console.error("Error parsing savedUser:", e);
-            return null;
+        const savedUserData = localStorage.getItem('user');
+        if (savedUserData && savedUserData !== "undefined") {
+            try {
+                setData(JSON.parse(savedUserData));
+            } catch (e) {
+                console.error("Error parsing savedUser:", e);
+            }
         }
-    });
-
+    }, []);
     const handleSetUser = (userData: {id:number | undefined | null; email: string | undefined | null; username: string | undefined | null; github_uid: string|null; github_nickname:string|null; github_repos: Array<string>|null} | null) => {
         setData(userData);
         // Store the user data in localStorage

@@ -1,7 +1,7 @@
 "use client";
 import './globals.css'
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "@/app/layout/Navbar";
+import Navbar from "@/Components/layout/Navbar";
 import Button from "@/Components/Common/Button";
 import {ToastContainer} from "react-toastify";
 import { AuthProvider } from '@/Components/Contexts/AuthContext';

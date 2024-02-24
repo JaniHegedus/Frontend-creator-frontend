@@ -6,7 +6,7 @@ import {useModal} from "@/Components/Contexts/ModalContext";
 import Login from "@/Components/UserAuth/Login";
 import Register from "@/Components/UserAuth/Register";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import PBar from "@/app/layout/ProfileBar";
+import PBar from "@/Components/layout/ProfileBar";
 import NavItem from "@/Components/Common/NavItem";
 import {FiMenu} from "react-icons/fi";
 
@@ -50,8 +50,7 @@ const Navbar = () => {
     const menuItems = [
         { href: "/", Name: "Home"},
         { href: "/api", Name: "Api"},
-        { href: "/CodeEditor", Name:"Code Editor" },
-        { href: "/PageCreator", Name: "Page Creator"},
+        { href: "/Creator", Name:"Get Started" }
     ];
     const setVisibility = () => {
         if (menuVisible) {
@@ -61,7 +60,7 @@ const Navbar = () => {
         }
     };
     return (
-        <div className="flex flex-row w-1/3 justify-end">
+        <div className="flex flex-row w-2/3 justify-end">
             {menuVisible && menuItems.map((item, index) => (
                     <NavItem href={item.href} Name={item.Name} key={index}/>
                 ))}

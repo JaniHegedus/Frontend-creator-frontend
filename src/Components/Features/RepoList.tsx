@@ -14,6 +14,7 @@ const RepoList: React.FC = () => {
 
     useEffect(() => {
         if (userData?.github_repos) {
+            // @ts-ignore
             setRepos(userData.github_repos);
         }
     }, [userData?.github_repos]);

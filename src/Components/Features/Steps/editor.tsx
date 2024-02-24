@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React, {useEffect, useRef, useState} from 'react';
 import { IEditorProps } from 'react-ace';
 import FileBrowser from "@/Components/Features/Filebrowser";
+import Button from "@/Components/Common/Button";
 
 type FileSystemItem = FileItem | FolderItem;
 type FileItem = {
@@ -52,7 +53,13 @@ const AceEditor = dynamic(
     },
     { ssr: false }
 ) as React.ComponentType<IEditorProps>;
-const EditorPage: React.FC = () => {
+
+interface EditorPageProps {
+    nextStep: () => void
+    prevStep: () => void
+}
+
+const EditorPage = ({nextStep}: EditorPageProps, {prevStep}: EditorPageProps) => {
     const [language, setLanguage] = useState('html');
     const [code, setCode] = useState<string>('');
     const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -104,7 +111,8 @@ const EditorPage: React.FC = () => {
     };
 
     return (
-            <div className="flex" style={{ height: '78vh', width: '190vh'}}>
+        <>
+            <div className="flex" style={{height: '78vh', width: '190vh'}}>
                 <div className="w-auto">
                     <h1>Project:</h1>
                     <FileBrowser files={fileData}/>
@@ -128,11 +136,10 @@ const EditorPage: React.FC = () => {
                             enableSnippets: true,
                             showLineNumbers: true,
                             tabSize: 2,
-                            useWorker: false,
-                            enableColorScheme: true
+                            useWorker: false
                         }}
-                        style={{ width: '100%', height: '100%' }}
-                        editorProps={{ $blockScrolling: true }}
+                        style={{width: '100%', height: '100%'}}
+                        editorProps={{$blockScrolling: true}}
                     />
                 </div>
                 <div className="flex flex-col w-1/4">
@@ -145,6 +152,11 @@ const EditorPage: React.FC = () => {
                     />
                 </div>
             </div>
+            <div>
+                <Button onClick={prevStep} label="Previous" color="primary" className="w-1"/>
+                <Button onClick={nextStep} label="next" color="primary" className="w-1"/>
+            </div>
+        </>
     );
 };
 
