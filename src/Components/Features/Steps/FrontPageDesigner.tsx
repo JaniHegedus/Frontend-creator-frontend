@@ -18,9 +18,10 @@ interface PageComponent {
 
 interface FrontPageDesignerProps {
     nextStep: () => void
+    prevStep: () => void
 }
 
-const FrontPageDesigner = ({nextStep}: FrontPageDesignerProps) => {
+const FrontPageDesigner = ({nextStep, prevStep }: FrontPageDesignerProps) => {
     const [pageComponents, setPageComponents] = useState<PageComponent[]>([]);
 
     // A drag and drop logika kezelése
@@ -85,7 +86,11 @@ const FrontPageDesigner = ({nextStep}: FrontPageDesignerProps) => {
                     </Droppable>
                 </DragDropContext>
             </div>
-            <Button onClick={nextStep} label="next" color="primary" className="w-1"/>
+            <div className="grid grid-cols-3 items-center">
+                <Button onClick={prevStep} label="Previous" color="secondary"/>
+                <div className="col-span-1"></div>
+                <Button onClick={nextStep} label="next" color="secondary"/>
+            </div>
         </>
     );
 };

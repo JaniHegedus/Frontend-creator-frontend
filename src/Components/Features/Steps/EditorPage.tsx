@@ -59,7 +59,7 @@ interface EditorPageProps {
     prevStep: () => void
 }
 
-const EditorPage = ({nextStep}: EditorPageProps, {prevStep}: EditorPageProps) => {
+const EditorPage = ({nextStep, prevStep}: EditorPageProps) => {
     const [language, setLanguage] = useState('html');
     const [code, setCode] = useState<string>('');
     const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -112,7 +112,7 @@ const EditorPage = ({nextStep}: EditorPageProps, {prevStep}: EditorPageProps) =>
 
     return (
         <>
-            <div className="flex" style={{height: '78vh', width: '190vh'}}>
+            <div className="flex" style={{height: '72vh', width: '190vh'}}>
                 <div className="w-auto">
                     <h1>Project:</h1>
                     <FileBrowser files={fileData}/>
@@ -152,9 +152,11 @@ const EditorPage = ({nextStep}: EditorPageProps, {prevStep}: EditorPageProps) =>
                     />
                 </div>
             </div>
-            <div>
-                <Button onClick={prevStep} label="Previous" color="primary" className="w-1"/>
-                <Button onClick={nextStep} label="next" color="primary" className="w-1"/>
+            <div className="grid grid-cols-16 items-center">
+                <Button onClick={prevStep} label="Previous" color="secondary" />
+                <div className="col-span-7"></div>
+                <div className="col-span-7"></div>
+                <Button onClick={nextStep} label="Next" color="secondary" />
             </div>
         </>
     );

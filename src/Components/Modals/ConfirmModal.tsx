@@ -5,9 +5,10 @@ interface ConfirmModalProps {
     onClose: () => void;
     onConfirm: () => void;
     message: string;
+    noNo?: boolean;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message,noNo }) => {
     if (!isOpen) return null;
 
     const handleConfirm = () => {
@@ -21,21 +22,38 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
                 <h2 className="text-gray-900 dark:text-white text-lg font-bold mb-4">Are you sure?</h2>
                 <p className="text-gray-600 dark:text-gray-300 mb-6">{message}</p>
                 <div className="flex justify-between">
-                    <button
-                        onClick={onClose}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
-                    >
-                        No
-                    </button>
-                    <button
-                        onClick={() => {
-                            onConfirm();
-                            onClose();
-                        }}
-                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
-                    >
-                        Yes
-                    </button>
+                    {noNo ?(
+
+                        <>
+                            <button
+                                onClick={() => {
+                                    onConfirm();
+                                    onClose();
+                                }}
+                                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
+                            >
+                                OK
+                            </button>
+                        </>
+                        )
+                        :(<>
+                            <button
+                                onClick={onClose}
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
+                            >
+                                No
+                            </button>
+                            <button
+                                onClick={() => {
+                                    onConfirm();
+                                    onClose();
+                                }}
+                                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
+                            >
+                                Yes
+                            </button>
+                        </>)
+                    }
                 </div>
             </div>
         </div>

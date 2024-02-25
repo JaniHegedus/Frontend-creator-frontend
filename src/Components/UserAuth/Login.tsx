@@ -5,6 +5,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import PasswordReset from "@/Components/UserAuth/PasswordReset";
+import Inputfield from "@/Components/Common/Inputfield";
 
 const Login = () => {
     const [login, setLogin] = useState(''); // This can be email or username.
@@ -61,22 +62,22 @@ const Login = () => {
                 <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 dark:bg-gray-800">
                     <div className="mb-4">
                         <label htmlFor="login" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email/Username:</label>
-                        <input
+                        <Inputfield
                             type="text"
                             id="login"
                             value={login}
-                            onChange={(e) => setLogin(e.target.value)}
+                            onChange={setLogin}
                             placeholder="Email or Username"
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         />
                     </div>
                     <div className="mb-6">
                         <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password:</label>
-                        <input
+                        <Inputfield
                             type="password"
                             id="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={setPassword}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         />
                     </div>

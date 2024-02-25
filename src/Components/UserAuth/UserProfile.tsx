@@ -7,9 +7,10 @@ import Button from "@/Components/Common/Button";
 import Link from "next/link";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import Loading from "@/Components/Common/Loading";
+import Inputfield from "@/Components/Common/Inputfield";
 
 const UserProfile = () => {
-    const user =useAuth();
+    const user = useAuth();
     const { setData } = useAuth();
     const token = localStorage.getItem('token');
     // Add state for form inputs
@@ -20,50 +21,61 @@ const UserProfile = () => {
     const [loading, setLoading] = useState(true);
     const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
     const [isRemoveConfirmModalOpen, setIsRemoveConfirmModalOpen] = useState(false);
-    const [, setIsDeleteConfirmed] = useState(false);
-    const [, setIsRemoveConfirmed] = useState(false);
+    const [isErrorConfirmModalOpen, setIsErrorConfirmModalOpen] = useState(false);
+    const [,setIsDeleteConfirmed] = useState(false);
+    const [,setIsRemoveConfirmed] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const openDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(true);
     const openRemoveConfirmModal = () => setIsRemoveConfirmModalOpen(true);
+    const openErrorConfirmModal = () => setIsErrorConfirmModalOpen(true);
     const closeDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(false);
     const closeRemoveConfirmModal = () => setIsRemoveConfirmModalOpen(false);
+    const closeErrorConfirmModal = () => setIsErrorConfirmModalOpen(false);
 
-        useEffect(() => {
-            const fetchUserData = async () => {
-                if (!token) {
-                    setError('No token found. User is not logged in.');
-                    setLoading(false);
-                    return;
-                }
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!token) {
+                setError('No token found. User is not logged in.');
+                setLoading(false);
+                openErrorConfirmModal();
+                return;
+            }
 
-                try {
-                    // You should replace '/userinfo' with the actual endpoint for your user data
-                    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                        },
-                    });
-                    let userdata = response.data;
-                    setData({id:userdata["id"],email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
-                    // Set the user data on successful fetch
-                    setLoading(false);
-                } catch (error) {
-                    // @ts-ignore
-                    if(error.response.status ==401)
-                    {
-                        setError('Session Expired You have to log in again.')
-                        setData(null);
-                        setLoading(false);
-                    }
-                    else{
-                        setError('Failed to fetch user data.');
-                        setLoading(false);
-                    }
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                const userdata = response.data;
+                setData({
+                    id: userdata.id,
+                    email: userdata.email,
+                    username: userdata.username,
+                    github_uid: userdata.github_uid,
+                    github_nickname: userdata.github_nickname,
+                    github_repos: userdata.github_repos,
+                });
+            } catch (error) {
+                if (axios.isAxiosError(error) && error.response?.status === 401) {
+                    setError('Session Expired. You have to log in again.');
+                    setData(null);
+                } else {
+                    setError('Failed to fetch user data.');
                 }
+                openErrorConfirmModal();
+            } finally {
+                setLoading(false);
+            }
         };
-        fetchUserData().then(() => {});
-    }, [setData, token, user]);
+
+        fetchUserData();
+    }, [token]); // Only re-run the effect if 'token' changes
+
+    const handleConfirmErrorModal = () =>{
+        window.location.href = "/";
+    }
     const handleConfirmAccountDelete = async () => {
         // Logic to execute when confirmed
         if (!token) {
@@ -136,7 +148,12 @@ const UserProfile = () => {
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        openErrorConfirmModal();
+        return (
+            <div>
+                <h1>Error: {error}</h1>
+            </div>
+        );
     }
 
     const handleConfirmRemoveGithub = async () => {
@@ -160,20 +177,27 @@ const UserProfile = () => {
     return (
         <div className="flex items-center justify-center p-6">
             <div className="w-full max-w-md">
-                <h1 className="mb-6 text-3xl font-bold text-center text-gray-900 dark:text-white">User Profile</h1>
+                <h1 className="mb-6 text-3xl font-bold text-center text-gray-900 dark:text-white">
+                    User Profile
+                </h1>
 
-                {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-700 dark:border-red-900 dark:text-red-200" role="alert">{error}</div>}
-                {success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-700 dark:border-green-900 dark:text-red-200" role="alert">{success}</div>}
+                {error && <div
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-700 dark:border-red-900 dark:text-red-200"
+                    role="alert">{error}</div>}
+                {success && <div
+                    className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-700 dark:border-green-900 dark:text-red-200"
+                    role="alert">{success}</div>}
 
                 {user && (
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 dark:bg-gray-800">
                         <div className="mb-4">
-                            <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username: {user.data?.username}</label>
-                            <input
+                            <label htmlFor="username"
+                                   className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username: {user.data?.username}</label>
+                            <Inputfield
                                 type="text"
                                 id="username"
                                 value={newUsername}
-                                onChange={(e) => setNewUsername(e.target.value)}
+                                onChange={setNewUsername}
                                 placeholder="New username"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                             />
@@ -185,62 +209,66 @@ const UserProfile = () => {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email: {user.data?.email}</label>
-                            <input
+                            <label htmlFor="email"
+                                   className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email: {user.data?.email}</label>
+                            <Inputfield
                                 type="email"
                                 id="email"
                                 value={newEmail}
-                                onChange={(e) => setNewEmail(e.target.value)}
+                                onChange ={setNewEmail}
                                 placeholder="New email"
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                            />
+                                />
                             <Button
                                 onClick={() => handleUpdateProfile('email', newEmail)}
                                 label="Change Email Address"
                                 color={"secondary"}
-                                />
+                            />
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password: *****</label>
-                            <input
+                            <label htmlFor="password"
+                                   className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password:
+                                *****</label>
+                            <Inputfield
                                 type="password"
                                 id="password"
                                 value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
+                                onChange={setNewPassword}
                                 placeholder="New password"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                             />
-                            <label htmlFor="passwordConfirmation" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Confirm Password:</label>
-                            <input
+                            <label htmlFor="passwordConfirmation"
+                                   className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Confirm
+                                Password:</label>
+                            <Inputfield
                                 type="password"
                                 id="passwordConfirmation"
                                 value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                onChange={setConfirmPassword}
                                 placeholder="Confirm New password"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                 required
                             />
                             <Button
                                 onClick={() => {
-                                    if(newPassword==confirmPassword)
-                                    {
-                                        handleUpdateProfile("password",newPassword)
-                                    }
-                                    else{
+                                    if (newPassword == confirmPassword) {
+                                        handleUpdateProfile("password", newPassword)
+                                    } else {
                                         setError('Passwords do not match');
                                     }
                                 }
-                            }
+                                }
                                 label="Change Password"
                                 color={"secondary"}
-                                />
+                            />
                         </div>
 
                         <div className="flex items-center justify-between">
                             {user.data?.github_uid ? (
                                 <>
-                                    <p className="text-gray-700 dark:text-white"><Link href={`https://github.com/${user.data?.github_nickname}`}>GitHub</Link> Connected</p>
+                                    <p className="text-gray-700 dark:text-white"><Link
+                                        href={`https://github.com/${user.data?.github_nickname}`}>GitHub</Link> Connected
+                                    </p>
                                     <Button label={"Remove"} onClick={openRemoveConfirmModal} color={"secondary"}/>
                                 </>
                             ) : (
@@ -257,16 +285,22 @@ const UserProfile = () => {
                     </form>
                 )}
                 <ConfirmModal
-                isOpen={isDeleteConfirmModalOpen}
-                onClose={closeDeleteConfirmModal}
-                onConfirm={handleConfirmAccountDelete}
-                message="Do you really want to perform this action? You will need to create a profile again."
+                    isOpen={isDeleteConfirmModalOpen}
+                    onClose={closeDeleteConfirmModal}
+                    onConfirm={handleConfirmAccountDelete}
+                    message="Do you really want to perform this action? You will need to create a profile again."
                 />
                 <ConfirmModal
                     isOpen={isRemoveConfirmModalOpen}
                     onClose={closeRemoveConfirmModal}
                     onConfirm={handleConfirmRemoveGithub}
                     message="Do you really want to perform this action? You will need to reconnect Github."
+                />
+                <ConfirmModal
+                    isOpen={isErrorConfirmModalOpen}
+                    onClose={closeErrorConfirmModal}
+                    onConfirm={handleConfirmErrorModal}
+                    message={error}
                 />
             </div>
         </div>

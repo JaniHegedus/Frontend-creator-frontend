@@ -6,12 +6,12 @@ interface GenerationBotInterfaceProps {
     prevStep: () => void;
 }
 
-const GenerationBotInterface = ({nextStep}: GenerationBotInterfaceProps, {prevStep}:GenerationBotInterfaceProps) =>  {
+const GenerationBotInterface = ({nextStep, prevStep}:GenerationBotInterfaceProps) =>  {
     return(
         <>
             <div>
-                <Button onClick={prevStep} label="Previous" color="primary" className="w-1"/>
-                <Button onClick={nextStep} label="next" color="primary" className="w-1"/>
+                <Button onClick={prevStep} label="Previous" color="secondary" className="w-1"/>
+                <Button onClick={nextStep} label="Next" color="secondary" className="w-1"/>
             </div>
         </>
     )

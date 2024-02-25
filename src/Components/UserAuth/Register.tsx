@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import axios from 'axios';
+import Inputfield from "@/Components/Common/Inputfield";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -62,44 +63,44 @@ const Register = () => {
                 <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 dark:bg-gray-800">
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email:</label>
-                        <input
+                        <Inputfield
                             type="email"
                             id="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={setEmail}
                             required
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white"
                         />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username:</label>
-                        <input
+                        <Inputfield
                             type="text"
                             id="username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={setUsername}
                             required
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white"
                         />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password:</label>
-                        <input
+                        <Inputfield
                             type="password"
                             id="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={setPassword}
                             required
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white"
                         />
                     </div>
                     <div className="mb-6">
                         <label htmlFor="passwordConfirmation" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Confirm Password:</label>
-                        <input
+                        <Inputfield
                             type="password"
                             id="passwordConfirmation"
                             value={passwordConfirmation}
-                            onChange={(e) => setPasswordConfirmation(e.target.value)}
+                            onChange={setPasswordConfirmation}
                             required
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white"
                         />

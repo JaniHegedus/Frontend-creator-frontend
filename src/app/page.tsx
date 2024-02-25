@@ -6,6 +6,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 
 export default function Home() {
     const [theme, setTheme] = useState(localStorage.getItem('themeE') === 'monokai')
+    const user = useAuth();
     const { setData } = useAuth();
     const [HEROImage, setHEROImage] =useState("/CodeEditor_Dark.jpg");
     useEffect(() => {
@@ -22,6 +23,15 @@ export default function Home() {
         localStorage.clear();
         setData(null);
     };
+    const handleGetStarted = () =>{
+        if(user.data)
+        {
+            window.location.href = "/Creator"
+        }else
+        {
+            window.location.href = "/UserAuth"
+        }
+    }
     return (
         <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white h-12">
 
@@ -35,7 +45,7 @@ export default function Home() {
                         <li>Have text content written for you</li>
                         <li>Update relevant images to your site</li>
                     </ul>
-                    <Button label="Get started for free" onClick={() => {}} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition ease-in-out duration-300"/>
+                    <Button label="Get started for free" onClick={handleGetStarted} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition ease-in-out duration-300"/>
                 </div>
                 <div>
                     <img src={HEROImage} alt="Hero" className="hidden lg:block rounded-lg shadow-lg"/>

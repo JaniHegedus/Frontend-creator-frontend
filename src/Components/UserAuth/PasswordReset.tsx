@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { NextPage } from 'next';
+import Inputfield from "@/Components/Common/Inputfield";
 
 const PasswordReset: NextPage = () => {
     const [login, setLogin] = useState('');
@@ -32,11 +33,11 @@ const PasswordReset: NextPage = () => {
             {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-700 dark:border-red-900 dark:text-red-200" role="alert">{error}</div>}
             <form onSubmit={handlePasswordReset}>
                 <label htmlFor="login" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email/Username:</label>
-                <input
+                <Inputfield
                     type="text"
                     placeholder="Enter your username or email"
                     value={login}
-                    onChange={(e) => setLogin(e.target.value)}
+                    onChange={setLogin}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                     required
                 />

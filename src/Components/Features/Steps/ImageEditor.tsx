@@ -51,15 +51,18 @@ const ImageEditor: React.FC<ImageEditorProps> = ({ nextStep, prevStep }) => {
             <div className="flex flex-col items-center justify-center space-y-4">
 
                 {/* Navigation Buttons */}
-                <div className="flex space-x-2">
-                    <Button onClick={prevStep} label="Previous" color="primary" className="w-1" />
-                    <Button onClick={nextStep} label="Next" color="primary" className="w-1" />
+                <div className="grid grid-cols-16 items-center">
+                    <Button onClick={prevStep} label="Previous" color="secondary"/>
+                    <div className="col-span-7"></div>
+                    <div className="col-span-7"></div>
+                    <Button onClick={nextStep} label="Next" color="secondary"/>
                 </div>
             </div>
         </>
     );
 };
-function ExportButton({ setHtml }: { setHtml: (html: string) => void }) {
+
+function ExportButton({setHtml}: { setHtml: (html: string) => void }) {
     const editor = useEditor();
     const [loading, setLoading] = useState(false);
     // A tailwind styled button that is pinned to the bottom right of the screen
