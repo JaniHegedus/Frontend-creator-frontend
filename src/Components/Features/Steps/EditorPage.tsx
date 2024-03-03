@@ -55,8 +55,8 @@ const AceEditor = dynamic(
 ) as React.ComponentType<IEditorProps>;
 
 interface EditorPageProps {
-    nextStep: () => void
-    prevStep: () => void
+    nextStep: () => void;
+    prevStep: () => void;
 }
 
 const EditorPage = ({nextStep, prevStep}: EditorPageProps) => {
@@ -89,7 +89,7 @@ const EditorPage = ({nextStep, prevStep}: EditorPageProps) => {
         }else {
             setEtheme("chrome")
         }
-    }, [theme]);
+    }, [theme, localStorage.getItem('themeE')]);
     // Function to detect language based on input
     // @ts-ignore
 
@@ -152,10 +152,8 @@ const EditorPage = ({nextStep, prevStep}: EditorPageProps) => {
                     />
                 </div>
             </div>
-            <div className="grid grid-cols-16 items-center">
+            <div className="flex justify-between items-center w-full px-4">
                 <Button onClick={prevStep} label="Previous" color="secondary" />
-                <div className="col-span-7"></div>
-                <div className="col-span-7"></div>
                 <Button onClick={nextStep} label="Next" color="secondary" />
             </div>
         </>

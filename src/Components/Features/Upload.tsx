@@ -1,9 +1,12 @@
-// components/Upload.tsx
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 
-const Upload = () => {
+interface UploadProps {
+    onFileLocation?: (fullname : string, location : string) => void; // Callback function to return the file location
+}
+
+const Upload = ({ onFileLocation }: UploadProps) => {
     const { data: userData } = useAuth();
     const [file, setFile] = useState<File | null>(null);
     const [success, setSuccess] = useState('');
@@ -30,11 +33,14 @@ const Upload = () => {
 
         try {
             const response = await axios.post(`${backendUrl}/uploads`, formData, {
-                "headers": {
+                headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
+            if(onFileLocation)
+            {
+                onFileLocation(response.data.filename, userData?.username+"/"+response.data.filename)
+            }
             setSuccess(`File uploaded successfully: ${response.data.filename}`);
         } catch (err) {
             setError('Upload failed. Please try again.');
@@ -48,21 +54,21 @@ const Upload = () => {
     return (
         <div className="flex items-center justify-center p-6">
             <div className="w-full max-w-md">
-                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <div className="mb-4">
                         <input
                             type="file"
                             onChange={handleFileChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         />
                     </div>
                     <div className="flex items-center justify-center">
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:hover:bg-blue-800">
                             Upload
                         </button>
                     </div>
-                    {success && <div className="text-green-500">{success}</div>}
-                    {error && <div className="text-red-500">{error}</div>}
+                    {success && <div className="text-green-500 dark:text-green-400">{success}</div>}
+                    {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
                 </form>
             </div>
         </div>

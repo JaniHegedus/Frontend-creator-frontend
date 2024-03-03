@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {FaLeftLong} from "react-icons/fa6";
+import {useAuth} from "@/Components/Contexts/AuthContext";
 
 // Define types for file and folder structure
 type FileSystemItem = FileItem | FolderItem;
@@ -11,11 +12,26 @@ type FileItem = {
 type FolderItem = {
     type: 'folder';
     name: string;
-    files: Array<FileItem | FolderItem>;
+    files: any;
 };
 
-const FileBrowser: React.FC<{ files: FileSystemItem[] }> = ({ files }) => {
+type SelectedFile = {
+    name: string;
+    path: string;
+}
+
+const FileBrowser: React.FC<{
+                            files: FileSystemItem[],
+                            setSelected?: Dispatch<SetStateAction<SelectedFile | null>>,
+                            selectable?: number | null | undefined;
+}>
+                            = ({
+                                   files,
+                                   setSelected,
+                                   selectable
+                            }) => {
     const [currentPath, setCurrentPath] = useState<FolderItem[]>([]);
+    const user = useAuth();
 
     const getFileIcon = (file: FileItem | FolderItem): string => {
         if (file.type === 'folder') {
@@ -45,7 +61,18 @@ const FileBrowser: React.FC<{ files: FileSystemItem[] }> = ({ files }) => {
             setCurrentPath([...currentPath, file]);
         } else {
             // Handle file click (e.g., open file)
-            alert(`Opening file: ${file.name}`);
+            if(selectable && selectable>0) {
+                if (setSelected) {
+                    let pathString = currentPath.map(i => i.name).join('/');
+                    pathString = pathString ? `${pathString}/` : '';
+
+                    setSelected({ name: file.name, path: `${user.data?.username}/${pathString}${file.name}` });
+                    alert(`Selected file file: ${file.name}`);
+                    selectable -= 1;
+                }
+            }else {
+                alert(`Can't select more files!`);
+            }
         }
     };
 

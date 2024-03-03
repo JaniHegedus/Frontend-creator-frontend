@@ -1,125 +1,233 @@
-import React, {useEffect, useState} from "react";
-import Button from "@/Components/Common/Button";
-import dynamic from "next/dynamic";
-import "@tldraw/tldraw/tldraw.css";
-import { useEditor } from "@tldraw/tldraw";
-import { getSvgAsImage } from "@/Components/lib/getSvgAsImage";
-import { blobToBase64 } from "@/Components/lib/blobToBase64";
-import ReactDOM from "react-dom";
-import { PreviewModal } from "@/Components/PreviewModal";
+import React, {useEffect, useRef, useState} from 'react';
+import { useAuth } from '@/Components/Contexts/AuthContext';
+import Upload from '@/Components/Features/Upload';
+import { useModal } from '@/Components/Contexts/ModalContext';
+import Button from '@/Components/Common/Button';
+import axios from "axios";
+import timestamp from 'time-stamp'; //for the filename
+import FilerobotImageEditor, {
+    TABS,
+    TOOLS,
+} from 'react-filerobot-image-editor';
+import Inputfield from "@/Components/Common/Inputfield";
 
 interface ImageEditorProps {
     nextStep: () => void;
     prevStep: () => void;
+    addToStepData:  (fullname : string, location : string) => void;
 }
-const Tldraw = dynamic(async () => (await import("@tldraw/tldraw")).Tldraw, {
-    ssr: false,
-});
-const ImageEditor: React.FC<ImageEditorProps> = ({ nextStep, prevStep }) => {
-    const [html, setHtml] = useState<null | string>(null);
+
+const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {
+    const user = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const {openModal} =useModal();
+    const [imageSource, setImageSource] = useState('blank-white-background.jpg');
+    const [newImageSource, setNewImageSource] = useState('');
+    const [uploadedDesignState, setUploadedDesignState] = useState(null);
+    const [theme, setTheme] = useState(localStorage.getItem('themeE') === 'monokai')
+    const  [isDarkMode]  = useState(false); // Or however you determine dark mode
+
+    const lightModePalette = {
+        palette:{
+            'bg-secondary': '#F9FAFB', // Gray-50 as secondary background
+            'bg-primary': '#FFFFFF', // White as primary background
+            'bg-primary-active': '#F3F4F6', // Gray-100 for active state backgrounds
+            'accent-primary': '#3B82F6', // Blue-500 for primary accent
+            'accent-primary-active': '#2563EB', // Blue-600 for active primary accent
+            'icons-primary': '#1F2937', // Gray-800 for primary icons
+            'icons-secondary': '#6B7280', // Gray-500 for secondary icons
+            'borders-secondary': '#D1D5DB', // Gray-300 for secondary borders
+            'borders-primary': '#E5E7EB', // Gray-200 for primary borders
+            'borders-strong': '#9CA3AF', // Gray-400 for stronger borders
+            'light-shadow': 'rgba(100, 100, 111, 0.2)', // Example light shadow
+            'warning': '#F87171', // Red-400 for warnings
+        },
+        typography: {
+            fontFamily: 'Roboto, Arial',
+        },
+    };
+    const darkModePalette = {
+        palette:{
+            'bg-secondary': '#4B5563', // Gray-600 as secondary background
+            'bg-primary': '#1F2937', // Gray-800 as primary background
+            'bg-primary-active': '#374151', // Gray-700 for active state backgrounds
+            'accent-primary': '#10B981', // Green-500 for primary accent
+            'accent-primary-active': '#059669', // Green-600 for active primary accent
+            'icons-primary': '#F9FAFB', // Gray-50 for primary icons
+            'icons-secondary': '#E5E7EB', // Gray-200 for secondary icons
+            'borders-secondary': '#374151', // Gray-700 for secondary borders
+            'borders-primary': '#4B5563', // Gray-600 for primary borders
+            'borders-strong': '#6B7280', // Gray-500 for stronger borders
+            'light-shadow': 'rgba(0, 0, 0, 0.2)', // Example shadow for dark mode
+            'warning': '#F87171', // Red-400 for warnings, same as light for contrast
+        },
+        typography: {
+            fontFamily: 'Roboto, Arial',
+        },
+    };
+    const [Etheme, setEtheme] = useState(darkModePalette)
 
     useEffect(() => {
-        const listener = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                setHtml(null);
-            }
-        };
-        window.addEventListener("keydown", listener);
+        if (theme)
+        {
+            setEtheme(darkModePalette)
+        }else {
+            setEtheme(lightModePalette)
+        }
+    }, [theme, localStorage.getItem('themeE')]);
 
-        return () => {
-            window.removeEventListener("keydown", listener);
-        };
-    });
+
+    const handleSubmit = () => {
+        setLoading(true);
+        setImageSource(newImageSource);
+        setLoading(false);
+    };
+
+    const onSave = async (editedImageObject : any, designState : any) => {
+        setLoading(true)
+        // Extract the base64 image data and convert it to a file
+        const base64String = editedImageObject.imageBase64;
+        const blob = await (await fetch(base64String)).blob();
+        const file = new File([blob], `${editedImageObject.fullName}`, { type: editedImageObject.mimeType });
+
+        // Create a FormData object and append the file
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('username', user.data?.username || '')
+
+        // Append additional data if necessary
+        // For example, appending the design state as well
+        const designStateBlob = new Blob([JSON.stringify(designState)], { type: 'application/json' });
+        //formData.append('designState', designStateBlob);
+
+        try {
+            const response = await axios.post(`${backendUrl}/uploads`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            const fileLocation = `${user.data?.username}/${editedImageObject.fullName}`;
+            addToStepData( editedImageObject.fullName, fileLocation);
+            // Handle the response from the backend
+            console.log('Image uploaded successfully:', editedImageObject.fullName);
+            setSuccess('Image uploaded successfully: '+ editedImageObject.fullName);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            setError('Error uploading image: '+ error);
+            setLoading(false);
+        }
+    };
+
+
+
+    const handleUploadClick = () => {
+        setLoading(true);
+        openModal(<Upload
+            onFileLocation=
+                {
+                    (fullName, location) => addToStepData( fullName, location)
+                }
+        />)
+        setLoading(false);
+    };
     return (
         <>
-            <div className={`w-160vh h-70vh`}>
-            <Tldraw persistenceKey="tldraw">
-                <ExportButton setHtml={setHtml} />
-            </Tldraw>
-            </div>
-            {html &&
-                ReactDOM.createPortal(
-                    <div
-                        className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center"
-                        style={{ zIndex: 2000, backgroundColor: "rgba(0,0,0,0.5)" }}
-                        onClick={() => setHtml(null)}
-                    >
-                        <PreviewModal html={html} setHtml={setHtml} />
-                    </div>,
-                    document.body
-                )}
-            <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="w-160vh h-70vh">
+                <div className="flex justify-center items-center">
+                    <div className="mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-lg p-2 border-2 border-amber-100 dark:border-gray-600">
+                        <div className="mb-4 flex ">
+                            <Inputfield
+                                type="text"
+                                placeholder="Enter image source URL"
+                                value={newImageSource}
+                                onChange={setNewImageSource}
+                            />
+                            <Button
+                                onClick={handleSubmit}
+                                label={loading ? "Loading...":"Submit"}
+                                disabled={loading}
+                            />
+                        </div>
 
-                {/* Navigation Buttons */}
-                <div className="grid grid-cols-16 items-center">
-                    <Button onClick={prevStep} label="Previous" color="secondary"/>
-                    <div className="col-span-7"></div>
-                    <div className="col-span-7"></div>
-                    <Button onClick={nextStep} label="Next" color="secondary"/>
+                        <div className={'w-160vh h-60vh'}>
+                            <FilerobotImageEditor
+                                defaultSavedImageName={'page-0'}
+                                theme={Etheme}
+                                // @ts-ignore
+                                loadableDesignState={uploadedDesignState}
+                                source={imageSource}
+                                onSave={(editedImageObject, designState) => onSave(editedImageObject, designState)}
+                                annotationsCommon={{
+                                    fill: '#ff0000',
+                                }}
+                                Text={{text: 'Filerobot...'}}
+                                Rotate={{angle: 90, componentType: 'slider'}}
+                                Crop={{
+                                    presetsItems: [
+                                        {
+                                            titleKey: 'classicTv',
+                                            descriptionKey: '4:3',
+                                            ratio: 4 / 3,
+                                        },
+                                        {
+                                            titleKey: 'cinemascope',
+                                            descriptionKey: '21:9',
+                                            ratio: 21 / 9,
+                                        },
+                                        {
+                                            titleKey: 'classic',
+                                            descriptionKey: '16:9',
+                                            ratio: 16 / 9,
+                                        },
+                                    ],
+                                    presetsFolders: [
+                                        {
+                                            titleKey: 'socialMedia',
+                                            groups: [
+                                                {
+                                                    titleKey: 'facebook',
+                                                    items: [
+                                                        {
+                                                            titleKey: 'profile',
+                                                            width: 180,
+                                                            height: 180,
+                                                            descriptionKey: 'fbProfileSize',
+                                                        },
+                                                        {
+                                                            titleKey: 'coverPhoto',
+                                                            width: 820,
+                                                            height: 312,
+                                                            descriptionKey: 'fbCoverPhotoSize',
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                }}
+                                tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK]}
+                                defaultTabId={TABS.ANNOTATE}
+                                defaultToolId={TOOLS.TEXT}
+                                savingPixelRatio={0}
+                                previewPixelRatio={0}
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
+                </div>
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">{success}</p>}
+                <div className="flex justify-between items-center w-full px-4">
+                    <Button onClick={prevStep} label={loading ? "Loading...":"Previous"} disabled={loading} color={"secondary"}/>
+                    <Button onClick={handleUploadClick} label={loading ? "Loading...":"Upload"} disabled={loading} color={"secondary"}/>
+                    <Button onClick={nextStep} label={loading ? "Loading...":"Next"} disabled={loading} color={"secondary"}/>
+                </div>
         </>
     );
 };
 
-function ExportButton({setHtml}: { setHtml: (html: string) => void }) {
-    const editor = useEditor();
-    const [loading, setLoading] = useState(false);
-    // A tailwind styled button that is pinned to the bottom right of the screen
-    return (
-        <button
-            onClick={async (e) => {
-                setLoading(true);
-                try {
-                    e.preventDefault();
-                    const svg = await editor.getSvg(
-                        Array.from(editor.currentPageShapeIds)
-                    );
-                    if (!svg) {
-                        return;
-                    }
-                    const png = await getSvgAsImage(svg, {
-                        type: "png",
-                        quality: 1,
-                        scale: 1,
-                    });
-                    const dataUrl = await blobToBase64(png!);
-                    const resp = await fetch("/api/toHtml", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ image: dataUrl }),
-                    });
-
-                    const json = await resp.json();
-
-                    if (json.error) {
-                        alert("Error from open ai: " + JSON.stringify(json.error));
-                        return;
-                    }
-
-                    const message = json.choices[0].message.content;
-                    const start = message.indexOf("<!DOCTYPE html>");
-                    const end = message.indexOf("</html>");
-                    const html = message.slice(start, end + "</html>".length);
-                    setHtml(html);
-                } finally {
-                    setLoading(false);
-                }
-            }}
-            className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ="
-            style={{ zIndex: 1000 }}
-            disabled={loading}
-        >
-            {loading ? (
-                <div className="flex justify-center items-center ">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                </div>
-            ) : (
-                "Make Real"
-            )}
-        </button>
-    );
-}
 export default ImageEditor;

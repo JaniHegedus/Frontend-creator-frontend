@@ -14,7 +14,6 @@ interface LanguageSelectorProps {
 }
 
 const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: LanguageSelectorProps) => {
-    // Initialize state with props
     const [selectedProgrammingLanguage, setSelectedProgrammingLanguage] = useState<string | null>(language.programming);
     const [selectedStyleLanguage, setSelectedStyleLanguage] = useState<string | null>(language.style);
     const [isDisabled, setIsDisabled] = useState(true);
@@ -75,9 +74,8 @@ const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: Lang
                     selectedValue={selectedStyleLanguage}
                 />
             </div>
-            <div className="grid grid-cols-3 items-center">
+            <div className="flex justify-between items-center w-full px-4">
                 <Button onClick={prevStep} label="Previous" color="secondary"/>
-                <div className="col-span-1"></div>
                 <Button onClick={nextStep} label="Next" color="secondary" disabled={isDisabled}/>
             </div>
         </div>

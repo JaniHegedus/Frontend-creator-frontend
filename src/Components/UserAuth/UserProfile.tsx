@@ -34,6 +34,7 @@ const UserProfile = () => {
     const closeErrorConfirmModal = () => setIsErrorConfirmModalOpen(false);
 
     useEffect(() => {
+
         const fetchUserData = async () => {
             if (!token) {
                 setError('No token found. User is not logged in.');
@@ -70,8 +71,13 @@ const UserProfile = () => {
             }
         };
 
+        if (error) {
+            openErrorConfirmModal();
+        }if (error) {
+            openErrorConfirmModal();
+        }
         fetchUserData();
-    }, [token]); // Only re-run the effect if 'token' changes
+    }, [token, error]); // Only re-run the effect if 'token' changes
 
     const handleConfirmErrorModal = () =>{
         window.location.href = "/";
@@ -120,20 +126,18 @@ const UserProfile = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            // Update your local user state or do whatever is needed post update
             // @ts-ignore
             setData(prevState => ({ ...prevState, [field]: value }));
+            localStorage.setItem('user', JSON.stringify(user));
             let fieldname = field.charAt(0).toUpperCase() + field.slice(1)
             setSuccess(fieldname+" set successfully")
         } catch (error) {
-            // @ts-ignore
             console.log(error)
             // @ts-ignore
             setError(error.response?.data?.error || 'An error occurred while updating the profile.');
             setLoading(false);
         }
     };
-    // Frontend code
     const handleGitHubLogin = () => {
         const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
         const redirectUri = `http://localhost:3000/auth/github`;
@@ -147,14 +151,7 @@ const UserProfile = () => {
         );
     }
 
-    if (error) {
-        openErrorConfirmModal();
-        return (
-            <div>
-                <h1>Error: {error}</h1>
-            </div>
-        );
-    }
+
 
     const handleConfirmRemoveGithub = async () => {
         if (!token) {
@@ -171,6 +168,7 @@ const UserProfile = () => {
                 },
             });
         setData({id:user.data?.id,email:user.data?.email,username:user.data?.username,github_uid:null,github_nickname:null,github_repos:null})
+        localStorage.setItem('user', JSON.stringify(user));
         setIsRemoveConfirmed(true);
         closeRemoveConfirmModal();
     }
@@ -301,6 +299,7 @@ const UserProfile = () => {
                     onClose={closeErrorConfirmModal}
                     onConfirm={handleConfirmErrorModal}
                     message={error}
+                    noNo={true}
                 />
             </div>
         </div>

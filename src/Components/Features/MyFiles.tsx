@@ -1,10 +1,14 @@
-// MyFiles.tsx
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import axios from 'axios';
 import FileBrowser from "@/Components/Features/Filebrowser";
 
-const MyFiles = () => {
+interface MyFileProps {
+    setSelected?: any;
+    selectable?: number | null;
+}
+
+const MyFiles = ({setSelected, selectable} : MyFileProps) => {
     const { data: userData } = useAuth();
     const [files, setFiles] = useState(null);
     const [error, setError] = useState('');
@@ -41,7 +45,7 @@ const MyFiles = () => {
         return <div>Loading...</div>;
     }
 
-    return <FileBrowser files={files} />;
+    return <FileBrowser files={files} setSelected={setSelected} selectable={selectable}/>;
 };
 
 export default MyFiles;

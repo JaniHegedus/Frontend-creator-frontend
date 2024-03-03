@@ -41,7 +41,7 @@ const ExportOptions = ({
                     selectedValue={selectedExportOption}
                 />
             </div>
-            <div>
+            <div className="flex justify-between items-center w-full px-4">
                 <Button onClick={prevStep} label="Previous" color="secondary"/>
                 {done && <Button onClick={afterExport} label="Done" color="secondary"/>}
             </div>

@@ -1,7 +1,7 @@
 "use client"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Button from "@/Components/Common/Button";
-import InputField from "@/Components/Common/Inputfield";
+import Inputfield from "@/Components/Common/Inputfield";
 import Dropdown from "@/Components/Common/Dropdown";
 
 interface Option {
@@ -13,9 +13,10 @@ interface PageCountProps {
     nextStep: () => void;
     pageCount: number | null;
     setPageCount: any;
+    disabled: boolean;
 }
 
-const PageCount = ({ nextStep, pageCount, setPageCount }: PageCountProps) => {
+const PageCount = ({ nextStep, pageCount, setPageCount, disabled }: PageCountProps) => {
     const [isDisabled, setIsDisabled] = useState(true);
     // State to manage the visibility of the custom input field directly
     const [isCustomSelected, setIsCustomSelected] = useState(false);
@@ -87,8 +88,8 @@ const PageCount = ({ nextStep, pageCount, setPageCount }: PageCountProps) => {
                 // Reflects "Custom" if custom is selected or value is greater than options
                 selectedValue={dropdownValue}
             />
-            {isCustomSelected && (
-                <InputField
+            {(isCustomSelected && pageCount) && (
+                <Inputfield
                     type="number"
                     id="customPageCount"
                     value={customPageCount}
@@ -99,8 +100,8 @@ const PageCount = ({ nextStep, pageCount, setPageCount }: PageCountProps) => {
                     max={10}
                 />
             )}
-            <div className="flex justify-center">
-                <Button onClick={nextStep} label="Next" color="secondary" disabled={isDisabled} />
+            <div className="flex justify-between items-center w-full px-4">
+                <Button onClick={nextStep} label="Next" color="secondary" disabled={isDisabled || disabled} />
             </div>
         </div>
     );

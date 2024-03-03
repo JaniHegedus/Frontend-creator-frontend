@@ -1,4 +1,5 @@
-import React, {createContext, useState, useContext, ReactNode, useEffect} from 'react';
+import React, {createContext, useState, useContext, ReactNode, useEffect, SetStateAction} from 'react';
+import {CPS} from "@/Components/CPS";
 
 type AuthContextType = {
     data: UserType | null;
@@ -9,10 +10,12 @@ type UserType = {
     id: (number | undefined | null);
     email: (string | undefined | null);
     username: (string | undefined | null);
-    github_uid: (string | null);
-    github_nickname: (string | null);
-    github_repos: (Array<string> | null);
+    github_uid?: (string | null);
+    github_nickname?: (string | null);
+    github_repos?: (Array<string> | null);
+    Creation_Process_State?: CPS | null;
 };
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
