@@ -20,8 +20,8 @@ const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: Lang
 
     const programmingLanguages = [
         { label: 'HTML', value: 'html' },
-        { label: 'HTML + JavaScript', value: 'javascript' },
-        { label: 'HTML + TypeScript', value: 'typescript' },
+        { label: 'HTML + JavaScript', value: 'html+javascript' },
+        { label: 'HTML + TypeScript', value: 'html+typescript' },
         { label: 'React (JSX)', value: 'react_jsx' },
         { label: 'React (TSX)', value: 'react_tsx' },
         // Add more as needed
@@ -30,7 +30,7 @@ const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: Lang
     const styleLanguages = [
         { label: 'CSS', value: 'css' },
         { label: 'SASS', value: 'sass' },
-        { label: 'Tailwind CSS', value: 'tailwind' },
+        { label: 'Tailwind CSS', value: 'tailwindcss' },
         // Add more as needed
     ];
 

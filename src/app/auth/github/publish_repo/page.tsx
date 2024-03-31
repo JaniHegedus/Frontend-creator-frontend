@@ -5,26 +5,26 @@ import { useAuth } from '@/Components/Contexts/AuthContext';
 import Loading from "@/Components/Common/Loading";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 
-const CreateRepo = () => {
+const PublishRepo = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const sent = useRef(false);
-    const { data, setData } = useAuth();
+    const { data,  } = useAuth();
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [modalmessage, setModalmessage] = useState("");
     const [onAcceptRedirect, setOnAcceptRedirect] = useState(0);
-
-    const createrepo = async () => {
+    // Attempt to publish project to GitHub
+    const publishProject = async () => {
         if (sent.current) {
             return;
         }
         sent.current = true;
 
-        const repoName = sessionStorage.getItem('repoName');
+        const projectName = sessionStorage.getItem("projectName");
 
-        if (!repoName) {
+        if (!projectName) {
             console.error('Repository name not found in sessionStorage, redirecting...');
-            window.location.href = '/Github'; // Adjust the redirection URL as necessary
+            window.location.href = '/Creator'; // Adjust the redirection URL as necessary
             return;
         }
 
@@ -34,10 +34,9 @@ const CreateRepo = () => {
             if (!authToken) {
                 throw new Error('Authentication token is not available.');
             }
-
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/github/create_repo`,
-                { code, email: data?.email, name:repoName },
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/github/publish_repo`,
+                { code, email: data?.email, name:projectName },
                 {
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
@@ -47,8 +46,7 @@ const CreateRepo = () => {
 
             if (response.data) {
                 console.log('Repository created successfully:', response.data);
-                setData({ ...data, ...response.data });
-                window.location.href = '/';
+                window.location.href = '/Github';
             }
         } catch (error) {
             console.error('Failed to create repository:', error);
@@ -71,18 +69,8 @@ const CreateRepo = () => {
         }
     };
 
-
     useEffect(() => {
-        // Redirect user immediately if certain conditions are not met
-        // This example assumes you have some conditions to check before proceeding
-        if (!code) {
-            console.error('Code is null, redirecting...');
-            window.location.href = '/'; // Adjust the redirection URL as necessary
-            return;
-        }
-
-
-        createrepo();
+        publishProject();
     }, [code]);
 
     return (
@@ -98,7 +86,7 @@ const CreateRepo = () => {
                     // For external links, especially ones that lead to installation flows,
                     // it's usually better to open in a new tab to prevent disrupting the current app state
                     if (onAcceptRedirect===1) {
-                        window.location.href = '/Github'
+                        window.location.href = '/Creator'
                     }
                     else if (onAcceptRedirect===2) {
                         window.open('https://github.com/apps/frontend-creator-backend/installations/new', '_blank')
@@ -111,7 +99,6 @@ const CreateRepo = () => {
             />
         </>
     );
-
 };
 
-export default CreateRepo;
+export default PublishRepo;

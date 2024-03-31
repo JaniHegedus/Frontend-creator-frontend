@@ -6,9 +6,10 @@ import FileBrowser from "@/Components/Features/Filebrowser";
 interface MyFileProps {
     setSelected?: any;
     selectable?: number | null;
+    location?: any;
 }
 
-const MyFiles = ({setSelected, selectable} : MyFileProps) => {
+const MyFiles = ({setSelected, selectable, location} : MyFileProps) => {
     const { data: userData } = useAuth();
     const [files, setFiles] = useState(null);
     const [error, setError] = useState('');
@@ -45,7 +46,7 @@ const MyFiles = ({setSelected, selectable} : MyFileProps) => {
         return <div>Loading...</div>;
     }
 
-    return <FileBrowser files={files} setSelected={setSelected} selectable={selectable}/>;
+    return <FileBrowser files={files} setSelected={setSelected} selectable={selectable} location={location}/>;
 };
 
 export default MyFiles;

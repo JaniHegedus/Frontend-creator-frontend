@@ -3,6 +3,8 @@ import Button from "@/Components/Common/Button";
 import {CPS} from "@/Components/CPS";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import MyFiles from "@/Components/Features/MyFiles";
+import axios from "axios";
+import {useAuth} from "@/Components/Contexts/AuthContext";
 
 
 interface GenerationBotInterfaceProps {
@@ -11,13 +13,15 @@ interface GenerationBotInterfaceProps {
     stepData: CPS | null;
     updateStepData: (key: any, value: any) => void;
     addToStepData:  (fullname : string, location : string) => void;
+    setGenerationBot: (generationbot : any) => void;
 }
 type SelectedFile = {
     name: string;
     path: string;
 }
 
-const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepData, prevStep}:GenerationBotInterfaceProps) =>  {
+const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevStep, setGenerationBot}:GenerationBotInterfaceProps) =>  {
+    const user = useAuth();
     const {openModal} = useModal();
     const [isAddDisabled, setIsAddDisabled] = useState(true)
     const [isRemoveDisabled, setIsRemoveDisabled] = useState(true)
@@ -26,6 +30,11 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
     const [success, setSuccess] = useState('')
     const [isSent, setIsSent] = useState<boolean | undefined>()
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState("")
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const [generated, setGenerated] = useState(false)
+    const [cantGenerate, setCantGenerate] = useState<boolean | undefined>(true)
+
     useEffect(() => {
         if(stepData?.pageCount && stepData.imageEdit)
         {
@@ -38,11 +47,26 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
             else {
                 setIsAddDisabled(true);
             }
+            if(stepData?.pageCount==(Object.keys(stepData?.imageEdit).length))
+                setCantGenerate(false);
+            else
+                setCantGenerate(true);
         }
-    }, [stepData, selectable]);
+    }, [stepData, selectable, cantGenerate]);
+    useEffect(() => {
+        if(generated)
+            setGenerationBot(true);
+    }, [generated]);
+
+    useEffect(() => {
+        if(stepData?.generationBot)
+            setIsSent(true);
+    }, [stepData]);
+
     const addMore = () => {
         openModal(<MyFiles setSelected={setSelected} selectable={selectable} />);
     };
+
     useEffect(() => {
         if (stepData?.imageEdit) {
             const imageCount = Object.keys(stepData.imageEdit).length;
@@ -56,7 +80,6 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
         }
     }, [stepData]);
 
-
     useEffect(() => {
         if(selected && selected.name!=null)
         {
@@ -64,6 +87,7 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
             setSuccess("File Added");
         }
     }, [selected]);
+
     const removeOne = (itemName : any) => {
         if (stepData && stepData.imageEdit) {
             const updatedImages = {...stepData.imageEdit};
@@ -71,10 +95,40 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
             updateStepData('imageEdit', updatedImages);
         }
     };
-    const sendToGenerate = () => {
+
+    const sendToGenerate = async () => {
         setIsLoading(true);
-        setIsSent(true);
+        const formData = new FormData();
+        formData.append('Project', JSON.stringify(stepData?.project) || '');
+        formData.append('Pages', stepData?.pageCount?.toString() || '0');
+        formData.append('Images', JSON.stringify(stepData?.imageEdit) || '');
+        formData.append('Languages', JSON.stringify(stepData?.language) || '');
+
+        formData.append('username', user.data?.username || '')
+
+        try{
+            const response = await axios.post(`${backendUrl}/generation`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            setIsSent(true);
+            setError("");
+            setSuccess("Project Directory and files created!")
+            setGenerated(true);
+        }catch (error)
+        {
+            console.error("Send Failed: ", error);
+            setSuccess("")
+            // @ts-ignore
+            setError(`Send Failed: ${error.response?.data?.message || error.message}`);
+            setIsLoading(false);
+        }
+        finally {
+            setIsLoading(false);
+        }
     };
+
     return(
         <>
             <div className="flex flex-col text-gray-900 dark:text-white ">
@@ -111,7 +165,8 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
                                 </li>
                             ))}
                         </ul>
-
+                        {success && <div className="text-green-500 dark:text-green-400">{success}</div>}
+                        {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
                     </div>
                 </div>
                 <div className="flex justify-between items-center w-full px-4 py-4">
@@ -136,6 +191,7 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
                                 onClick={sendToGenerate}
                                 label="Generate"
                                 color="secondary"
+                                disabled={cantGenerate}
                             />)
                     }
 
@@ -145,4 +201,4 @@ const GenerationBotInterface = ({nextStep,addToStepData, updateStepData, stepDat
         </>
     )
 }
-export default GenerationBotInterface
+export default GenerationBot

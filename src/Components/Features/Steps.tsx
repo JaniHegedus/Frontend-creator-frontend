@@ -4,24 +4,27 @@ import React, {useEffect, useState} from "react";
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import LanguageSelector from "@/Components/Features/Steps/LanguageSelector";
 import ExportOptions from "@/Components/Features/Steps/ExportOptions";
-import GenerationBotInterface from "@/Components/Features/Steps/GenerationBotInterface";
+import GenerationBot from "@/Components/Features/Steps/GenerationBot";
 import ImageEditor from "@/Components/Features/Steps/ImageEditor";
 import EditorPage from "@/Components/Features/Steps/EditorPage";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import ProjectIniter from "@/Components/Features/Steps/ProjectIniter";
 import Button from "@/Components/Common/Button";
 import {CPS} from "@/Components/CPS";
+import {useModal} from "@/Components/Contexts/ModalContext";
+import DownloadSummary from "@/Components/Features/Steps/DownloadSummarry";
 
 const Creator = () => {
     const user = useAuth();
     const { setData } =useAuth()
     const [error, setError] = useState('');
-    const [step, setStep] = useState(4);
-    const [done, setDone] = useState(true)
+    const [step, setStep] = useState(1);
+    const [done, ] = useState(true)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const closeConfirmModal = () => setIsConfirmModalOpen(false);
     const [isDisabled, setIsDisabled] = useState(true)
     const [recent, setRecent] = useState<boolean>(false)
+    const {openModal} = useModal();
 
     const [stepData, setStepData] = useState<CPS>({
         project: {
@@ -45,6 +48,11 @@ const Creator = () => {
             setIsDisabled(false)
         }
     }, [stepData]);
+
+    useEffect(() => {   //In case anything changes that is influencing the generation regeneration is possible!
+        updateStepData('generationBot', false);
+    }, [stepData.project, stepData.language,stepData.pageCount,stepData.imageEdit]);
+
     useEffect(() => {
         if (!user.loading && user.data === null) {
             setIsConfirmModalOpen(true);
@@ -68,7 +76,7 @@ const Creator = () => {
         }));
     };
 
-    const addToStepData = (key: string, subKey: string, value: string) => {
+    const addToStepData = (key: any, subKey: any, value: any) => {
         setStepData((prevData) => ({
             ...prevData,
             [key]: {
@@ -95,7 +103,7 @@ const Creator = () => {
         setStep(prevStep => Math.max(prevStep - 1, 1));
     };
     const afterExport = () =>{
-
+        openModal(<DownloadSummary stepData={stepData}/>)
     }
     const handleSaveCurrent = () => {
         if (!user.loading) {
@@ -109,9 +117,7 @@ const Creator = () => {
                     github_repos:user.data?.github_repos,
                     Creation_Process_State: stepData
                 };
-            // Assuming setData updates the user context
             setData(updatedUser);
-            // Persist updated user data for reload persistence
             localStorage.setItem('user', JSON.stringify(updatedUser));
         }
     };
@@ -185,13 +191,13 @@ const Creator = () => {
                     {step === 4 && (
                         <div>
                             <h2 className={"text-lg font-bold mb-4"}>Step {step}: Send to Generation Bot</h2>
-                            <GenerationBotInterface
+                            <GenerationBot
                                 nextStep={nextStep}
                                 prevStep={prevStep}
                                 stepData={stepData}
                                 updateStepData={updateStepData}
                                 addToStepData={(fullname, location) => addToStepData('imageEdit',fullname, location)}
-
+                                setGenerationBot={(newGenerationBotresponse: any) => updateStepData('generationBot', newGenerationBotresponse)}
                             />
                         </div>
                     )}
@@ -199,7 +205,7 @@ const Creator = () => {
                     {step === 5 && (
                         <div>
                             <h2 className={"text-lg font-bold mb-4"}>Step {step}: Edit in Code</h2>
-                            <EditorPage nextStep={nextStep} prevStep={prevStep} />
+                            <EditorPage nextStep={nextStep} prevStep={prevStep} stepData={stepData}/>
                         </div>
                     )}
 

@@ -49,7 +49,7 @@ const Navbar = () => {
     };
     const menuItems = [
         { href: "/", Name: "Home"},
-        { href: "/api", Name: "Api"},
+        { href: "/Tutorial", Name: "Tutorial"},
         { href: "/Creator", Name:"Get Started" }
     ];
     const setVisibility = () => {

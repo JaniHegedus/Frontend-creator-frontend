@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {FaLeftLong} from "react-icons/fa6";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 
@@ -24,14 +24,41 @@ const FileBrowser: React.FC<{
                             files: FileSystemItem[],
                             setSelected?: Dispatch<SetStateAction<SelectedFile | null>>,
                             selectable?: number | null | undefined;
+                            location?: any
 }>
                             = ({
                                    files,
                                    setSelected,
-                                   selectable
+                                   selectable,
+                                   location
                             }) => {
     const [currentPath, setCurrentPath] = useState<FolderItem[]>([]);
     const user = useAuth();
+
+    useEffect(() => {
+        // This effect runs only once on component mount due to an empty dependency array
+        if (location) {
+            // Split the location into path segments
+            const pathSegments = location.split('/');
+            const initialPathArray: FolderItem[] = [];
+
+            let currentFiles: FileSystemItem[] = files;
+
+            // Iterate over each segment to build the initial path array
+            for (const segment of pathSegments) {
+                const foundFolder = currentFiles.find(file => file.type === 'folder' && file.name === segment) as FolderItem;
+                if (foundFolder) {
+                    initialPathArray.push(foundFolder);
+                    currentFiles = foundFolder.files;
+                } else {
+                    // If any segment is not found, stop further processing
+                    break;
+                }
+            }
+
+            setCurrentPath(initialPathArray);
+        }
+    }, [location])
 
     const getFileIcon = (file: FileItem | FolderItem): string => {
         if (file.type === 'folder') {

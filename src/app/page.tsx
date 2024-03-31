@@ -7,7 +7,6 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 export default function Home() {
     const [theme, setTheme] = useState(localStorage.getItem('themeE') === 'monokai')
     const user = useAuth();
-    const { setData } = useAuth();
     const [HEROImage, setHEROImage] =useState("/CodeEditor_Dark.jpg");
     useEffect(() => {
         // Safely access localStorage and update theme state
@@ -18,11 +17,6 @@ export default function Home() {
         setHEROImage(theme ? "./CodeEditor_Dark.jpg" : "./CodeEditor_Light.jpg");
     }, [theme]); // Depend on theme state to re-run this effect
 
-    const handleClick = () => {
-        // Clear user-related information from local storage and reset user state
-        localStorage.clear();
-        setData(null);
-    };
     const handleGetStarted = () =>{
         if(user.data)
         {
@@ -33,11 +27,11 @@ export default function Home() {
         }
     }
     return (
-        <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white h-12">
+        <div className="flex flex-col bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white ">
 
             {/* Hero Section with Image */}
             <div className="flex justify-between items-center bg-gray-300 dark:bg-gray-700 p-10">
-                <div className="max-w-xl ml-10">
+                <div className="ml-10">
                     <h1 className="text-6xl font-bold mb-4">Create your own website for free!</h1>
                     <p className="mb-6">You can create an amazing FrontEnd with FC in just minutes. Join our users and build one yourself.</p>
                     <ul className="mb-6">
@@ -80,19 +74,6 @@ export default function Home() {
                     className="max-w-md mx-auto bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg border-2 border-amber-100 dark:border-gray-600 m-2">
                     <h3 className="text-2xl font-bold mb-2">Github Integration</h3>
                     <p className="text-sm">Your created pages can be directly exported to your github repositories!</p>
-                </div>
-            </div>
-
-            {/* How It Works Section */}
-            <div className="bg-gray-300 dark:bg-gray-700 p-10">
-                <h2 className="text-3xl font-bold text-center mb-6">How It Works</h2>
-                <div className="max-w-2xl mx-auto">
-                    <p className="mb-3">Step 1: Sign up for free.</p>
-                    <p>Step 2: Choose a template or start from scratch.</p>
-                    <p>Step 3: Upload a visualized idea.</p>
-                    <p>Step 4: Change page generation Lables.</p>
-                    <p>Step 5: Edit your code.</p>
-                    <p>fc</p>
                 </div>
             </div>
         </div>

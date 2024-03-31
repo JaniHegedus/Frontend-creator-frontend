@@ -1,5 +1,4 @@
 "use client"
-// pages/UserProfile.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
@@ -32,6 +31,8 @@ const UserProfile = () => {
     const closeDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(false);
     const closeRemoveConfirmModal = () => setIsRemoveConfirmModalOpen(false);
     const closeErrorConfirmModal = () => setIsErrorConfirmModalOpen(false);
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
     useEffect(() => {
 
@@ -44,7 +45,7 @@ const UserProfile = () => {
             }
 
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/userinfo`, {
+                const response = await axios.get(`${backendUrl}/userinfo`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -91,7 +92,7 @@ const UserProfile = () => {
         }
         try {
             // You should replace '/userinfo' with the actual endpoint for your user data
-            await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/delete`, {
+            await axios.delete(`${backendUrl}/user/delete`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -121,7 +122,7 @@ const UserProfile = () => {
         };
         try {
             // @ts-ignore
-            await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/modify`, payload, {
+            await axios.patch(`${backendUrl}/user/modify`, payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -139,7 +140,7 @@ const UserProfile = () => {
         }
     };
     const handleGitHubLogin = () => {
-        const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+
         const redirectUri = `http://localhost:3000/auth/github`;
 
         window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
