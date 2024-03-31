@@ -5,6 +5,7 @@ import {useModal} from "@/Components/Contexts/ModalContext";
 import MyFiles from "@/Components/Features/MyFiles";
 import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
+import Loading from "@/Components/Common/Loading";
 
 
 interface GenerationBotInterfaceProps {
@@ -132,6 +133,8 @@ const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevSt
     return(
         <>
             <div className="flex flex-col text-gray-900 dark:text-white ">
+                {isLoading? <Loading/>
+                    :
                 <div className="p-4 w-90vh h-60vh">
                     <h1 className="text-4xl font-bold mb-4">Current Settings:</h1>
                     <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 m-4">
@@ -169,6 +172,7 @@ const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevSt
                         {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
                     </div>
                 </div>
+                }
                 <div className="flex justify-between items-center w-full px-4 py-4">
                     <Button
                         onClick={prevStep}

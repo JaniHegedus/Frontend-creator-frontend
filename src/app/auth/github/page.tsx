@@ -9,6 +9,7 @@ const GitHubConnectCallbackPage = () => {
     const code = urlParams.get('code');
     const sent = useRef(false);
     const {data, setData } = useAuth();
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     useEffect(() => {
         const connectGitHubAccount = async () => {
@@ -24,7 +25,7 @@ const GitHubConnectCallbackPage = () => {
                     new Error('Authentication token is not available.');
                 }
                 const response = await axios.post(
-                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/github`,
+                    `${backendUrl}/auth/github`,
                     // @ts-ignore
                     { code:code, email:data["email"]},
                     {

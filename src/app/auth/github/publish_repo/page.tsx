@@ -13,6 +13,7 @@ const PublishRepo = () => {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [modalmessage, setModalmessage] = useState("");
     const [onAcceptRedirect, setOnAcceptRedirect] = useState(0);
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     // Attempt to publish project to GitHub
     const publishProject = async () => {
         if (sent.current) {
@@ -35,7 +36,7 @@ const PublishRepo = () => {
                 throw new Error('Authentication token is not available.');
             }
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/github/publish_repo`,
+                `${backendUrl}/github/publish_repo`,
                 { code, email: data?.email, name:projectName },
                 {
                     headers: {

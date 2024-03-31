@@ -33,6 +33,7 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
             link.remove();
             setStatusMessage("Files downloaded successfully!");
         } catch (error) {
+            // @ts-ignore
             setStatusMessage(`Error downloading files: ${error.message}`);
         }
     };
@@ -40,8 +41,8 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
     // Helper function to push the project to GitHub
     const pushToGitHub = async ( projectName: string) => {
         const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-        // Ensure the redirectUri matches the route in your application that handles the GitHub callback.
-        const redirectUri = `http://localhost:3000/auth/github/publish_repo`;
+        const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
+        const redirectUri = `${frontendUrl}/auth/github/publish_repo`;
 
         // Including `repo` scope to allow for repository creation, modification, and more.
         // Add other scopes as needed, separated by spaces.

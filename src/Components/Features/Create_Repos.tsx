@@ -5,7 +5,8 @@ import {useState} from "react";
 const handle_creation = () => {
     const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
     // Ensure the redirectUri matches the route in your application that handles the GitHub callback.
-    const redirectUri = `http://localhost:3000/auth/github/create_repo`;
+    const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
+    const redirectUri = `${frontendUrl}/auth/github/create_repo`;
 
     // Including `repo` scope to allow for repository creation, modification, and more.
     // Add other scopes as needed, separated by spaces.

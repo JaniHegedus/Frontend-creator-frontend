@@ -18,7 +18,8 @@ const Login = () => {
 
     const handleGitHubLogin = () => {
         const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-        const redirectUri = `http://localhost:3000/auth/github/callback`;
+        const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
+        const redirectUri = `${frontendUrl}/auth/github/callback`;
 
         window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
     };

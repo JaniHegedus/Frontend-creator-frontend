@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
+import Loading from "@/Components/Common/Loading";
 
 interface UploadProps {
     onFileLocation?: (fullname : string, location : string) => void; // Callback function to return the file location
@@ -11,6 +12,7 @@ const Upload = ({ onFileLocation }: UploadProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +28,7 @@ const Upload = ({ onFileLocation }: UploadProps) => {
             setError('Please select a file to upload.');
             return;
         }
-
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('file', file);
         formData.append('username', userData?.username || '')
@@ -42,8 +44,10 @@ const Upload = ({ onFileLocation }: UploadProps) => {
                 onFileLocation(response.data.filename, userData?.username+"/"+response.data.filename)
             }
             setSuccess(`File uploaded successfully: ${response.data.filename}`);
+            setIsLoading(false);
         } catch (err) {
             setError('Upload failed. Please try again.');
+            setIsLoading(false);
         }
     };
 
@@ -54,6 +58,7 @@ const Upload = ({ onFileLocation }: UploadProps) => {
     return (
         <div className="flex items-center justify-center p-6">
             <div className="w-full max-w-md">
+                {isLoading? <Loading/>:
                 <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <div className="mb-4">
                         <input
@@ -70,6 +75,7 @@ const Upload = ({ onFileLocation }: UploadProps) => {
                     {success && <div className="text-green-500 dark:text-green-400">{success}</div>}
                     {error && <div className="text-red-500 dark:text-red-400">{error}</div>}
                 </form>
+                }
             </div>
         </div>
     );
