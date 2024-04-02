@@ -76,7 +76,7 @@ const Register = () => {
                     <div className="mb-4">
                         <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username:</label>
                         <Inputfield
-                            type="text"
+                            type="username"
                             id="username"
                             value={username}
                             onChange={setUsername}

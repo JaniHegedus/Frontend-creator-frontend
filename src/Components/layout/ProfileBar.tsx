@@ -30,6 +30,10 @@ const PBar = () => {
         { icon: <FaBriefcase />, label: "Github", path: "/Github" },
         { icon: <FaFolder/>, label: "My Files", path: "/MyFiles" }
     ];
+    const menuItemsNoGithub = [
+        { icon: <FaWrench />, label: "Change User Info", path: "/Profile" },
+        { icon: <FaFolder/>, label: "My Files", path: "/MyFiles" }
+    ]
     const setVisible = () => {
         if (isDropdownVisible) {
             setIsDropdownVisible(false);
@@ -49,19 +53,36 @@ const PBar = () => {
                         {isDropdownVisible && (
                             <div className="absolute right-0.5 top-10 mt-2 bg-blue-400 dark:bg-blue-800" style={{perspective: '1500px'}}>
                                 <ul className="list-none p-0">
-                                    {menuItems.map((item, index) => (
-                                        <li className="text-black dark:text-gray-400 relative w-60 h-12 mb-2 bg-gray-400 shadow-lg transition-transform duration-500 origin-center-left transform dark:bg-gray-800 hover:bg-blue-400  dark:hover:bg-blue-800"
-                                            key={index} style={{transformOrigin: 'center left'}}>
-                                            <Link href={item.path} className="flex items-center p-2">
-                                                <div className="flex items-center justify-center w-12 mr-2">
-                                                    {item.icon}
-                                                </div>
-                                                <div className="flex-grow">
-                                                    {item.label}
-                                                </div>
-                                            </Link>
-                                        </li>
-                                    ))}
+
+                                    {data?.github_uid ?
+                                        menuItems.map((item, index) => (
+                                            <li className="text-black dark:text-gray-400 relative w-60 h-12 mb-2 bg-gray-400 shadow-lg transition-transform duration-500 origin-center-left transform dark:bg-gray-800 hover:bg-blue-400  dark:hover:bg-blue-800"
+                                                key={index} style={{transformOrigin: 'center left'}}>
+                                                <Link href={item.path} className="flex items-center p-2">
+                                                    <div className="flex items-center justify-center w-12 mr-2">
+                                                        {item.icon}
+                                                    </div>
+                                                    <div className="flex-grow">
+                                                        {item.label}
+                                                    </div>
+                                                </Link>
+                                            </li>
+                                        ))
+                                        :
+                                        menuItemsNoGithub.map((item, index) => (
+                                                <li className="text-black dark:text-gray-400 relative w-60 h-12 mb-2 bg-gray-400 shadow-lg transition-transform duration-500 origin-center-left transform dark:bg-gray-800 hover:bg-blue-400  dark:hover:bg-blue-800"
+                                                    key={index} style={{transformOrigin: 'center left'}}>
+                                                    <Link href={item.path} className="flex items-center p-2">
+                                                        <div className="flex items-center justify-center w-12 mr-2">
+                                                            {item.icon}
+                                                        </div>
+                                                        <div className="flex-grow">
+                                                            {item.label}
+                                                        </div>
+                                                    </Link>
+                                                </li>
+                                        ))
+                                    }
                                 </ul>
                             </div>
                         )}

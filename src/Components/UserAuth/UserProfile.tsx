@@ -111,33 +111,76 @@ const UserProfile = () => {
         closeDeleteConfirmModal();
     };
     const handleUpdateProfile = async (field:any, value:any) => {
-        if (!token) {
-            setError('You must be logged in to update your profile.');
-            return;
-        }
-        const payload = {
-            user: {
-                [field]: value,
+        if (field === "username") {
+            if (!user.loading) {
+                try {
+                    const formData = new FormData();
+                    formData.append("username", user.data?.username || value);
+                    formData.append("new_directory", value);
+
+                    // Attempt to modify the directory first
+                    await axios.post(`${backendUrl}/user_file/modify_storage`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+
+                    // If directory modification is successful, proceed to update the username
+                    const payload = {
+                        user: {
+                            [field]: value,
+                        }
+                    };
+
+                    await axios.patch(`${backendUrl}/user/modify`, payload, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
+
+                    // Assuming setData updates the state related to user info
+                    // @ts-ignore
+                    setData(prevState => ({ ...prevState, [field]: value }));
+                    localStorage.setItem('user', JSON.stringify({ ...user, [field]: value })); // Ensure the local storage is updated correctly
+
+                    let fieldname = field.charAt(0).toUpperCase() + field.slice(1);
+                    setSuccess(`${fieldname} set successfully`);
+                } catch (error) {
+                    console.error(error);
+                    // @ts-ignore
+                    setError(error.response?.data?.error || 'An error occurred while updating the profile.');
+                    setLoading(false);
+                }
             }
-        };
-        try {
-            // @ts-ignore
-            await axios.patch(`${backendUrl}/user/modify`, payload, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            // @ts-ignore
-            setData(prevState => ({ ...prevState, [field]: value }));
-            localStorage.setItem('user', JSON.stringify(user));
-            let fieldname = field.charAt(0).toUpperCase() + field.slice(1)
-            setSuccess(fieldname+" set successfully")
-        } catch (error) {
-            console.log(error)
-            // @ts-ignore
-            setError(error.response?.data?.error || 'An error occurred while updating the profile.');
-            setLoading(false);
+        } else {
+            // Handle other fields if needed
+            try {
+                const payload = {
+                    user: {
+                        [field]: value,
+                    }
+                };
+
+                await axios.patch(`${backendUrl}/user/modify`, payload, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                // @ts-ignore
+                setData(prevState => ({ ...prevState, [field]: value }));
+                localStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
+
+                let fieldname = field.charAt(0).toUpperCase() + field.slice(1);
+                setSuccess(`${fieldname} set successfully`);
+            } catch (error) {
+                console.error(error);
+                // @ts-ignore
+                setError(error.response?.data?.error || 'An error occurred while updating the profile.');
+                setLoading(false);
+            }
         }
+
     };
     const handleGitHubLogin = () => {
 
@@ -193,7 +236,7 @@ const UserProfile = () => {
                             <label htmlFor="username"
                                    className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username: {user.data?.username}</label>
                             <Inputfield
-                                type="text"
+                                type="username"
                                 id="username"
                                 value={newUsername}
                                 onChange={setNewUsername}
