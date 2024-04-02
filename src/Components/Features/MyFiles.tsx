@@ -25,7 +25,7 @@ const MyFiles = ({setSelected, selectable, location} : MyFileProps) => {
             return response.data.files; // Adjust according to your API response structure
         } catch (error) {
             console.error('Error fetching user files:', error);
-            setError('Failed to fetch files');
+            setError('Failed to fetch files, Do you have files on your account?');
             setIsLoading(false);
             throw error;
         }

@@ -10,6 +10,7 @@ import FilerobotImageEditor, {
     TOOLS,
 } from 'react-filerobot-image-editor';
 import Inputfield from "@/Components/Common/Inputfield";
+import {toast} from "react-toastify";
 
 interface ImageEditorProps {
     nextStep: () => void;
@@ -82,7 +83,10 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
 
     const handleSubmit = () => {
         setLoading(true);
-        setImageSource(newImageSource);
+        if(newImageSource)
+            setImageSource(newImageSource);
+        else
+            toast.error("No Url given!")
         setLoading(false);
     };
 
