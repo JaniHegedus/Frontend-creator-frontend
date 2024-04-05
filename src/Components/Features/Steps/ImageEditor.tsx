@@ -30,6 +30,8 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
     const [uploadedDesignState, setUploadedDesignState] = useState(null);
     const [theme, setTheme] = useState(localStorage.getItem('themeE') === 'monokai')
     const  [isDarkMode]  = useState(false); // Or however you determine dark mode
+    const isMobile = () => window.innerWidth <= 640; // 640px is a common breakpoint for mobile devices
+    const [displayEditor, setDisplayEditor] = useState(!isMobile());
 
     const lightModePalette = {
         palette:{
@@ -79,6 +81,28 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
             setEtheme(lightModePalette)
         }
     }, [theme, localStorage.getItem('themeE')]);
+
+    const handleResize = () => {
+        setDisplayEditor(!isMobile());
+    };
+
+
+    useEffect(() => {
+        // Function to handle resize events
+        const handleResize = () => {
+            // Set state, run checks, or trigger side effects related to window size
+            // ...
+        };
+
+        // Add event listener
+        window.addEventListener('resize', handleResize);
+
+        // Call the handler right away so state gets updated with initial window size
+        handleResize();
+
+        // Remove event listener on cleanup
+        return () => window.removeEventListener('resize', handleResize);
+    }, []); // Empty array ensures that effect is only run on mount and unmount
 
 
     const handleSubmit = () => {
@@ -140,9 +164,11 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
     };
     return (
         <>
-            <div className="w-160vh h-70vh">
-                <div className="flex justify-center items-center">
-                    <div className="mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-lg p-2 border-2 border-amber-100 dark:border-gray-600">
+            <div className="flex justify-center items-center w-full h-full">
+                <div
+                    className="flex flex-col w-full max-w-5xl mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-lg p-2 border-2 border-amber-100 dark:border-gray-600 overflow-hidden">
+                    <div
+                        className="mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-lg p-2 border-2 border-amber-100 dark:border-gray-600">
                         <div className="mb-4 flex ">
                             <Inputfield
                                 type="text"
@@ -152,84 +178,93 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
                             />
                             <Button
                                 onClick={handleSubmit}
-                                label={loading ? "Loading...":"Submit"}
+                                label={loading ? "Loading..." : "Submit"}
                                 disabled={loading}
                             />
                         </div>
-
-                        <div className={'w-160vh h-60vh'}>
-                            <FilerobotImageEditor
-                                defaultSavedImageName={'page-0'}
-                                theme={Etheme}
-                                // @ts-ignore
-                                loadableDesignState={uploadedDesignState}
-                                source={imageSource}
-                                onSave={(editedImageObject, designState) => onSave(editedImageObject, designState)}
-                                annotationsCommon={{
-                                    fill: '#ff0000',
-                                }}
-                                Text={{text: 'Filerobot...'}}
-                                Rotate={{angle: 90, componentType: 'slider'}}
-                                Crop={{
-                                    presetsItems: [
-                                        {
-                                            titleKey: 'classicTv',
-                                            descriptionKey: '4:3',
-                                            ratio: 4 / 3,
-                                        },
-                                        {
-                                            titleKey: 'cinemascope',
-                                            descriptionKey: '21:9',
-                                            ratio: 21 / 9,
-                                        },
-                                        {
-                                            titleKey: 'classic',
-                                            descriptionKey: '16:9',
-                                            ratio: 16 / 9,
-                                        },
-                                    ],
-                                    presetsFolders: [
-                                        {
-                                            titleKey: 'socialMedia',
-                                            groups: [
+                        {displayEditor ? (
+                            <div className="">
+                                    <FilerobotImageEditor
+                                        defaultSavedImageName={'page-0'}
+                                        theme={Etheme}
+                                        // @ts-ignore
+                                        loadableDesignState={uploadedDesignState}
+                                        source={imageSource}
+                                        onSave={(editedImageObject, designState) => onSave(editedImageObject, designState)}
+                                        annotationsCommon={{
+                                            fill: '#ff0000',
+                                        }}
+                                        Text={{text: 'Filerobot...'}}
+                                        Rotate={{angle: 90, componentType: 'slider'}}
+                                        Crop={{
+                                            presetsItems: [
                                                 {
-                                                    titleKey: 'facebook',
-                                                    items: [
+                                                    titleKey: 'classicTv',
+                                                    descriptionKey: '4:3',
+                                                    ratio: 4 / 3,
+                                                },
+                                                {
+                                                    titleKey: 'cinemascope',
+                                                    descriptionKey: '21:9',
+                                                    ratio: 21 / 9,
+                                                },
+                                                {
+                                                    titleKey: 'classic',
+                                                    descriptionKey: '16:9',
+                                                    ratio: 16 / 9,
+                                                },
+                                            ],
+                                            presetsFolders: [
+                                                {
+                                                    titleKey: 'socialMedia',
+                                                    groups: [
                                                         {
-                                                            titleKey: 'profile',
-                                                            width: 180,
-                                                            height: 180,
-                                                            descriptionKey: 'fbProfileSize',
-                                                        },
-                                                        {
-                                                            titleKey: 'coverPhoto',
-                                                            width: 820,
-                                                            height: 312,
-                                                            descriptionKey: 'fbCoverPhotoSize',
+                                                            titleKey: 'facebook',
+                                                            items: [
+                                                                {
+                                                                    titleKey: 'profile',
+                                                                    width: 180,
+                                                                    height: 180,
+                                                                    descriptionKey: 'fbProfileSize',
+                                                                },
+                                                                {
+                                                                    titleKey: 'coverPhoto',
+                                                                    width: 820,
+                                                                    height: 312,
+                                                                    descriptionKey: 'fbCoverPhotoSize',
+                                                                },
+                                                            ],
                                                         },
                                                     ],
                                                 },
                                             ],
-                                        },
-                                    ],
-                                }}
-                                tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK]}
-                                defaultTabId={TABS.ANNOTATE}
-                                defaultToolId={TOOLS.TEXT}
-                                savingPixelRatio={0}
-                                previewPixelRatio={0}
-                            />
-                        </div>
+                                        }}
+                                        tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK]}
+                                        defaultTabId={TABS.ANNOTATE}
+                                        defaultToolId={TOOLS.TEXT}
+                                        savingPixelRatio={0}
+                                        previewPixelRatio={0}
+                                    />
+                            </div>
+                        ) : (
+                            // Display a message or alternative content for mobile users
+                            <div className="text-center p-4">
+                                <p className="text-lg text-gray-800 dark:text-gray-300">
+                                    The image editor is not available on mobile devices. Please use a desktop for image
+                                    editing features.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
-                </div>
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">{success}</p>}
-                <div className="flex justify-between items-center w-full px-4">
-                    <Button onClick={prevStep} label={loading ? "Loading...":"Previous"} disabled={loading} color={"secondary"}/>
-                    <Button onClick={handleUploadClick} label={loading ? "Loading...":"Upload"} disabled={loading} color={"secondary"}/>
-                    <Button onClick={nextStep} label={loading ? "Loading...":"Next"} disabled={loading} color={"secondary"}/>
-                </div>
+            </div>
+            {error && <p className="text-red-500">{error}</p>}
+            {success && <p className="text-green-500">{success}</p>}
+            <div className="flex justify-between items-center w-full px-4">
+                <Button onClick={prevStep} label={loading ? "Loading...":"Previous"} disabled={loading} color={"secondary"}/>
+                <Button onClick={handleUploadClick} label={loading ? "Loading...":"Upload"} disabled={loading} color={"secondary"}/>
+                <Button onClick={nextStep} label={loading ? "Loading...":"Next"} disabled={loading} color={"secondary"}/>
+            </div>
         </>
     );
 };

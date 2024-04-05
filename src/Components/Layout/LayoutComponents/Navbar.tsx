@@ -6,8 +6,8 @@ import {useModal} from "@/Components/Contexts/ModalContext";
 import Login from "@/Components/UserAuth/Login";
 import Register from "@/Components/UserAuth/Register";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import PBar from "@/Components/layout/ProfileBar";
-import NavItem from "@/Components/Common/NavItem";
+import PBar from "@/Components/Layout/LayoutComponents/ProfileBar";
+import NavItem from "@/Components/Layout/LayoutComponents/NavItem";
 import {FiMenu} from "react-icons/fi";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -60,34 +60,39 @@ const Navbar = () => {
         }
     };
     return (
-        <div className="flex flex-row w-2/3 justify-end">
-            {menuVisible && menuItems.map((item, index) => (
+        <div className="flex items-center justify-end w-full">
+            <div
+                className={`flex flex-col w-full ${menuVisible ? "block" : "hidden"} md:flex md:flex-row md:items-center md:w-auto`}>
+                {menuVisible && menuItems.map((item, index) => (
                     <NavItem href={item.href} Name={item.Name} key={index}/>
                 ))}
-            {menuVisible && data ?
-                        ( // If there is a user object, render the span with the username
-                            <>
-                                <PBar/>
-                                <Button label="Logout" onClick={openConfirmModal}/>
-                                <ConfirmModal
-                                    isOpen={isConfirmModalOpen}
-                                    onClose={closeConfirmModal}
-                                    onConfirm={handleConfirm}
-                                    message="Do you really want to perform this action? You will need to log in again."
-                                />
-                            </>
-                        ) : menuVisible ? (
+                {menuVisible && data ?
+                    ( // If there is a user object, render the span with the username
+                        <>
+                            <PBar/>
+                            <Button label="Logout" onClick={openConfirmModal}/>
+                            <ConfirmModal
+                                isOpen={isConfirmModalOpen}
+                                onClose={closeConfirmModal}
+                                onConfirm={handleConfirm}
+                                message="Do you really want to perform this action? You will need to log in again."
+                            />
+                        </>
+                    ) : menuVisible ? (
                             <>
                                 {/* If not logged in, show login and register buttons */}
-                                <Button label="Login" onClick={handleLoginClick} />
-                                <Button label="Register" onClick={handleRegisterClick} />
+                                <Button label="Login" onClick={handleLoginClick}/>
+                                <Button label="Register" onClick={handleRegisterClick}/>
                             </>
                         ) // If user is null, render nothing
-                :(<> </>)
+                        : (<> </>)
+                }
+            </div>
+                <Button content={<FiMenu size={24}/>} onClick={() => {
+                    setVisibility()
+                }}/>
+            </div>
+            );
             }
-            <Button content={<FiMenu size={24} />} onClick={() =>{setVisibility()}}/>
-        </div>
-    );
-}
 
-export default Navbar;
+            export default Navbar;

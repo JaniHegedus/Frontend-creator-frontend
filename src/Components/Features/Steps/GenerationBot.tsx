@@ -135,7 +135,7 @@ const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevSt
             <div className="flex flex-col text-gray-900 dark:text-white ">
                 {isLoading? <Loading/>
                     :
-                <div className="p-4 w-90vh h-60vh">
+                <div className="p-4 w-90vh h-60vh text-center">
                     <h1 className="text-4xl font-bold mb-4">Current Settings:</h1>
                     <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 m-4">
                         <h2 className="text-2xl font-bold mb-2">Project:</h2>

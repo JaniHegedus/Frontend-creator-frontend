@@ -2,11 +2,20 @@
 import React, {useEffect, useState} from 'react';
 
 const TutorialPage = () => {
-    const [theme, setTheme] = useState(localStorage.getItem('themeE') === 'monokai')
+    const [theme, setTheme] = useState<boolean>()
+    const [storedTheme, setStoredTheme] = useState<string | null>();
+    useEffect(() => {
+        if(localStorage.getItem('themeE'))
+        {
+            setTheme(localStorage.getItem('themeE') === 'monokai');
+        }
+    }, []);
     const [DIR, setDIR] = useState("Light")
-    const storedTheme = localStorage.getItem('themeE');
     // You can add state and functions here if needed
     useEffect(() => {
+        if(localStorage.getItem('themeE')){
+            setStoredTheme( localStorage.getItem('themeE'));
+        }
 
         // Safely access localStorage and update theme state
         setTheme(storedTheme === 'monokai');

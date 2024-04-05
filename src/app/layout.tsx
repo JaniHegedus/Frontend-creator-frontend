@@ -1,12 +1,14 @@
 "use client";
 import './globals.css'
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "@/Components/layout/Navbar";
+import Navbar from "@/Components/Layout/LayoutComponents/Navbar";
 import Button from "@/Components/Common/Button";
 import {ToastContainer} from "react-toastify";
 import { AuthProvider } from '@/Components/Contexts/AuthContext';
 import {ModalProvider} from "@/Components/Contexts/ModalContext";
 import {NotifyMessage} from "@/Components/Common/ToastNotification/Notification";
+import Header from "@/Components/Layout/Header";
+import Footer from "@/Components/Layout/Footer";
 
 export default function RootLayout({ children }: {children: React.ReactNode})
 {
@@ -54,31 +56,17 @@ export default function RootLayout({ children }: {children: React.ReactNode})
         <html class={darkmode ? "dark" : ""}>
             <head>
                 <title>Frontend Creator</title>
-                <link rel="icon" type="image/png" sizes="32x32" href="/Frontend_Creator.png" />
             </head>
             <AuthProvider>
                 <ModalProvider>
                     <body className="font-sans bg-blue-100 text-black dark:bg-slate-900 dark:text-gray-600">
                     <ToastContainer position="top-right"/>
-                    <header className="flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 sticky top-0 z-50">
-                        <span className="text-2xl font-bold dark:text-gray-300">Frontend Creator</span>
-                        <Navbar />
-                    </header>
-                    <div className="center-content flex justify-center items-center h-[calc(100vh-2rem-60px)]">
+                    <Header/>
+                    <div className="center-content flex justify-center items-center ]">
                         {children}
                     </div>
 
-                    <div className="footer flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 fixed bottom-0 w-full dark:text-gray-300">
-                        <span>Hegedüs János 2023 © All rights reserved.</span>
-                        <div className="theme-toggle cursor-pointer">
-                            <div className="theme-toggle cursor-pointer">
-                                <Button
-                                    label={darkmode ? "Light mode" : "Dark mode"}
-                                    onClick={toggleDarkMode}
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    <Footer darkMode={darkmode} toggleDarkMode={toggleDarkMode}/>
                     </body>
                 </ModalProvider>
             </AuthProvider>

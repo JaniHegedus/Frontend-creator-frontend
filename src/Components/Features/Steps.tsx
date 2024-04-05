@@ -143,14 +143,14 @@ const Creator = () => {
     };
     return (
         <>
-            <div className={"flex justify-center container mx-auto text-center items-center align-middle w-screen"}>
-                <div className={"my-10"}>
+            <div className="flex flex-col justify-center items-center min-h-screen">
+                <div className="w-full flex-1 overflow-auto p-4"> {/* Allow for padding and scrolling */}
 
                     {/* Conditional rendering based on the step */}
 
                     {step === 1 && (
                         <div>
-                            <h2 className={"text-lg font-bold mb-4"}>Step {step}: Project Name and Details</h2>
+                            <h2 className={"text-lg font-bold mb-4 pt-4"}>Step {step}: Project Name and Details</h2>
                             <ProjectIniter
                                 project={stepData.project}
                                 setProject={(projectName, projectDescription) => updateStepData('project', {
@@ -167,22 +167,25 @@ const Creator = () => {
 
                     {step === 2 && (
                         <div>
-                            <h2 className={"text-lg font-bold mb-4"}>Step {step}: Preview and Edit Image</h2>
+                            <h2 className={"text-lg font-bold mb-4 pt-4"}>Step {step}: Preview and Edit Image</h2>
                             <ImageEditor
                                 nextStep={nextStep}
                                 prevStep={prevStep}
-                                addToStepData={(fullname, location) => addToStepData('imageEdit',fullname, location)}
+                                addToStepData={(fullname, location) => addToStepData('imageEdit', fullname, location)}
                             />
                         </div>
                     )}
 
                     {step === 3 && (
                         <div>
-                            <h2 className={"text-lg font-bold mb-4"}>Step {step}: Choose Language</h2>
+                            <h2 className={"text-lg font-bold mb-4 pt-4"}>Step {step}: Choose Language</h2>
                             <LanguageSelector
                                 nextStep={nextStep}
                                 prevStep={prevStep}
-                                updateLanguage={(programming, style) => updateStepData('language', { programming, style })}
+                                updateLanguage={(programming, style) => updateStepData('language', {
+                                    programming,
+                                    style
+                                })}
                                 language={stepData.language} // Ensure you're passing the current language selections if this is intended
                             />
                         </div>
@@ -190,13 +193,13 @@ const Creator = () => {
 
                     {step === 4 && (
                         <div>
-                            <h2 className={"text-lg font-bold mb-4"}>Step {step}: Send to Generation Bot</h2>
+                            <h2 className={"text-lg font-bold mb-4 pt-4"}>Step {step}: Send to Generation Bot</h2>
                             <GenerationBot
                                 nextStep={nextStep}
                                 prevStep={prevStep}
                                 stepData={stepData}
                                 updateStepData={updateStepData}
-                                addToStepData={(fullname, location) => addToStepData('imageEdit',fullname, location)}
+                                addToStepData={(fullname, location) => addToStepData('imageEdit', fullname, location)}
                                 setGenerationBot={(newGenerationBotresponse: any) => updateStepData('generationBot', newGenerationBotresponse)}
                             />
                         </div>
@@ -204,14 +207,14 @@ const Creator = () => {
 
                     {step === 5 && (
                         <div>
-                            <h2 className={"text-lg font-bold mb-4"}>Step {step}: Edit in Code</h2>
+                            <h2 className={"text-lg font-bold mb-4 pt-4"}>Step {step}: Edit in Code</h2>
                             <EditorPage nextStep={nextStep} prevStep={prevStep} stepData={stepData}/>
                         </div>
                     )}
 
                     {step === 6 && (
                         <div>
-                            <h2 className={"text-lg font-bold mb-4"}>Step 6: Export</h2>
+                            <h2 className={"text-lg font-bold mb-4 pt-4"}>Step 6: Export</h2>
                             <ExportOptions
                                 prevStep={prevStep}
                                 done={done}
