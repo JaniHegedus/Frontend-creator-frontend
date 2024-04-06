@@ -1,21 +1,12 @@
-// pages/editor.js
 import dynamic from 'next/dynamic';
 import React, {useEffect, useRef, useState} from 'react';
 import { IEditorProps } from 'react-ace';
 import Button from "@/Components/Common/Button";
 import MyFiles from "@/Components/Features/MyFiles";
 import axios from "axios";
+import {EditorPageProps} from "@/Components/InterFaces/Steps/EditorPageProps";
+import {SelectedFile} from "@/Components/Types/File/SelectedFile";
 
-type FileItem = {
-    type: 'file';
-    name: string;
-};
-
-type FolderItem = {
-    type: 'folder';
-    name: string;
-    files: Array<FileItem | FolderItem>;
-};
 const AceEditor = dynamic(
     async () => {
         const ace = await import('react-ace');
@@ -32,17 +23,6 @@ const AceEditor = dynamic(
     },
     { ssr: false }
 ) as React.ComponentType<IEditorProps>;
-
-interface EditorPageProps {
-    nextStep: () => void;
-    prevStep: () => void;
-    stepData: any;
-}
-
-type SelectedFile = {
-    name: string;
-    path: string;
-}
 
 const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
     const [language, ] = useState('html');

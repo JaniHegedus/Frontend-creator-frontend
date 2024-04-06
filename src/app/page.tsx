@@ -1,9 +1,8 @@
 "use client"
 import React, {useEffect, useState} from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import Button from "@/Components/Common/Button";
 import { useAuth } from "@/Components/Contexts/AuthContext";
-import FeatureCard from "@/Components/FeatureCard";
+import FeatureCard from "@/Components/Common/FeatureCard";
 
 export default function Home() {
     const [theme, setTheme] = useState<boolean>()

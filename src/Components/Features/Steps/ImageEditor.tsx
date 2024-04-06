@@ -1,22 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useAuth } from '@/Components/Contexts/AuthContext';
 import Upload from '@/Components/Features/Upload';
 import { useModal } from '@/Components/Contexts/ModalContext';
 import Button from '@/Components/Common/Button';
 import axios from "axios";
-import timestamp from 'time-stamp'; //for the filename
 import FilerobotImageEditor, {
     TABS,
     TOOLS,
 } from 'react-filerobot-image-editor';
 import Inputfield from "@/Components/Common/Inputfield";
 import {toast} from "react-toastify";
-
-interface ImageEditorProps {
-    nextStep: () => void;
-    prevStep: () => void;
-    addToStepData:  (fullname : string, location : string) => void;
-}
+import {ImageEditorProps} from "@/Components/InterFaces/Steps/ImageEditorProps";
 
 const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {
     const user = useAuth();
@@ -27,11 +21,10 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
     const {openModal} =useModal();
     const [imageSource, setImageSource] = useState('blank-white-background.jpg');
     const [newImageSource, setNewImageSource] = useState('');
-    const [uploadedDesignState, setUploadedDesignState] = useState(null);
-    const [theme, setTheme] = useState(localStorage.getItem('themeE') === 'monokai')
-    const  [isDarkMode]  = useState(false); // Or however you determine dark mode
+    const [uploadedDesignState, ] = useState(null);
+    const [theme, ] = useState(localStorage.getItem('themeE') === 'monokai')
     const isMobile = () => window.innerWidth <= 640; // 640px is a common breakpoint for mobile devices
-    const [displayEditor, setDisplayEditor] = useState(!isMobile());
+    const [displayEditor] = useState(!isMobile());
 
     const lightModePalette = {
         palette:{
@@ -82,11 +75,6 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
         }
     }, [theme, localStorage.getItem('themeE')]);
 
-    const handleResize = () => {
-        setDisplayEditor(!isMobile());
-    };
-
-
     useEffect(() => {
         // Function to handle resize events
         const handleResize = () => {
@@ -114,7 +102,7 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
         setLoading(false);
     };
 
-    const onSave = async (editedImageObject : any, designState : any) => {
+    const onSave = async (editedImageObject : any) => {
         setLoading(true)
         // Extract the base64 image data and convert it to a file
         const base64String = editedImageObject.imageBase64;
@@ -128,11 +116,11 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
 
         // Append additional data if necessary
         // For example, appending the design state as well
-        const designStateBlob = new Blob([JSON.stringify(designState)], { type: 'application/json' });
+        //const designStateBlob = new Blob([JSON.stringify(designState)], { type: 'application/json' });
         //formData.append('designState', designStateBlob);
 
         try {
-            const response = await axios.post(`${backendUrl}/uploads`, formData, {
+            await axios.post(`${backendUrl}/uploads`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

@@ -1,26 +1,9 @@
-import React, {createContext, useState, useContext, ReactNode, useEffect, SetStateAction} from 'react';
-import {CPS} from "@/Components/CPS";
-
-type AuthContextType = {
-    data: UserType | null;
-    setData: (userData: UserType | null) => void;
-    loading: boolean; // Include loading in context type
-};
-type UserType = {
-    id: (number | undefined | null);
-    email: (string | undefined | null);
-    username: (string | undefined | null);
-    github_uid?: (string | null);
-    github_nickname?: (string | null);
-    github_repos?: (Array<string> | null);
-    Creation_Process_State?: CPS | null;
-};
+import React, {createContext, useState, useContext, useEffect} from 'react';
+import {AuthContextType} from "@/Components/Types/AuthContextType";
+import {UserType} from "@/Components/Types/UserType";
+import {AuthProviderProps} from "@/Components/InterFaces/Contexts/AuthProviderProps";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-type AuthProviderProps = {
-    children: ReactNode;
-};
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

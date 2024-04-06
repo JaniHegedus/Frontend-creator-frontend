@@ -1,12 +1,5 @@
 import React from 'react';
-
-interface ConfirmModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
-    message: string;
-    noNo?: boolean;
-}
+import {ConfirmModalProps} from "@/Components/InterFaces/Modals/ConfirmModalProps";
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message,noNo }) => {
     if (!isOpen) return null;
@@ -26,10 +19,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
 
                         <>
                             <button
-                                onClick={() => {
-                                    onConfirm();
-                                    onClose();
-                                }}
+                                onClick={() => {handleConfirm}}
                                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
                             >
                                 OK
@@ -44,10 +34,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
                                 No
                             </button>
                             <button
-                                onClick={() => {
-                                    onConfirm();
-                                    onClose();
-                                }}
+                                onClick={() => {handleConfirm}}
                                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
                             >
                                 Yes

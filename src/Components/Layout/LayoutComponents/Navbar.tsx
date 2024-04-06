@@ -62,7 +62,7 @@ const Navbar = () => {
     return (
         <div className="flex items-center justify-end w-full">
             <div
-                className={`flex flex-col w-full ${menuVisible ? "block" : "hidden"} md:flex md:flex-row md:items-center md:w-auto`}>
+                className={`flex flex-col w-auto ${menuVisible ? "block" : "hidden"} md:flex md:flex-row md:items-center md:w-auto`}>
                 {menuVisible && menuItems.map((item, index) => (
                     <NavItem href={item.href} Name={item.Name} key={index}/>
                 ))}
@@ -88,11 +88,10 @@ const Navbar = () => {
                         : (<> </>)
                 }
             </div>
-                <Button content={<FiMenu size={24}/>} onClick={() => {
-                    setVisibility()
-                }}/>
-            </div>
-            );
-            }
-
-            export default Navbar;
+            <Button content={<FiMenu size={24}/>} onClick={() => {
+                setVisibility()
+            }}/>
+        </div>
+    );
+}
+export default Navbar;

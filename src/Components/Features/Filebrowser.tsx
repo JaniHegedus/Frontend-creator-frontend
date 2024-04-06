@@ -1,24 +1,10 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {FaLeftLong} from "react-icons/fa6";
 import {useAuth} from "@/Components/Contexts/AuthContext";
-
-// Define types for file and folder structure
-type FileSystemItem = FileItem | FolderItem;
-type FileItem = {
-    type: 'file';
-    name: string;
-};
-
-type FolderItem = {
-    type: 'folder';
-    name: string;
-    files: any;
-};
-
-type SelectedFile = {
-    name: string;
-    path: string;
-}
+import {FileItem} from "@/Components/Types/File/FileItem";
+import {FolderItem} from "@/Components/Types/File/FolderItem";
+import {SelectedFile} from "@/Components/Types/File/SelectedFile";
+import {FileSystemItem} from "@/Components/Types/File/FileSystemItem";
 
 const FileBrowser: React.FC<{
                             files: FileSystemItem[],

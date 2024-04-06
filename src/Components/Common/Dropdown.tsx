@@ -1,25 +1,14 @@
 "use client"
 import React, {useState, useRef, useEffect, FC} from 'react';
 import Button from "@/Components/Common/Button";
-interface Option {
-    label: string;
-    value:  any;
-}
-interface DropdownProps {
-    options: Option[];
-    onSelect: (option: Option) => void; // onSelect now expects a function that takes an Option type as an argument
-    className?: string;
-    disabled?: boolean;
-    color?: string;
-    placeholder?: string;
-    selectedValue?: any;
-}
+import {Option} from "@/Components/InterFaces/Steps/Option";
+import {DropdownProps} from "@/Components/InterFaces/Common/DropdownProps";
+
 const Dropdown: FC<DropdownProps> = ({
                                          options = [],
                                          onSelect = () => {},
                                          className = '',
                                          disabled = false,
-                                         color = 'primary',
                                          placeholder = "Select an option",
                                          selectedValue, // Destructuring the new prop
                                      }) => {
@@ -54,18 +43,6 @@ const Dropdown: FC<DropdownProps> = ({
         setSelectedOption(option);
         setIsOpen(false);
         onSelect(option); // Propagate the selection to parent component if needed
-    };
-
-
-    const generateClassName = () => {
-        switch (color) {
-            case 'secondary':
-                return "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline";
-            case 'list':
-                return "py-1 px-2 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded focus:outline-none focus:shadow-outline";
-            default:
-                return "py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded focus:outline-none focus:shadow-outline";
-        }
     };
 
     // @ts-ignore

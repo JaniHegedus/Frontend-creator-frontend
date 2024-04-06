@@ -1,11 +1,8 @@
-import {CPS} from "@/Components/CPS";
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
-interface DownloadSummaryProps
-{
-    stepData : CPS;
-}
+import {DownloadSummaryProps} from "@/Components/InterFaces/Steps/DownloadSummaryProps";
+
 const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
     const [success, ] = useState("")
     const [error, ] = useState("")

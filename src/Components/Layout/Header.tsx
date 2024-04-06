@@ -30,7 +30,7 @@ const Header = () => {
 
 
     return (
-        <header className={`flex justify-between items-center p-4 bg-gray-400 dark:bg-gray-800 sticky w-full top-0 z-50 transition-opacity duration-300 ${!isVisible ? 'opacity-0' : 'opacity-100'}`}>
+        <header className={`flex justify-center items-center p-4 bg-gray-400 dark:bg-gray-800 sticky w-full top-0 z-50 transition-opacity duration-300 text-center ${!isVisible ? 'opacity-0' : 'opacity-100'}`}>
             <span className="text-xl sm:text-2xl font-bold dark:text-gray-300">Frontend Creator</span>
             <Navbar/>
         </header>

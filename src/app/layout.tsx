@@ -1,8 +1,6 @@
 "use client";
 import './globals.css'
-import React, { useEffect, useState, useRef } from "react";
-import Navbar from "@/Components/Layout/LayoutComponents/Navbar";
-import Button from "@/Components/Common/Button";
+import React, { useEffect, useState, useRef } from "react"
 import {ToastContainer} from "react-toastify";
 import { AuthProvider } from '@/Components/Contexts/AuthContext';
 import {ModalProvider} from "@/Components/Contexts/ModalContext";
@@ -32,6 +30,15 @@ export default function RootLayout({ children }: {children: React.ReactNode})
             }
         }
     }, []);
+    useEffect(() => {
+        // Change the class on the html element
+        const html = document.documentElement;
+        if (darkmode) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+    }, [darkmode]); // Re-run when darkmode changes
 
     function toggleDarkMode() {
         const html = document.documentElement;
@@ -53,7 +60,7 @@ export default function RootLayout({ children }: {children: React.ReactNode})
 
     return (
         // @ts-ignore
-        <html class={darkmode ? "dark" : ""}>
+        <html>
             <head>
                 <title>Frontend Creator</title>
             </head>

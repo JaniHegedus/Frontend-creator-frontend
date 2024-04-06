@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Button from "@/Components/Common/Button";
 import Inputfield from "@/Components/Common/Inputfield";
-import PageCount from "@/Components/Features/Steps/PageCount"; // Adjusted to the new InputField component
-
-interface ProjectIniterProps {
-    nextStep: () => void;
-    setPageCount: (pagecount:any) => void;
-    pageCount: any;
-    setProject: (projectName: string, projectDescription: string) => void;
-    project: {
-        projectName: string | null,
-        projectDescription: string | null
-    }
-}
+import PageCount from "@/Components/Features/Steps/PageCount";
+import {ProjectIniterProps} from "@/Components/InterFaces/Steps/ProjectIniterProps"; 
 
 const ProjectIniter = ({nextStep,pageCount,setPageCount, setProject, project } : ProjectIniterProps) => {
     const [Name, setName] = useState<string | null>(project.projectName);

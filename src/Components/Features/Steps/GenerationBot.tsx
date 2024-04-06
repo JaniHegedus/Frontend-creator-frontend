@@ -1,25 +1,12 @@
 import React, { useEffect, useState} from "react";
 import Button from "@/Components/Common/Button";
-import {CPS} from "@/Components/CPS";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import MyFiles from "@/Components/Features/MyFiles";
 import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
-
-
-interface GenerationBotInterfaceProps {
-    nextStep: () => void;
-    prevStep: () => void;
-    stepData: CPS | null;
-    updateStepData: (key: any, value: any) => void;
-    addToStepData:  (fullname : string, location : string) => void;
-    setGenerationBot: (generationbot : any) => void;
-}
-type SelectedFile = {
-    name: string;
-    path: string;
-}
+import {GenerationBotInterfaceProps} from "@/Components/InterFaces/Steps/GenerationBotInterfaceProps";
+import {SelectedFile} from "@/Components/Types/File/SelectedFile";
 
 const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevStep, setGenerationBot}:GenerationBotInterfaceProps) =>  {
     const user = useAuth();
@@ -108,7 +95,7 @@ const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevSt
         formData.append('username', user.data?.username || '')
 
         try{
-            const response = await axios.post(`${backendUrl}/generation`, formData, {
+            await axios.post(`${backendUrl}/generation`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

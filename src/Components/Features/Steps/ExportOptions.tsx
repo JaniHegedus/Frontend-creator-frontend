@@ -3,15 +3,7 @@ import Button from "@/Components/Common/Button";
 import Dropdown from "@/Components/Common/Dropdown";
 import Loading from "@/Components/Common/Loading";
 import {useAuth} from "@/Components/Contexts/AuthContext";
-
-interface ExportOptionsProps {
-    prevStep: () => void;
-    done?: boolean;
-    afterExport: () => void;
-    selectedExportOption: string;
-    updateExportOption: (value: string) => void; // Callback to update the export option in the parent state
-}
-
+import {ExportOptionsProps} from "@/Components/InterFaces/Steps/ExportOptionsProps";
 
 const ExportOptions = ({
                            prevStep,
@@ -68,7 +60,7 @@ const ExportOptions = ({
             }
             <div className="flex justify-between items-center w-full px-4">
                 <Button onClick={prevStep} label="Previous" color="secondary"/>
-                {done && <Button onClick={handleDone} label="Done" color="secondary" disabled={isDisabled}/>}
+                <Button onClick={handleDone} label={done ? "Done" : "Download"} color="secondary" disabled={isDisabled}/>
             </div>
         </>
     );

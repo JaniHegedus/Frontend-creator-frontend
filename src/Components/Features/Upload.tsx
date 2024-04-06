@@ -2,10 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
-
-interface UploadProps {
-    onFileLocation?: (fullname : string, location : string) => void; // Callback function to return the file location
-}
+import {UploadProps} from "@/Components/InterFaces/UploadProps";
 
 const Upload = ({ onFileLocation }: UploadProps) => {
     const { data: userData } = useAuth();
@@ -45,6 +42,7 @@ const Upload = ({ onFileLocation }: UploadProps) => {
             }
             setSuccess(`File uploaded successfully: ${response.data.filename}`);
             setIsLoading(false);
+            setFile(null);
         } catch (err) {
             setError('Upload failed. Please try again.');
             setIsLoading(false);

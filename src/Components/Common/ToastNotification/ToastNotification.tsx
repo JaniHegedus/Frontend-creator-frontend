@@ -1,19 +1,11 @@
 import { toast } from "react-toastify";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-interface notifyInterface {
-  position?: "top-right" | "bottom-left";
-  delay?: number;
-  progressBar?: boolean;
-  type?: "default" | "success" | "warning" | "error";
-  label?: string;
-  text?: string;
-}
+import {notifyInterface} from "@/Components/InterFaces/Common/Toast/notifyInterface";
 
 export const ToastNotification = (
     {
   position = "top-right",
   delay = 10000,
-  progressBar = false,
   type = "default",
   label,
   text,

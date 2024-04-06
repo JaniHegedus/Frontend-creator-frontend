@@ -1,10 +1,5 @@
-import React, { FunctionComponent, ReactNode } from 'react';
-
-interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    children: ReactNode;
-}
+import React, { FunctionComponent } from 'react';
+import {ModalProps} from "@/Components/InterFaces/Modals/ModalProps";
 
 const ModalWindow: FunctionComponent<ModalProps> = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;

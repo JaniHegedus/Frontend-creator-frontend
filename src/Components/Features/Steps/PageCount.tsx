@@ -1,20 +1,10 @@
 "use client"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/Components/Common/Button";
 import Inputfield from "@/Components/Common/Inputfield";
 import Dropdown from "@/Components/Common/Dropdown";
-
-interface Option {
-    label: string;
-    value: number | "X";
-}
-
-interface PageCountProps {
-    nextStep: () => void;
-    pageCount: number | null;
-    setPageCount: any;
-    disabled: boolean;
-}
+import {PageCountProps} from "@/Components/InterFaces/Steps/PageCountProps";
+import {Option} from "@/Components/InterFaces/Steps/Option";
 
 const PageCount = ({ nextStep, pageCount, setPageCount, disabled }: PageCountProps) => {
     const [isDisabled, setIsDisabled] = useState(true);

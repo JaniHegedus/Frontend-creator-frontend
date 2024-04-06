@@ -10,7 +10,7 @@ import EditorPage from "@/Components/Features/Steps/EditorPage";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import ProjectIniter from "@/Components/Features/Steps/ProjectIniter";
 import Button from "@/Components/Common/Button";
-import {CPS} from "@/Components/CPS";
+import {CPS} from "@/Components/Types/CPS";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import DownloadSummary from "@/Components/Features/Steps/DownloadSummarry";
 
@@ -19,7 +19,7 @@ const Creator = () => {
     const { setData } =useAuth()
     const [error, setError] = useState('');
     const [step, setStep] = useState(1);
-    const [done, ] = useState(true)
+    const [done, setDone] = useState(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const closeConfirmModal = () => setIsConfirmModalOpen(false);
     const [isDisabled, setIsDisabled] = useState(true)
@@ -103,7 +103,10 @@ const Creator = () => {
         setStep(prevStep => Math.max(prevStep - 1, 1));
     };
     const afterExport = () =>{
-        openModal(<DownloadSummary stepData={stepData}/>)
+        openModal(<DownloadSummary stepData={stepData}/>, onModalClose)
+    }
+    const onModalClose = () =>{
+        setDone(true);
     }
     const handleSaveCurrent = () => {
         if (!user.loading) {
@@ -140,6 +143,26 @@ const Creator = () => {
                 };
             setData(updatedUser);
         }
+    };
+    const afterDone = () => {
+        setStep(1);
+        setDone(false);
+        setStepData({
+            project: {
+                projectName: null,
+                    projectDescription: null
+            },
+            pageCount: null,
+                imageEdit: {},
+            language: {
+                programming: null,
+                    style: null
+            },
+            generationBot: null,
+                codeEdit: null,
+                exportOptions: null,
+        }
+    )
     };
     return (
         <>
@@ -218,7 +241,7 @@ const Creator = () => {
                             <ExportOptions
                                 prevStep={prevStep}
                                 done={done}
-                                afterExport={afterExport}
+                                afterExport={done ? afterDone : afterExport}
                                 selectedExportOption={stepData.exportOptions || ''}
                                 updateExportOption={(value) => updateStepData('exportOptions', value)}
                             />
