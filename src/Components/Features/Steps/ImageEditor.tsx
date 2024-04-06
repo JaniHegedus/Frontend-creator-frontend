@@ -178,7 +178,7 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
                                         // @ts-ignore
                                         loadableDesignState={uploadedDesignState}
                                         source={imageSource}
-                                        onSave={(editedImageObject, designState) => onSave(editedImageObject, designState)}
+                                        onSave={(editedImageObject) => onSave(editedImageObject)}
                                         annotationsCommon={{
                                             fill: '#ff0000',
                                         }}

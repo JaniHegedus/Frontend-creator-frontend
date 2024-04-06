@@ -1,4 +1,4 @@
-import {CPS} from "@/Components/Types/CPS";
+import {CPS} from "@/Components/Types/AuthContextTypes";
 
 export interface DownloadSummaryProps
 {

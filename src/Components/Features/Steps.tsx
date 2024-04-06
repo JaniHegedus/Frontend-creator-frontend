@@ -10,9 +10,9 @@ import EditorPage from "@/Components/Features/Steps/EditorPage";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import ProjectIniter from "@/Components/Features/Steps/ProjectIniter";
 import Button from "@/Components/Common/Button";
-import {CPS} from "@/Components/Types/CPS";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import DownloadSummary from "@/Components/Features/Steps/DownloadSummarry";
+import {CPS} from "@/Components/Types/AuthContextTypes";
 
 const Creator = () => {
     const user = useAuth();
