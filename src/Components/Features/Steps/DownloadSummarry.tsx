@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import {DownloadSummaryProps} from "@/Components/InterFaces/Steps/DownloadSummaryProps";
+import Tooltip from "@/Components/Features/ToolTip";
 
 const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
     const [success, ] = useState("")
@@ -68,7 +69,7 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
     return (
         <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto my-8">
             <h1 className="text-2xl font-bold mb-4">Project Summary:</h1>
-            <p className="mb-2"><span className="font-semibold">Project Name:</span> {stepData.project.projectName}</p>
+            <Tooltip message={"This will be the Directory Name"}><p className="mb-2"><span className="font-semibold">Project Name:</span> {stepData.project.projectName}</p></Tooltip>
             <p className="mb-2"><span className="font-semibold">Project Description:</span> {stepData.project.projectDescription}</p>
             <p className="mb-2"><span className="font-semibold">Project Pages:</span> {stepData.pageCount}</p>
             <p className="mb-2"><span className="font-semibold">Languages Chosen:</span> {stepData.language.programming} {stepData.language.style}</p>

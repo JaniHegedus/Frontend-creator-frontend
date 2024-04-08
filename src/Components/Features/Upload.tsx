@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
 import {UploadProps} from "@/Components/InterFaces/UploadProps";
+import Tooltip from "@/Components/Features/ToolTip";
 
 const Upload = ({ onFileLocation }: UploadProps) => {
     const { data: userData } = useAuth();
@@ -58,13 +59,16 @@ const Upload = ({ onFileLocation }: UploadProps) => {
             <div className="w-full max-w-md">
                 {isLoading? <Loading/>:
                 <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <div className="mb-4">
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                        />
-                    </div>
+                    <Tooltip message={"Only Pictures"}>
+                        <div className="mb-4">
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                accept="image/*"
+                            />
+                        </div>
+                    </Tooltip>
                     <div className="flex items-center justify-center">
                         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dark:hover:bg-blue-800">
                             Upload

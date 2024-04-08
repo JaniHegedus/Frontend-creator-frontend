@@ -7,6 +7,7 @@ import {useAuth} from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
 import {GenerationBotInterfaceProps} from "@/Components/InterFaces/Steps/GenerationBotInterfaceProps";
 import {SelectedFile} from "@/Components/Types/File/SelectedFile";
+import Tooltip from "@/Components/Features/ToolTip";
 
 const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevStep, setGenerationBot}:GenerationBotInterfaceProps) =>  {
     const user = useAuth();
@@ -133,14 +134,16 @@ const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevSt
                     <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-4 m-4 relative justify-center">
                         <div className="flex justify-center items-center mb-4">
                             <h2 className="text-2xl font-bold p-2">Selected Pictures</h2>
-                            <div className="pl-4">
-                                <Button
-                                    onClick={addMore}
-                                    label={"+"}
-                                    disabled={isAddDisabled}
-                                    color={"secondary"}
-                                />
-                            </div>
+                            <Tooltip message={"The number of the pictures and pages have to be equal"}>
+                                <div className="pl-4">
+                                    <Button
+                                        onClick={addMore}
+                                        label={"+"}
+                                        disabled={isAddDisabled}
+                                        color={"secondary"}
+                                    />
+                                </div>
+                            </Tooltip>
                         </div>
                         <ul className="list-disc pl-5 pr-8 mt-8 max-h-52 overflow-y-auto">
                             {Object.keys(stepData?.imageEdit || {}).map((imageName) => (

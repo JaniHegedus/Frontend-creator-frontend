@@ -64,7 +64,7 @@ const Inputfield: FC<InputFieldProps> = ({
     return (
         <>
             <input
-                type="text" // type should always be text since HTML input types don't include 'username'
+                type={type === 'password' ? 'password' : type} // Ensures password inputs are masked
                 id={id}
                 value={value}
                 onChange={handleChange}
@@ -72,7 +72,7 @@ const Inputfield: FC<InputFieldProps> = ({
                 className={`${className} ${error ? 'border-red-500' : ''}`}
                 required={required}
                 {...(type === 'number' && { min, max })}
-                {...(type === 'text' && { minLength, maxLength })}
+                {...(['text', 'password'] && { minLength, maxLength })} // Adjusted to apply minLength and maxLength to both text and password types
             />
             {error && <p className="text-red-500 text-xs italic">{error}</p>}
         </>

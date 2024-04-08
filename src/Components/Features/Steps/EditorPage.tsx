@@ -6,6 +6,8 @@ import MyFiles from "@/Components/Features/MyFiles";
 import axios from "axios";
 import {EditorPageProps} from "@/Components/InterFaces/Steps/EditorPageProps";
 import {SelectedFile} from "@/Components/Types/File/SelectedFile";
+import Tooltip from "@/Components/Features/ToolTip";
+import {FaInfo} from "react-icons/fa";
 
 const AceEditor = dynamic(
     async () => {
@@ -121,34 +123,39 @@ const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
                 <div className="flex flex-col w-2/4">
                     <h1>Code Editor : {selectedFile ? selectedFile.name : ""}</h1>
                     <AceEditor
-                        className="border-2 w-1/2"
-                        mode={language}
-                        theme={Etheme}
-                        name="code_editor"
-                        value={code}
-                        onChange={handleCodeChange}
-                        fontSize={16}
-                        showPrintMargin={true}
-                        showGutter={true}
-                        highlightActiveLine={true}
-                        setOptions={{
-                            enableBasicAutocompletion: true,
-                            enableLiveAutocompletion: true,
-                            enableSnippets: true,
-                            showLineNumbers: true,
-                            tabSize: 2,
-                            useWorker: false
-                        }}
-                        style={{width: '100%', height: '100%'}}
-                        editorProps={{$blockScrolling: true}}
-                    />
+                            className="border-2 w-1/2"
+                            mode={language}
+                            theme={Etheme}
+                            name="code_editor"
+                            value={code}
+                            onChange={handleCodeChange}
+                            fontSize={16}
+                            showPrintMargin={true}
+                            showGutter={true}
+                            highlightActiveLine={true}
+                            setOptions={{
+                                enableBasicAutocompletion: true,
+                                enableLiveAutocompletion: true,
+                                enableSnippets: true,
+                                showLineNumbers: true,
+                                tabSize: 2,
+                                useWorker: false
+                            }}
+                            style={{width: '100%', height: '100%'}}
+                            editorProps={{$blockScrolling: true}}
+                        />
                 </div>
-                <div className="flex flex-col w-1/4">
+                <div className="flex flex-col w-1/4 justify-center text-center">
                     <h1>Page Title: {title}</h1>
+                    <Tooltip message={"You can save the file and preview using CTRL+S"}>
+                        <div className={"rounded bg-red-500 dark:bg-red-800 p-1 text-center justify-center items-center grid grid-cols-2"}>
+                            <FaInfo/> <p>INFORMATION</p>
+                        </div>
+                    </Tooltip>
                     <iframe
                         ref={iframeRef}
                         className="border-2 h-screen"
-                        //style={{ width: '100%', height: '100%', border: '3', margin:'4' }}
+                        style={{ background: "white", border: '3', margin:'4' }}
                         title="Output"
                     />
                 </div>

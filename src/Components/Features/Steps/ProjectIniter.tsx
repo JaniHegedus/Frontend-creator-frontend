@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Inputfield from "@/Components/Common/Inputfield";
 import PageCount from "@/Components/Features/Steps/PageCount";
-import {ProjectIniterProps} from "@/Components/InterFaces/Steps/ProjectIniterProps"; 
+import {ProjectIniterProps} from "@/Components/InterFaces/Steps/ProjectIniterProps";
+import Tooltip from "@/Components/Features/ToolTip";
 
 const ProjectIniter = ({nextStep,pageCount,setPageCount, setProject, project } : ProjectIniterProps) => {
     const [Name, setName] = useState<string | null>(project.projectName);
@@ -30,7 +31,7 @@ const ProjectIniter = ({nextStep,pageCount,setPageCount, setProject, project } :
         setDescription(project.projectDescription);
     }, [project]);
     return (
-        <>
+        <div className={"w-40vh text-center justify-center"}>
             <div>
                 <Inputfield
                     type="text"
@@ -50,13 +51,15 @@ const ProjectIniter = ({nextStep,pageCount,setPageCount, setProject, project } :
                 />
             </div>
             <h2 className={"text-lg font-bold mb-4"}>Choose Page Count</h2>
-            <PageCount
-                nextStep={nextStep}
-                pageCount={pageCount}
-                setPageCount={setPageCount}
-                disabled={isDisabled}
-            />
-        </>
+            <Tooltip message={"This Will determine the needed Pictures number!"}>
+                <PageCount
+                    nextStep={nextStep}
+                    pageCount={pageCount}
+                    setPageCount={setPageCount}
+                    disabled={isDisabled}
+                />
+            </Tooltip>
+        </div>
     );
 }
 

@@ -11,6 +11,7 @@ import FilerobotImageEditor, {
 import Inputfield from "@/Components/Common/Inputfield";
 import {toast} from "react-toastify";
 import {ImageEditorProps} from "@/Components/InterFaces/Steps/ImageEditorProps";
+import Tooltip from "@/Components/Features/ToolTip";
 
 const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {
     const user = useAuth();
@@ -171,7 +172,8 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
                             />
                         </div>
                         {displayEditor ? (
-                            <div className="">
+                            <Tooltip message={"You can create or Import Images Here"}>
+                                <div className="">
                                     <FilerobotImageEditor
                                         defaultSavedImageName={'page-0'}
                                         theme={Etheme}
@@ -234,6 +236,7 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
                                         previewPixelRatio={0}
                                     />
                             </div>
+                            </Tooltip>
                         ) : (
                             // Display a message or alternative content for mobile users
                             <div className="text-center p-4">
@@ -250,7 +253,7 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
             {success && <p className="text-green-500">{success}</p>}
             <div className="flex justify-between items-center w-full px-4">
                 <Button onClick={prevStep} label={loading ? "Loading...":"Previous"} disabled={loading} color={"secondary"}/>
-                <Button onClick={handleUploadClick} label={loading ? "Loading...":"Upload"} disabled={loading} color={"secondary"}/>
+                <Tooltip message={"You can Upload Pictures here!"}><Button onClick={handleUploadClick} label={loading ? "Loading...":"Upload"} disabled={loading} color={"secondary"}/></Tooltip>
                 <Button onClick={nextStep} label={loading ? "Loading...":"Next"} disabled={loading} color={"secondary"}/>
             </div>
         </>

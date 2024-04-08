@@ -13,12 +13,13 @@ import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import DownloadSummary from "@/Components/Features/Steps/DownloadSummarry";
 import {CPS} from "@/Components/Types/AuthContextTypes";
+import Tooltip from "@/Components/Features/ToolTip";
 
 const Creator = () => {
     const user = useAuth();
     const { setData } =useAuth()
     const [error, setError] = useState('');
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(4);
     const [done, setDone] = useState(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const closeConfirmModal = () => setIsConfirmModalOpen(false);
@@ -274,10 +275,12 @@ const Creator = () => {
 
             )}
             <div className={"fixed bottom-24 right-5 rounded ="}>
-                <Button onClick={handleSaveCurrent}
+                <Tooltip message={"Save your Work"}>
+                    <Button onClick={handleSaveCurrent}
                         label={"Save Current"}
                         disabled={isDisabled}
                         color={"primary"}/>
+                </Tooltip>
             </div>
         </>
     );
