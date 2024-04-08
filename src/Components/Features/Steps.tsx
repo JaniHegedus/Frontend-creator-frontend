@@ -12,7 +12,7 @@ import ProjectIniter from "@/Components/Features/Steps/ProjectIniter";
 import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import DownloadSummary from "@/Components/Features/Steps/DownloadSummarry";
-import {CPS} from "@/Components/Types/AuthContextTypes";
+import {CPS} from "@/Types/AuthContextTypes";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const Creator = () => {

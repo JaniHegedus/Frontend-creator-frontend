@@ -1,5 +1,5 @@
 import React from 'react';
-import {ConfirmModalProps} from "@/Components/InterFaces/Modals/ConfirmModalProps";
+import {ConfirmModalProps} from "@/InterFaces/Modals/ConfirmModalProps";
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message,noNo }) => {
     if (!isOpen) return null;

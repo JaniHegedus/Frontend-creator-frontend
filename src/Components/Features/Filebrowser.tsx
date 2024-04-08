@@ -1,8 +1,8 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {FaLeftLong} from "react-icons/fa6";
 import {useAuth} from "@/Components/Contexts/AuthContext";
-import {SelectedFile} from "@/Components/Types/File/SelectedFile";
-import {FileItem, FileSystemItem, FolderItem} from "@/Components/Types/File/SystemTypes";
+import {SelectedFile} from "@/Types/File/SelectedFile";
+import {FileItem, FileSystemItem, FolderItem} from "@/Types/File/SystemTypes";
 
 const FileBrowser: React.FC<{
                             files: FileSystemItem[],

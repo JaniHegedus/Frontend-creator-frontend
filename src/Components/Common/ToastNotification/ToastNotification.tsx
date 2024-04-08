@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import {notifyInterface} from "@/Components/InterFaces/Common/Toast/notifyInterface";
+import {notifyInterface} from "@/InterFaces/Common/Toast/notifyInterface";
 
 export const ToastNotification = (
     {

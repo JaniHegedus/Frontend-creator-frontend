@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
-import {DownloadSummaryProps} from "@/Components/InterFaces/Steps/DownloadSummaryProps";
+import {DownloadSummaryProps} from "@/InterFaces/Steps/DownloadSummaryProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {

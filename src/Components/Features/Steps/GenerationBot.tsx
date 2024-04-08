@@ -5,8 +5,8 @@ import MyFiles from "@/Components/Features/MyFiles";
 import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
-import {GenerationBotInterfaceProps} from "@/Components/InterFaces/Steps/GenerationBotInterfaceProps";
-import {SelectedFile} from "@/Components/Types/File/SelectedFile";
+import {GenerationBotInterfaceProps} from "@/InterFaces/Steps/GenerationBotInterfaceProps";
+import {SelectedFile} from "@/Types/File/SelectedFile";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const GenerationBot = ({nextStep,addToStepData, updateStepData, stepData, prevStep, setGenerationBot}:GenerationBotInterfaceProps) =>  {

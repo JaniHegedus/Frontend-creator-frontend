@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Inputfield from "@/Components/Common/Inputfield";
 import PageCount from "@/Components/Features/Steps/PageCount";
-import {ProjectIniterProps} from "@/Components/InterFaces/Steps/ProjectIniterProps";
+import {ProjectIniterProps} from "@/InterFaces/Steps/ProjectIniterProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const ProjectIniter = ({nextStep,pageCount,setPageCount, setProject, project } : ProjectIniterProps) => {

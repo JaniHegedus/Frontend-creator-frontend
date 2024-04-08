@@ -1,6 +1,6 @@
 import Button from "@/Components/Common/Button";
 import React from "react";
-import {FooterProps} from "@/Components/InterFaces/Layout/FooterProps";
+import {FooterProps} from "@/InterFaces/Layout/FooterProps";
 
 
 const Footer = ({darkMode, toggleDarkMode}:FooterProps) =>{

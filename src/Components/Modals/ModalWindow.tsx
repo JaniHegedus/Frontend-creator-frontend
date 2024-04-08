@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import {ModalProps} from "@/Components/InterFaces/Modals/ModalProps";
+import {ModalProps} from "@/InterFaces/Modals/ModalProps";
 
 const ModalWindow: FunctionComponent<ModalProps> = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;

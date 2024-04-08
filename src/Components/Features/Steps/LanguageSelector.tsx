@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from '@/Components/Common/Dropdown';
 import Button from "@/Components/Common/Button";
-import {LanguageSelectorProps} from "@/Components/InterFaces/Steps/LanguageSelectorProps";
+import {LanguageSelectorProps} from "@/InterFaces/Steps/LanguageSelectorProps";
 
 const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: LanguageSelectorProps) => {
     const [selectedProgrammingLanguage, setSelectedProgrammingLanguage] = useState<string | null>(language.programming);

@@ -1,4 +1,4 @@
-import {Option} from "@/Components/InterFaces/Steps/Option";
+import {Option} from "@/InterFaces/Steps/Option";
 
 export interface DropdownProps {
     options: Option[];

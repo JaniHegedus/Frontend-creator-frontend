@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import ModalWindow from "@/Components/Modals/ModalWindow";
-import {IModalContext} from "@/Components/InterFaces/Contexts/IModalContext";
+import {IModalContext} from "@/InterFaces/Contexts/IModalContext";
 
 const defaultState = {
     isModalOpen: false,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ButtonPropsWithContent, ButtonPropsWithLabel} from "@/Components/InterFaces/Common/ButtonProps";
+import {ButtonPropsWithContent, ButtonPropsWithLabel} from "@/InterFaces/Common/ButtonProps";
 
 type ButtonProps = ButtonPropsWithLabel | ButtonPropsWithContent;
 

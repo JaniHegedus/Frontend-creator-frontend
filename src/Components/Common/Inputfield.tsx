@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import {InputFieldProps} from "@/Components/InterFaces/Common/InputFieldProps";
+import {InputFieldProps} from "@/InterFaces/Common/InputFieldProps";
 
 const Inputfield: FC<InputFieldProps> = ({
                                              id,

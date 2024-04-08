@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "@/Components/Contexts/AuthContext";
-import {RepoType} from "@/Components/Types/RepoType";
+import {RepoType} from "@/Types/RepoType";
 
 const RepoList: React.FC = () => {
     const { data: userData } = useAuth();

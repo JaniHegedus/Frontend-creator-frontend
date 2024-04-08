@@ -3,7 +3,7 @@ import Button from "@/Components/Common/Button";
 import Dropdown from "@/Components/Common/Dropdown";
 import Loading from "@/Components/Common/Loading";
 import {useAuth} from "@/Components/Contexts/AuthContext";
-import {ExportOptionsProps} from "@/Components/InterFaces/Steps/ExportOptionsProps";
+import {ExportOptionsProps} from "@/InterFaces/Steps/ExportOptionsProps";
 
 const ExportOptions = ({
                            prevStep,

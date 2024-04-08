@@ -1,8 +1,8 @@
 "use client"
 import React, {useState, useRef, useEffect, FC} from 'react';
 import Button from "@/Components/Common/Button";
-import {Option} from "@/Components/InterFaces/Steps/Option";
-import {DropdownProps} from "@/Components/InterFaces/Common/DropdownProps";
+import {Option} from "@/InterFaces/Steps/Option";
+import {DropdownProps} from "@/InterFaces/Common/DropdownProps";
 
 const Dropdown: FC<DropdownProps> = ({
                                          options = [],

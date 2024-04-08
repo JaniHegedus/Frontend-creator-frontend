@@ -4,8 +4,8 @@ import { IEditorProps } from 'react-ace';
 import Button from "@/Components/Common/Button";
 import MyFiles from "@/Components/Features/MyFiles";
 import axios from "axios";
-import {EditorPageProps} from "@/Components/InterFaces/Steps/EditorPageProps";
-import {SelectedFile} from "@/Components/Types/File/SelectedFile";
+import {EditorPageProps} from "@/InterFaces/Steps/EditorPageProps";
+import {SelectedFile} from "@/Types/File/SelectedFile";
 import Tooltip from "@/Components/Features/ToolTip";
 import {FaInfo} from "react-icons/fa";
 

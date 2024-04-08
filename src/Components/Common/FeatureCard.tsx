@@ -1,5 +1,5 @@
 import React from 'react';
-import {FeatureCardProps} from "@/Components/InterFaces/Common/FeatureCardProps";
+import {FeatureCardProps} from "@/InterFaces/Common/FeatureCardProps";
 
 const FeatureCard = ({ title, description, icon }: FeatureCardProps) => {
     return (

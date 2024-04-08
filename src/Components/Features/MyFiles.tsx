@@ -3,7 +3,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 import axios from 'axios';
 import FileBrowser from "@/Components/Features/Filebrowser";
 import Loading from "@/Components/Common/Loading";
-import {MyFileProps} from "@/Components/InterFaces/MyFileProps";
+import {MyFileProps} from "@/InterFaces/MyFileProps";
 
 const MyFiles = ({setSelected, selectable, location} : MyFileProps) => {
     const { data: userData } = useAuth();

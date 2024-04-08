@@ -1,4 +1,4 @@
-import {CPS} from "@/Components/Types/AuthContextTypes";
+import {CPS} from "@/Types/AuthContextTypes";
 
 export interface GenerationBotInterfaceProps {
     nextStep: () => void;

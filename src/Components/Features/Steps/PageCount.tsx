@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Button from "@/Components/Common/Button";
 import Inputfield from "@/Components/Common/Inputfield";
 import Dropdown from "@/Components/Common/Dropdown";
-import {PageCountProps} from "@/Components/InterFaces/Steps/PageCountProps";
-import {Option} from "@/Components/InterFaces/Steps/Option";
+import {PageCountProps} from "@/InterFaces/Steps/PageCountProps";
+import {Option} from "@/InterFaces/Steps/Option";
 
 const PageCount = ({ nextStep, pageCount, setPageCount, disabled }: PageCountProps) => {
     const [isDisabled, setIsDisabled] = useState(true);

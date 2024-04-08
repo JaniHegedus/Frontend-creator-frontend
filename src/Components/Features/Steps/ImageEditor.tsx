@@ -10,7 +10,7 @@ import FilerobotImageEditor, {
 } from 'react-filerobot-image-editor';
 import Inputfield from "@/Components/Common/Inputfield";
 import {toast} from "react-toastify";
-import {ImageEditorProps} from "@/Components/InterFaces/Steps/ImageEditorProps";
+import {ImageEditorProps} from "@/InterFaces/Steps/ImageEditorProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {

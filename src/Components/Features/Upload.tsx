@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
-import {UploadProps} from "@/Components/InterFaces/UploadProps";
+import {UploadProps} from "@/InterFaces/UploadProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const Upload = ({ onFileLocation }: UploadProps) => {
