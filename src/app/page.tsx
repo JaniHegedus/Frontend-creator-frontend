@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import FeatureCard from "@/Components/Common/FeatureCard";
+import Image from "next/image";
 
 export default function Home() {
     const [theme, setTheme] = useState<boolean>()
@@ -30,10 +31,12 @@ export default function Home() {
     const handleGetStarted = () =>{
         if(user.data)
         {
-            window.location.href = "/Creator"
+            if (typeof window !== 'undefined')
+                window.location.href = "/Creator"
         }else
         {
-            window.location.href = "/UserAuth"
+            if (typeof window !== 'undefined')
+                window.location.href = "/UserAuth"
         }
     }
     return (
@@ -56,7 +59,7 @@ export default function Home() {
                     </button>
                 </div>
                 <div className="mt-6 lg:mt-0">
-                    <img src={HEROImage} alt="Hero" className="mx-auto rounded-lg shadow-lg lg:block"/>
+                    <Image src={HEROImage} alt="Hero" className="mx-auto rounded-lg shadow-lg lg:block"/>
                 </div>
             </div>
 

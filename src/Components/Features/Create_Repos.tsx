@@ -11,7 +11,8 @@ const handle_creation = () => {
     // Add other scopes as needed, separated by spaces.
     const scope = "repo";
 
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+    if (typeof window !== 'undefined')
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
 };
 
 const CreateRepos = () => {

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Inputfield from "@/Components/Common/Inputfield";
+import logger from "@/Components/Logger";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -17,7 +18,8 @@ const Register = () => {
         const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
         const redirectUri = `${frontendUrl}/auth/github/callback`;
 
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
+        if (typeof window !== 'undefined')
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
     };
     const handleSubmit = async (event:any) => {
         event.preventDefault();
@@ -37,6 +39,7 @@ const Register = () => {
                         password_confirmation: passwordConfirmation
                     }
                 });
+                logger.info(response.data);
                 setEmail('');
                 setUsername('');
                 setPassword('');

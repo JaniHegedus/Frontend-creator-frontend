@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import Dropdown from '@/Components/Common/Dropdown';
 import Button from "@/Components/Common/Button";
 import {LanguageSelectorProps} from "@/InterFaces/Steps/LanguageSelectorProps";
+import {Option} from "@/InterFaces/Steps/Option";
 
 const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: LanguageSelectorProps) => {
     const [selectedProgrammingLanguage, setSelectedProgrammingLanguage] = useState<string | null>(language.programming);
     const [selectedStyleLanguage, setSelectedStyleLanguage] = useState<string | null>(language.style);
     const [isDisabled, setIsDisabled] = useState(true);
 
-    const programmingLanguages = [
+    const programmingLanguages : Option[] = [
         { label: 'HTML', value: 'html' },
         { label: 'HTML + JavaScript', value: 'html+javascript' },
         { label: 'HTML + TypeScript', value: 'html+typescript' },
@@ -18,7 +19,7 @@ const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: Lang
         // Add more as needed
     ];
 
-    const styleLanguages = [
+    const styleLanguages : Option[] = [
         { label: 'CSS', value: 'css' },
         { label: 'SASS', value: 'sass' },
         { label: 'Tailwind CSS', value: 'tailwindcss' },

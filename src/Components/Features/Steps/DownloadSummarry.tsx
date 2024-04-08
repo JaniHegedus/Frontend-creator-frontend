@@ -3,6 +3,7 @@ import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import {DownloadSummaryProps} from "@/InterFaces/Steps/DownloadSummaryProps";
 import Tooltip from "@/Components/Features/ToolTip";
+import logger from "@/Components/Logger";
 
 const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
     const [success, ] = useState("")
@@ -20,6 +21,7 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
                 params: { username, projectName },
                 responseType: "blob",
             });
+            logger.info(response.data);
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
@@ -46,7 +48,8 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
         // Add other scopes as needed, separated by spaces.
         const scope = "repo";
         sessionStorage.setItem('projectName', projectName);
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+        if (typeof window !== 'undefined')
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
     };
     const initiateExport = async () => {
         if (stepData.exportOptions === "download") {
@@ -55,14 +58,15 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
             await pushToGitHub(stepData.project.projectName || "");
         }
         else {
-            window.location.href= "/MyFiles"
+            if (typeof window !== 'undefined')
+                window.location.href= "/MyFiles"
         }
     };
     useEffect(() => {
         if (!hasInitiatedExportRef.current) {
             initiateExport();
             hasInitiatedExportRef.current = true; // Set the ref to true after initiating the export
-            console.log("Initiated export once");
+            logger.info("Initiated export once");
         }
     }, []);
 

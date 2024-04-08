@@ -4,6 +4,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
 import {UploadProps} from "@/InterFaces/UploadProps";
 import Tooltip from "@/Components/Features/ToolTip";
+import logger from "@/Components/Logger";
 
 const Upload = ({ onFileLocation }: UploadProps) => {
     const { data: userData } = useAuth();
@@ -39,6 +40,7 @@ const Upload = ({ onFileLocation }: UploadProps) => {
             });
             if(onFileLocation)
             {
+                logger.info(response.data);
                 onFileLocation(response.data.filename, userData?.username+"/"+response.data.filename)
             }
             setSuccess(`File uploaded successfully: ${response.data.filename}`);

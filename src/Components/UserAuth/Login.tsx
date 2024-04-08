@@ -6,6 +6,7 @@ import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import PasswordReset from "@/Components/UserAuth/PasswordReset";
 import Inputfield from "@/Components/Common/Inputfield";
+import logger from "@/Components/Logger";
 
 const Login = () => {
     const [login, setLogin] = useState(''); // This can be email or username.
@@ -20,8 +21,8 @@ const Login = () => {
         const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
         const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
         const redirectUri = `${frontendUrl}/auth/github/callback`;
-
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
+        if (typeof window !== 'undefined')
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
     };
 
     const handleSubmit = async (event:any) => {
@@ -35,17 +36,18 @@ const Login = () => {
                 password: password
             });
 
+            logger.info(response.data);
             let userdata = response.data;
-            console.log(userdata);
+            logger.info(userdata);
             setData({id:userdata["id"], email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
 
             localStorage.setItem('token', response.data.token);
-            console.log(response.data);
             const { token } = response.data;
             localStorage.setItem('token', token);
             // Redirect to home page or dashboard
             setSuccess(`Login successful. Welcome ${response.data.username || response.data.email}!`);
-            window.location.href = '/'; // Update this with your dashboard path
+            if (typeof window !== 'undefined')
+                window.location.href = '/'; // Update this with your dashboard path
         } catch (err) {
             setError('Login failed. Please check your credentials and try again.');
         }

@@ -1,3 +1,4 @@
+"use client"
 import React, {useState} from 'react';
 import axios from 'axios';
 import { useAuth } from '@/Components/Contexts/AuthContext';
@@ -37,7 +38,8 @@ const Navbar = () => {
             localStorage.removeItem('token'); // Remove the token from local storage
             setData(null); // Remove the user from context
             // After logging out, redirect to the home page or login page
-            window.location.href = '/';
+            if (typeof window !== 'undefined')
+                window.location.href = '/';
         } catch (error) {
             console.error('Logout failed', error);
             // Optionally, handle errors here (e.g., display an error message)

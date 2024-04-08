@@ -4,6 +4,8 @@ import Dropdown from "@/Components/Common/Dropdown";
 import Loading from "@/Components/Common/Loading";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import {ExportOptionsProps} from "@/InterFaces/Steps/ExportOptionsProps";
+import {Option} from "@/InterFaces/Steps/Option";
+import logger from "@/Components/Logger";
 
 const ExportOptions = ({
                            prevStep,
@@ -21,7 +23,7 @@ const ExportOptions = ({
         // Add more as needed
     ];
 
-    const exportOptionsWithoutGithub = [
+    const exportOptionsWithoutGithub : Option[]  = [
         { label: 'Download', value: 'download' },
         { label: 'Cloud', value: 'cloud' },
     ];
@@ -30,7 +32,7 @@ const ExportOptions = ({
     const [isLoading, setIsLoading] = useState(false)
     const handleSelectExportOptions = (option: any) => {
         updateExportOption(option.value); // Use the provided callback to update
-        console.log('Selected export option:', option.label);
+        logger.info('Selected export option:', option.label);
     };
 
     useEffect(() => {

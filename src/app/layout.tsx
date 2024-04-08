@@ -20,7 +20,11 @@ export default function RootLayout({ children }: {children: React.ReactNode})
         }
 
         if (typeof window !== 'undefined') {
-            const queryParams = new URLSearchParams(window.location.search);
+            let queryParams;
+            if (typeof window !== 'undefined') {
+                queryParams = new URLSearchParams(window.location.search);
+            }
+            // @ts-ignore
             const error = queryParams.get('error');
             if (error) {
                 const errorMessage = decodeURIComponent(error);

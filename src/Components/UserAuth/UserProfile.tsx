@@ -7,6 +7,7 @@ import Link from "next/link";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import Loading from "@/Components/Common/Loading";
 import Inputfield from "@/Components/Common/Inputfield";
+import logger from "@/Components/Logger";
 
 const UserProfile = () => {
     const user = useAuth();
@@ -50,6 +51,7 @@ const UserProfile = () => {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
+                logger.info(response.data);
                 const userdata = response.data;
                 setData({
                     id: userdata.id,
@@ -81,7 +83,8 @@ const UserProfile = () => {
     }, [token, error]); // Only re-run the effect if 'token' changes
 
     const handleConfirmErrorModal = () =>{
-        window.location.href = "/";
+        if (typeof window !== 'undefined')
+            window.location.href = "/";
     }
     const handleConfirmAccountDelete = async () => {
         // Logic to execute when confirmed
@@ -103,7 +106,8 @@ const UserProfile = () => {
             localStorage.removeItem('token'); // Remove the token from local storage
 
             // After logging out, redirect to the home page or login page
-            window.location.href = '/';
+            if (typeof window !== 'undefined')
+                window.location.href = '/';
         } catch (error) {
             setError('Failed to delete user.');
             setLoading(false);
@@ -186,7 +190,8 @@ const UserProfile = () => {
 
         const redirectUri = `http://localhost:3000/auth/github`;
 
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
+        if (typeof window !== 'undefined')
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
     };
 
     if (loading) {

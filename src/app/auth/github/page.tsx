@@ -3,9 +3,14 @@ import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from '@/Components/Contexts/AuthContext';
 import Loading from "@/Components/Common/Loading";
+import logger from "@/Components/Logger";
 
 const GitHubConnectCallbackPage = () => {
-    const urlParams = new URLSearchParams(window.location.search);
+    let urlParams;
+    if (typeof window !== 'undefined') {
+        urlParams = new URLSearchParams(window.location.search);
+    }
+    // @ts-ignore
     const code = urlParams.get('code');
     const sent = useRef(false);
     const {data, setData } = useAuth();
@@ -14,7 +19,7 @@ const GitHubConnectCallbackPage = () => {
     useEffect(() => {
         const connectGitHubAccount = async () => {
             if (sent.current || !code) {
-                console.error('Request already sent or code is null.');
+                logger.info('Request already sent or code is null.');
                 return;
             }
             sent.current = true;
@@ -37,19 +42,22 @@ const GitHubConnectCallbackPage = () => {
 
                 // Assuming the backend returns the updated user information:
                 if (response.data) {
-                    console.log(response)
+                    logger.info(response.data)
                     // Redirect user after successful GitHub account connection
-                    window.location.href = '/Profile'; // Redirect to a profile page or other appropriate page
+                    if (typeof window !== 'undefined')
+                        window.location.href = '/Profile'; // Redirect to a profile page or other appropriate page
                 }
             } catch (error) {
-                console.error('Failed to connect GitHub account:', error);
+                logger.info('Failed to connect GitHub account:', error);
                 // @ts-ignore
                 if (error.response && error.response.status === 422)
                 {
-                    window.location.href = `/?error=${encodeURIComponent('Account is already Linked')}`;
+                    if (typeof window !== 'undefined')
+                        window.location.href = `/?error=${encodeURIComponent('Account is already Linked')}`;
                 }
                 else{
-                    window.location.href = `/?error=${encodeURIComponent('Failed to connect GitHub account')}`;
+                    if (typeof window !== 'undefined')
+                        window.location.href = `/?error=${encodeURIComponent('Failed to connect GitHub account')}`;
                 }
                 // Redirect with error
                 sent.current = false;

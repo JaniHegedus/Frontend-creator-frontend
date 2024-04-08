@@ -90,7 +90,8 @@ const Creator = () => {
 
 
     const handleConfirm = () =>{
-        window.location.href = "/"
+        if (typeof window !== 'undefined')
+            window.location.href = "/"
     }
 
 

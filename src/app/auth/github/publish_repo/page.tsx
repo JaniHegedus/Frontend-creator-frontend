@@ -4,9 +4,14 @@ import axios from 'axios';
 import { useAuth } from '@/Components/Contexts/AuthContext';
 import Loading from "@/Components/Common/Loading";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
+import logger from "@/Components/Logger";
 
 const PublishRepo = () => {
-    const urlParams = new URLSearchParams(window.location.search);
+    let urlParams;
+    if (typeof window !== 'undefined') {
+        urlParams = new URLSearchParams(window.location.search);
+    }
+    // @ts-ignore
     const code = urlParams.get('code');
     const sent = useRef(false);
     const { data,  } = useAuth();
@@ -24,8 +29,9 @@ const PublishRepo = () => {
         const projectName = sessionStorage.getItem("projectName");
 
         if (!projectName) {
-            console.error('Repository name not found in sessionStorage, redirecting...');
-            window.location.href = '/Creator'; // Adjust the redirection URL as necessary
+            logger.info('Repository name not found in sessionStorage, redirecting...');
+            if (typeof window !== 'undefined')
+                window.location.href = '/Creator'; // Adjust the redirection URL as necessary
             return;
         }
 
@@ -46,11 +52,12 @@ const PublishRepo = () => {
             );
 
             if (response.data) {
-                console.log('Repository created successfully:', response.data);
-                window.location.href = '/Github';
+                logger.info('Repository created successfully:', response.data);
+                if (typeof window !== 'undefined')
+                    window.location.href = '/Github';
             }
         } catch (error) {
-            console.error('Failed to create repository:', error);
+            logger.info('Failed to create repository:', error);
             // @ts-ignore
             if(error.response && error.response.status === 422) {
                 setModalmessage("Repository already exists");
@@ -87,13 +94,16 @@ const PublishRepo = () => {
                     // For external links, especially ones that lead to installation flows,
                     // it's usually better to open in a new tab to prevent disrupting the current app state
                     if (onAcceptRedirect===1) {
-                        window.location.href = '/Creator'
+                        if (typeof window !== 'undefined')
+                            window.location.href = '/Creator'
                     }
                     else if (onAcceptRedirect===2) {
-                        window.open('https://github.com/apps/frontend-creator-backend/installations/new', '_blank')
+                        if (typeof window !== 'undefined')
+                            window.open('https://github.com/apps/frontend-creator-backend/installations/new', '_blank')
                     }
                     else {
-                        window.location.href = `/?err=${onAcceptRedirect}`; // Redirect to a profile page or other appropriate page
+                        if (typeof window !== 'undefined')
+                            window.location.href = `/?err=${onAcceptRedirect}`; // Redirect to a profile page or other appropriate page
                     }
                 }}
                 message={modalmessage}

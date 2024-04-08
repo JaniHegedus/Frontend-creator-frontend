@@ -3,9 +3,13 @@ import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
+import logger from "@/Components/Logger";
 
 const GitHubCallbackPage = () => {
-    const urlParams = new URLSearchParams(window.location.search);
+    let urlParams;
+    if (typeof window !== 'undefined')
+        urlParams = new URLSearchParams(window.location.search);
+    // @ts-ignore
     const code = urlParams.get('code');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const sent = useRef(false);
@@ -14,14 +18,14 @@ const GitHubCallbackPage = () => {
     useEffect(() => {
         const sendCodeToBackend = async () => {
             if (sent.current || !code) {
-                console.error('Request already sent or code is null.');
+                logger.info('Request already sent or code is null.');
                 return;
             }
             sent.current = true;
 
             try {
                 const response = await axios.post(`${backendUrl}/auth/github/callback`, { code });
-                console.log("Authentication successful", response.data);
+                logger.info("Authentication successful", response.data);
 
                 const { token } = response.data;
                 localStorage.setItem('token', token);
@@ -35,7 +39,7 @@ const GitHubCallbackPage = () => {
 
                 // Assuming the backend response has the user details in the expected format
                 const userDetails = userDetailsResponse.data;
-                console.log(userDetails);
+                logger.info(userDetails);
 
                 // Now you have your user details, you can set it in your state
                 setData({
@@ -47,14 +51,16 @@ const GitHubCallbackPage = () => {
                     github_repos: userDetails.github_repos
                 });
                 // Redirect user after successful login
-                window.location.href = '/success'; // Redirect to a success page
+                if (typeof window !== 'undefined')
+                    window.location.href = '/success'; // Redirect to a success page
             } catch (err) {
-                console.error('Error during GitHub authentication:', err);
+                logger.info('Error during GitHub authentication:', err);
                 sent.current = false;
 
                 // Redirect with error
-                // @ts-ignore
-                window.location.href = `/?error=${encodeURIComponent(err.message)}`;
+                if (typeof window !== 'undefined')
+                    // @ts-ignore
+                    window.location.href = `/?error=${encodeURIComponent(err.message)}`;
             }
         };
 
