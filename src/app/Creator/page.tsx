@@ -1,8 +1,6 @@
-"use client";
-
 import React from "react";
-import Creator from "@/Components/Features/Steps";
-
+import dynamic from "next/dynamic";
+const Creator = dynamic(() => import('@/Components/Features/Steps'), { ssr: false });
 const Home = () => {
     return (
         <div>

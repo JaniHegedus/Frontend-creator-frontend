@@ -1,6 +1,5 @@
 import axios from "axios";
 import {NotifyMessage} from "@/Components/Common/ToastNotification/Notification";
-import logger from "@/Components/Logger";
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const getHello = async () =>
 {
@@ -28,7 +27,7 @@ export const getAiLabels = async () =>
         .then((res) =>
         {
             const message = res.data.responses[0]
-            logger.info(message)
+            console.info(message)
             NotifyMessage("success","Server Responded with:", "Label Annotations");
         })
         .catch((e) => {
@@ -45,8 +44,8 @@ export const getAiTexts = async () =>
         .then((res) =>
         {
             const message = res.data.responses[0]
-            logger.info(message)
-            logger.info("Server Responded with:", "Text Annotations");
+            console.info(message)
+            console.info("Server Responded with:", "Text Annotations");
         })
         .catch((e) => {
             NotifyMessage("error", e.message);
@@ -62,7 +61,7 @@ export const getAiColors = async () =>
         .then((res) =>
         {
             const message = res.data.responses[0]
-            logger.info(message)
+            console.info(message)
             NotifyMessage("success","Server Responded with:", "Color Annotations");
         })
         .catch((e) => {
@@ -79,7 +78,7 @@ export const getCode = async () =>
         .then((res) =>
         {
             const message = res.data.responses
-            logger.info(message)
+            console.info(message)
             NotifyMessage("success","Server Responded with:", "Code Generation");
         })
         .catch((e) => {

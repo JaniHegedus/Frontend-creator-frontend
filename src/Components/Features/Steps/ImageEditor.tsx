@@ -12,7 +12,6 @@ import Inputfield from "@/Components/Common/Inputfield";
 import {toast} from "react-toastify";
 import {ImageEditorProps} from "@/InterFaces/Steps/ImageEditorProps";
 import Tooltip from "@/Components/Features/ToolTip";
-import logger from "@/Components/Logger";
 
 const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {
     const user = useAuth();
@@ -130,11 +129,11 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
             const fileLocation = `${user.data?.username}/${editedImageObject.fullName}`;
             addToStepData( editedImageObject.fullName, fileLocation);
             // Handle the response from the backend
-            logger.info('Image uploaded successfully:', editedImageObject.fullName);
+            console.info('Image uploaded successfully:', editedImageObject.fullName);
             setSuccess('Image uploaded successfully: '+ editedImageObject.fullName);
             setLoading(false);
         } catch (error) {
-            logger.info('Error uploading image:', error);
+            console.info('Error uploading image:', error);
             setError('Error uploading image: '+ error);
             setLoading(false);
         }

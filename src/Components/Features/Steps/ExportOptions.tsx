@@ -5,7 +5,6 @@ import Loading from "@/Components/Common/Loading";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import {ExportOptionsProps} from "@/InterFaces/Steps/ExportOptionsProps";
 import {Option} from "@/InterFaces/Steps/Option";
-import logger from "@/Components/Logger";
 
 const ExportOptions = ({
                            prevStep,
@@ -32,7 +31,7 @@ const ExportOptions = ({
     const [isLoading, setIsLoading] = useState(false)
     const handleSelectExportOptions = (option: any) => {
         updateExportOption(option.value); // Use the provided callback to update
-        logger.info('Selected export option:', option.label);
+        console.info('Selected export option:', option.label);
     };
 
     useEffect(() => {

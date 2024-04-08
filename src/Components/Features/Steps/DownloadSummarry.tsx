@@ -3,7 +3,6 @@ import axios from "axios";
 import {useAuth} from "@/Components/Contexts/AuthContext";
 import {DownloadSummaryProps} from "@/InterFaces/Steps/DownloadSummaryProps";
 import Tooltip from "@/Components/Features/ToolTip";
-import logger from "@/Components/Logger";
 
 const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
     const [success, ] = useState("")
@@ -21,7 +20,7 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
                 params: { username, projectName },
                 responseType: "blob",
             });
-            logger.info(response.data);
+            console.info(response.data);
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
@@ -66,7 +65,7 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
         if (!hasInitiatedExportRef.current) {
             initiateExport();
             hasInitiatedExportRef.current = true; // Set the ref to true after initiating the export
-            logger.info("Initiated export once");
+            console.info("Initiated export once");
         }
     }, []);
 

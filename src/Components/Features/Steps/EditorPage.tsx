@@ -8,7 +8,6 @@ import {EditorPageProps} from "@/InterFaces/Steps/EditorPageProps";
 import {SelectedFile} from "@/Types/File/SelectedFile";
 import Tooltip from "@/Components/Features/ToolTip";
 import {FaInfo} from "react-icons/fa";
-import logger from "@/Components/Logger";
 
 const AceEditor = dynamic(
     async () => {
@@ -44,9 +43,9 @@ const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
         try {
             // Note the direct passing of formData as the second argument
             const response = await axios.post(`${backendUrl}/user_file_update`, formData);
-            logger.info(response.data);
+            console.info(response.data);
         } catch (error) {
-            logger.info('Error updating user files:', error);
+            console.info('Error updating user files:', error);
             throw error; // Rethrowing the error might not be necessary unless you have a catch block where this is called
         }
     };
@@ -57,8 +56,8 @@ const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
             if (event.ctrlKey && event.key === 's') {
                 event.preventDefault(); // Prevent the browser's save dialog
                 updateOutput(code); // Call the function to update iframe
-                logger.info(selectedFile)
-                logger.info(code)
+                console.info(selectedFile)
+                console.info(code)
                 saveCode(selectedFile, code)
             }
         };
@@ -98,10 +97,10 @@ const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
                 const response = await axios.get(`${backendUrl}/user_file`, {
                     params: { file_path: selectedFile?.path },
                 });
-                logger.info(response.data.content)
+                console.info(response.data.content)
                 handleCodeChange(response.data.content); // Adjust according to your API response structure
             } catch (error) {
-                logger.info('Error fetching user files:', error);
+                console.info('Error fetching user files:', error);
                 throw error;
             }
         }

@@ -3,23 +3,25 @@ import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from '@/Components/Contexts/AuthContext';
 import Loading from "@/Components/Common/Loading";
-import logger from "@/Components/Logger";
 
 const GitHubConnectCallbackPage = () => {
-    let urlParams;
-    if (typeof window !== 'undefined') {
-        urlParams = new URLSearchParams(window.location.search);
-    }
-    // @ts-ignore
-    const code = urlParams.get('code');
     const sent = useRef(false);
     const {data, setData } = useAuth();
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+    let urlParams;
+    if (typeof window !== 'undefined') {
+        urlParams = new URLSearchParams(window.location.search);
+    }
+
+    let code: string|null;
+    if(urlParams)
+        code = urlParams.get('code');
+
     useEffect(() => {
         const connectGitHubAccount = async () => {
             if (sent.current || !code) {
-                logger.info('Request already sent or code is null.');
+                console.info('Request already sent or code is null.');
                 return;
             }
             sent.current = true;
@@ -42,13 +44,13 @@ const GitHubConnectCallbackPage = () => {
 
                 // Assuming the backend returns the updated user information:
                 if (response.data) {
-                    logger.info(response.data)
+                    console.info(response.data)
                     // Redirect user after successful GitHub account connection
                     if (typeof window !== 'undefined')
                         window.location.href = '/Profile'; // Redirect to a profile page or other appropriate page
                 }
             } catch (error) {
-                logger.info('Failed to connect GitHub account:', error);
+                console.info('Failed to connect GitHub account:', error);
                 // @ts-ignore
                 if (error.response && error.response.status === 422)
                 {
@@ -67,7 +69,7 @@ const GitHubConnectCallbackPage = () => {
         if (code && !sent.current) {
             connectGitHubAccount().then(() => {});
         }
-    }, [code, data, setData]);
+    }, [data, setData]);
 
     return (
         <Loading/>

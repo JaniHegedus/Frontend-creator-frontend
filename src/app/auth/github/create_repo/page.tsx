@@ -4,22 +4,25 @@ import axios from 'axios';
 import { useAuth } from '@/Components/Contexts/AuthContext';
 import Loading from "@/Components/Common/Loading";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import logger from "@/Components/Logger";
 
 const CreateRepo = () => {
-    let urlParams;
-    if (typeof window !== 'undefined') {
-        urlParams = new URLSearchParams(window.location.search);
-    }
-    // @ts-ignore
-    const code = urlParams.get('code');
     const sent = useRef(false);
     const { data, setData } = useAuth();
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [modalmessage, setModalmessage] = useState("");
     const [onAcceptRedirect, setOnAcceptRedirect] = useState(0);
 
+    let urlParams;
+    if (typeof window !== 'undefined')
+        urlParams = new URLSearchParams(window.location.search);
+
+    let code: string|null;
+    if(urlParams)
+        code = urlParams.get('code');
+
+
     const createrepo = async () => {
+
         if (sent.current) {
             return;
         }
@@ -28,7 +31,7 @@ const CreateRepo = () => {
         const repoName = sessionStorage.getItem('repoName');
 
         if (!repoName) {
-            logger.info('Repository name not found in sessionStorage, redirecting...');
+            console.info('Repository name not found in sessionStorage, redirecting...');
             if (typeof window !== 'undefined')
                 window.location.href = '/Github'; // Adjust the redirection URL as necessary
             return;
@@ -38,7 +41,7 @@ const CreateRepo = () => {
 
             const authToken = localStorage.getItem('token');
             if (!authToken) {
-                throw new Error('Authentication token is not available.');
+                console.error('Authentication token is not available.');
             }
 
             const response = await axios.post(
@@ -52,13 +55,13 @@ const CreateRepo = () => {
             );
 
             if (response.data) {
-                logger.info('Repository created successfully:', response.data);
+                console.info('Repository created successfully:', response.data);
                 setData({ ...data, ...response.data });
                 if (typeof window !== 'undefined')
                     window.location.href = '/';
             }
         } catch (error) {
-            logger.info('Failed to create repository:', error);
+            console.info('Failed to create repository:', error);
             // @ts-ignore
             if(error.response && error.response.status === 422) {
                 setModalmessage("Repository already exists");
@@ -83,7 +86,7 @@ const CreateRepo = () => {
         // Redirect user immediately if certain conditions are not met
         // This example assumes you have some conditions to check before proceeding
         if (!code) {
-            logger.info('Code is null, redirecting...');
+            console.info('Code is null, redirecting...');
             if (typeof window !== 'undefined')
                 window.location.href = '/'; // Adjust the redirection URL as necessary
             return;
@@ -91,7 +94,7 @@ const CreateRepo = () => {
 
 
         createrepo();
-    }, [code]);
+    }, []);
 
     return (
         <>

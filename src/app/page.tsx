@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import FeatureCard from "@/Components/Common/FeatureCard";
-import Image from "next/image";
 
 export default function Home() {
     const [theme, setTheme] = useState<boolean>()
@@ -59,7 +58,7 @@ export default function Home() {
                     </button>
                 </div>
                 <div className="mt-6 lg:mt-0">
-                    <Image src={HEROImage} alt="Hero" className="mx-auto rounded-lg shadow-lg lg:block"/>
+                    <img src={HEROImage} alt="Hero" className="mx-auto rounded-lg shadow-lg lg:block"/>
                 </div>
             </div>
 

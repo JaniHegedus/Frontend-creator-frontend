@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Inputfield from "@/Components/Common/Inputfield";
-import logger from "@/Components/Logger";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +11,6 @@ const Register = () => {
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-    const [sent, setSent] = useState(false)
     const handleGitHubLogin = () => {
         const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
         const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
@@ -29,8 +27,7 @@ const Register = () => {
             setError('Passwords do not match');
             return;
         }
-        if(!sent){
-            try {
+        try {
                 const response = await axios.post(`${backendUrl}/register`, {
                     user: {
                         email,
@@ -39,21 +36,19 @@ const Register = () => {
                         password_confirmation: passwordConfirmation
                     }
                 });
-                logger.info(response.data);
+                console.info(response.data);
                 setEmail('');
                 setUsername('');
                 setPassword('');
                 setPasswordConfirmation('');
                 setSuccess('Registration successful. You can now log in.');
-            } catch (error) {
+        } catch (error) {
+            // @ts-ignore
+            if (error.response && error.response.data) {
                 // @ts-ignore
-                if (error.response && error.response.data) {
-                    // Assuming your backend sends back an error message in the response body
-                    // @ts-ignore
-                    setError(error.response.data.message || 'Registration failed. Please try again.');
-                } else {
-                    setError('There was an error processing your request.');
-                }
+                setError(error.response.data.message || 'Registration failed. Please try again.');
+            } else {
+                setError('There was an error processing your request.');
             }
         }
     };

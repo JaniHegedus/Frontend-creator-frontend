@@ -19,7 +19,7 @@ const Creator = () => {
     const user = useAuth();
     const { setData } =useAuth()
     const [error, setError] = useState('');
-    const [step, setStep] = useState(4);
+    const [step, setStep] = useState(1);
     const [done, setDone] = useState(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const closeConfirmModal = () => setIsConfirmModalOpen(false);

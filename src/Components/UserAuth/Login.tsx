@@ -6,7 +6,6 @@ import Button from "@/Components/Common/Button";
 import {useModal} from "@/Components/Contexts/ModalContext";
 import PasswordReset from "@/Components/UserAuth/PasswordReset";
 import Inputfield from "@/Components/Common/Inputfield";
-import logger from "@/Components/Logger";
 
 const Login = () => {
     const [login, setLogin] = useState(''); // This can be email or username.
@@ -36,9 +35,9 @@ const Login = () => {
                 password: password
             });
 
-            logger.info(response.data);
+            console.info(response.data);
             let userdata = response.data;
-            logger.info(userdata);
+            console.info(userdata);
             setData({id:userdata["id"], email:userdata["email"],username:userdata["username"],github_uid:userdata["github_uid"],github_nickname:userdata["github_nickname"],github_repos:userdata["github_repos"]});
 
             localStorage.setItem('token', response.data.token);

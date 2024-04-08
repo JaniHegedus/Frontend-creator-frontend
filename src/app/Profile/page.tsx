@@ -1,8 +1,6 @@
-"use client";
+import dynamic from "next/dynamic";
 
-
-import UserProfile from "@/Components/UserAuth/UserProfile";
-
+const UserProfile = dynamic(() => import('@/Components/UserAuth/UserProfile'), { ssr: false });
 const Home = () => {
 
     return (

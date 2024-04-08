@@ -3,29 +3,31 @@ import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import Loading from "@/Components/Common/Loading";
-import logger from "@/Components/Logger";
 
 const GitHubCallbackPage = () => {
-    let urlParams;
-    if (typeof window !== 'undefined')
-        urlParams = new URLSearchParams(window.location.search);
-    // @ts-ignore
-    const code = urlParams.get('code');
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const sent = useRef(false);
     const { setData } = useAuth();
 
+    let urlParams;
+    if (typeof window !== 'undefined')
+        urlParams = new URLSearchParams(window.location.search);
+
+    let code: string|null;
+    if(urlParams)
+        code = urlParams.get('code');
+
     useEffect(() => {
         const sendCodeToBackend = async () => {
             if (sent.current || !code) {
-                logger.info('Request already sent or code is null.');
+                console.info('Request already sent or code is null.');
                 return;
             }
             sent.current = true;
 
             try {
                 const response = await axios.post(`${backendUrl}/auth/github/callback`, { code });
-                logger.info("Authentication successful", response.data);
+                console.info("Authentication successful", response.data);
 
                 const { token } = response.data;
                 localStorage.setItem('token', token);
@@ -39,7 +41,7 @@ const GitHubCallbackPage = () => {
 
                 // Assuming the backend response has the user details in the expected format
                 const userDetails = userDetailsResponse.data;
-                logger.info(userDetails);
+                console.info(userDetails);
 
                 // Now you have your user details, you can set it in your state
                 setData({
@@ -54,7 +56,7 @@ const GitHubCallbackPage = () => {
                 if (typeof window !== 'undefined')
                     window.location.href = '/success'; // Redirect to a success page
             } catch (err) {
-                logger.info('Error during GitHub authentication:', err);
+                console.info('Error during GitHub authentication:', err);
                 sent.current = false;
 
                 // Redirect with error
@@ -67,7 +69,7 @@ const GitHubCallbackPage = () => {
         if (code && !sent.current) {
             sendCodeToBackend().then(() => {});
         }
-    }, [code, backendUrl, setData]);
+    }, [backendUrl, setData]);
 
     return (
         <Loading/>

@@ -7,13 +7,13 @@ import Link from "next/link";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 import Loading from "@/Components/Common/Loading";
 import Inputfield from "@/Components/Common/Inputfield";
-import logger from "@/Components/Logger";
 
 const UserProfile = () => {
     const user = useAuth();
     const { setData } = useAuth();
-    const token = localStorage.getItem('token');
-    // Add state for form inputs
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
     const [newUsername, setNewUsername] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -51,7 +51,7 @@ const UserProfile = () => {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
-                logger.info(response.data);
+                console.info(response.data);
                 const userdata = response.data;
                 setData({
                     id: userdata.id,
@@ -80,7 +80,7 @@ const UserProfile = () => {
             openErrorConfirmModal();
         }
         fetchUserData();
-    }, [token, error]); // Only re-run the effect if 'token' changes
+    }, [error]); // Only re-run the effect if 'token' changes
 
     const handleConfirmErrorModal = () =>{
         if (typeof window !== 'undefined')
@@ -101,10 +101,12 @@ const UserProfile = () => {
                 },
             });
             setIsDeleteConfirmed(true);
-            localStorage.removeItem('user');     // Remove the user from local storage
-            localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
-            localStorage.removeItem('token'); // Remove the token from local storage
+            if (localStorage){
+                localStorage.removeItem('user');     // Remove the user from local storage
+                localStorage.removeItem('userEmail'); // Remove the userEmail from local storage
+                localStorage.removeItem('token'); // Remove the token from local storage
 
+            }
             // After logging out, redirect to the home page or login page
             if (typeof window !== 'undefined')
                 window.location.href = '/';
@@ -145,7 +147,8 @@ const UserProfile = () => {
                     // Assuming setData updates the state related to user info
                     // @ts-ignore
                     setData(prevState => ({ ...prevState, [field]: value }));
-                    localStorage.setItem('user', JSON.stringify({ ...user, [field]: value })); // Ensure the local storage is updated correctly
+                    if (localStorage)
+                        localStorage.setItem('user', JSON.stringify({ ...user, [field]: value })); // Ensure the local storage is updated correctly
 
                     let fieldname = field.charAt(0).toUpperCase() + field.slice(1);
                     setSuccess(`${fieldname} set successfully`);
@@ -173,7 +176,8 @@ const UserProfile = () => {
 
                 // @ts-ignore
                 setData(prevState => ({ ...prevState, [field]: value }));
-                localStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
+                if (localStorage)
+                    localStorage.setItem('user', JSON.stringify({ ...user, [field]: value }));
 
                 let fieldname = field.charAt(0).toUpperCase() + field.slice(1);
                 setSuccess(`${fieldname} set successfully`);
@@ -187,9 +191,7 @@ const UserProfile = () => {
 
     };
     const handleGitHubLogin = () => {
-
         const redirectUri = `http://localhost:3000/auth/github`;
-
         if (typeof window !== 'undefined')
             window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
     };
@@ -217,7 +219,8 @@ const UserProfile = () => {
                 },
             });
         setData({id:user.data?.id,email:user.data?.email,username:user.data?.username,github_uid:null,github_nickname:null,github_repos:null})
-        localStorage.setItem('user', JSON.stringify(user));
+        if (localStorage)
+            localStorage.setItem('user', JSON.stringify(user));
         setIsRemoveConfirmed(true);
         closeRemoveConfirmModal();
     }

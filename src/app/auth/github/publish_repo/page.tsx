@@ -4,22 +4,24 @@ import axios from 'axios';
 import { useAuth } from '@/Components/Contexts/AuthContext';
 import Loading from "@/Components/Common/Loading";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import logger from "@/Components/Logger";
 
 const PublishRepo = () => {
-    let urlParams;
-    if (typeof window !== 'undefined') {
-        urlParams = new URLSearchParams(window.location.search);
-    }
-    // @ts-ignore
-    const code = urlParams.get('code');
     const sent = useRef(false);
     const { data,  } = useAuth();
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [modalmessage, setModalmessage] = useState("");
     const [onAcceptRedirect, setOnAcceptRedirect] = useState(0);
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-    // Attempt to publish project to GitHub
+
+    let urlParams;
+    if (typeof window !== 'undefined') {
+        urlParams = new URLSearchParams(window.location.search);
+    }
+
+    let code: string|null;
+    if(urlParams)
+        code = urlParams.get('code');
+
     const publishProject = async () => {
         if (sent.current) {
             return;
@@ -29,7 +31,7 @@ const PublishRepo = () => {
         const projectName = sessionStorage.getItem("projectName");
 
         if (!projectName) {
-            logger.info('Repository name not found in sessionStorage, redirecting...');
+            console.info('Repository name not found in sessionStorage, redirecting...');
             if (typeof window !== 'undefined')
                 window.location.href = '/Creator'; // Adjust the redirection URL as necessary
             return;
@@ -39,7 +41,7 @@ const PublishRepo = () => {
 
             const authToken = localStorage.getItem('token');
             if (!authToken) {
-                throw new Error('Authentication token is not available.');
+                console.error('Authentication token is not available.');
             }
             const response = await axios.post(
                 `${backendUrl}/github/publish_repo`,
@@ -52,12 +54,12 @@ const PublishRepo = () => {
             );
 
             if (response.data) {
-                logger.info('Repository created successfully:', response.data);
+                console.info('Repository created successfully:', response.data);
                 if (typeof window !== 'undefined')
                     window.location.href = '/Github';
             }
         } catch (error) {
-            logger.info('Failed to create repository:', error);
+            console.info('Failed to create repository:', error);
             // @ts-ignore
             if(error.response && error.response.status === 422) {
                 setModalmessage("Repository already exists");
@@ -79,7 +81,7 @@ const PublishRepo = () => {
 
     useEffect(() => {
         publishProject();
-    }, [code]);
+    }, []);
 
     return (
         <>
