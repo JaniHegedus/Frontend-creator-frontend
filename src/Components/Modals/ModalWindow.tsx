@@ -14,7 +14,7 @@ const ModalWindow: FunctionComponent<ModalProps> = ({ isOpen, onClose, children 
                         </svg>
                     </button>
                 </div>
-                <div className="mt-2 px-7 py-3">
+                <div className="mt-2 px-7 py-3">{/*Elvileg Ez is csak egy egyszerű child mint minden másik*/}
                     {children}
                 </div>
             </div>

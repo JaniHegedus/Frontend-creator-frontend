@@ -83,7 +83,7 @@ const Login = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         />
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-4">
                         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded focus:outline-none m-3 focus:shadow-outline dark:bg-blue-600 dark:hover:bg-blue-800">
                             Login
                         </button>

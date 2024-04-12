@@ -44,7 +44,7 @@ export default function Home() {
             {/* Hero Section with Image */}
             <div className="flex flex-col lg:flex-row justify-between items-center bg-gray-300 dark:bg-gray-700 p-4 lg:p-10">
                 <div className="text-center lg:text-left lg:ml-10">
-                    <h1 className="text-4xl lg:text-6xl font-bold mb-4">Create your own Frontend code base with Ai assist!</h1>
+                    <h1 className="text-4xl lg:text-6xl font-bold mb-4">Create your own FrontEnd code base with Ai assist!</h1>
                     <p className="mb-6">You can create an amazing FrontEnd with FC in just minutes. Join our users and
                         build one yourself.</p>
                     <ul className="mb-6 text-left list-disc list-inside">

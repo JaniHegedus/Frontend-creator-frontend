@@ -14,6 +14,7 @@ const LanguageSelector = ({ nextStep, prevStep, updateLanguage, language }: Lang
         { label: 'HTML', value: 'html' },
         { label: 'HTML + JavaScript', value: 'html+javascript' },
         { label: 'HTML + TypeScript', value: 'html+typescript' },
+        { label: 'PHP', value: 'php'},
         { label: 'React (JSX)', value: 'react_jsx' },
         { label: 'React (TSX)', value: 'react_tsx' },
         // Add more as needed

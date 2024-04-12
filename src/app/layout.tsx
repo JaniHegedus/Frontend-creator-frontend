@@ -20,10 +20,7 @@ export default function RootLayout({ children }: {children: React.ReactNode})
         }
 
         if (typeof window !== 'undefined') {
-            let queryParams;
-            if (typeof window !== 'undefined') {
-                queryParams = new URLSearchParams(window.location.search);
-            }
+            let queryParams = new URLSearchParams(window.location.search);
             // @ts-ignore
             const error = queryParams.get('error');
             if (error) {
@@ -60,10 +57,7 @@ export default function RootLayout({ children }: {children: React.ReactNode})
         }
     }
 
-
-
     return (
-        // @ts-ignore
         <html>
             <head>
                 <title>Frontend Creator</title>
@@ -71,13 +65,12 @@ export default function RootLayout({ children }: {children: React.ReactNode})
             <AuthProvider>
                 <ModalProvider>
                     <body className="font-sans bg-blue-100 text-black dark:bg-slate-900 dark:text-gray-600">
-                    <ToastContainer position="top-right"/>
-                    <Header/>
-                    <div className="center-content flex justify-center items-center ]">
-                        {children}
-                    </div>
-
-                    <Footer darkMode={darkmode} toggleDarkMode={toggleDarkMode}/>
+                        <ToastContainer position="top-right"/>
+                            <Header/>
+                            <div className="center-content flex justify-center items-center mb-20">
+                                {children}
+                            </div>
+                        <Footer darkMode={darkmode} toggleDarkMode={toggleDarkMode}/>
                     </body>
                 </ModalProvider>
             </AuthProvider>
