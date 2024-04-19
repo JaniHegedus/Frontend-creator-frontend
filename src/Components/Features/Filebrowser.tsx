@@ -25,6 +25,9 @@ const FileBrowser: React.FC<{
     const user = useAuth();
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const username = user.data?.username
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
 
     useEffect(() => {
         // This effect runs only once on component mount due to an empty dependency array
@@ -128,6 +131,9 @@ const FileBrowser: React.FC<{
                 const response = await axios.get(`${backendUrl}/download_directory`, {
                     params: { username, filename: pathString },
                     responseType: "blob",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
                 });
                 console.info(response.data);
 
@@ -148,6 +154,9 @@ const FileBrowser: React.FC<{
                 const response = await axios.get(`${backendUrl}/download_file`, {
                     params: { username, filename: pathString },
                     responseType: "blob",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
                 });
                 console.info(response.data);
 
@@ -171,6 +180,9 @@ const FileBrowser: React.FC<{
             const response = await axios.get(`${backendUrl}/download`, {
                 params: { username },
                 responseType: "blob",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
             });
             console.info(response.data);
 

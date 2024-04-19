@@ -6,6 +6,9 @@ import {UploadProps} from "@/InterFaces/UploadProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const Upload = ({ onFileLocation }: UploadProps) => {
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
     const { data: userData } = useAuth();
     const [file, setFile] = useState<File | null>(null);
     const [success, setSuccess] = useState('');
@@ -34,7 +37,8 @@ const Upload = ({ onFileLocation }: UploadProps) => {
         try {
             const response = await axios.post(`${backendUrl}/uploads`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
                 }
             });
             if(onFileLocation)

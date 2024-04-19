@@ -10,12 +10,19 @@ const MyFiles = ({setSelected, selectable, location, downloadable} : MyFileProps
     const [files, setFiles] = useState(null);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false)
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
 
     const fetchUserFiles = async ({username}: { username: any }) => {
         setIsLoading(true)
         const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL; // Ensure this is set in your environment
         try {
-            const response = await axios.get(`${backendUrl}/user_files/${username}`);
+            const response = await axios.get(`${backendUrl}/user_files/${username}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
             setIsLoading(false);
             return response.data.files; // Adjust according to your API response structure
         } catch (error) {

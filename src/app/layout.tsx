@@ -67,7 +67,7 @@ export default function RootLayout({ children }: {children: React.ReactNode})
                     <body className="font-sans bg-blue-100 text-black dark:bg-slate-900 dark:text-gray-600">
                         <ToastContainer position="top-right"/>
                             <Header/>
-                            <div className="center-content flex justify-center items-center mb-100">
+                            <div className="center-content flex justify-center items-center mb-20">
                                 {children}
                             </div>
                         <Footer darkMode={darkmode} toggleDarkMode={toggleDarkMode}/>

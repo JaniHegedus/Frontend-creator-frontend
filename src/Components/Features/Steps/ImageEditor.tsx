@@ -14,6 +14,9 @@ import {ImageEditorProps} from "@/InterFaces/Steps/ImageEditorProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
     const user = useAuth();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState('');
@@ -123,7 +126,8 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
         try {
             await axios.post(`${backendUrl}/uploads`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
                 }
             });
             const fileLocation = `${user.data?.username}/${editedImageObject.fullName}`;

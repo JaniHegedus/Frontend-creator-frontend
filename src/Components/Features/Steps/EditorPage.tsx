@@ -27,6 +27,9 @@ const AceEditor = dynamic(
 ) as React.ComponentType<IEditorProps>;
 
 const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
     const [language, ] = useState('html');
     const [code, setCode] = useState<string>('');
     const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -42,7 +45,11 @@ const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
 
         try {
             // Note the direct passing of formData as the second argument
-            const response = await axios.post(`${backendUrl}/user_file_update`, formData);
+            const response = await axios.post(`${backendUrl}/user_file_update`, formData,{
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
             console.info(response.data);
         } catch (error) {
             console.info('Error updating user files:', error);
@@ -96,6 +103,9 @@ const EditorPage = ({nextStep, prevStep, stepData}: EditorPageProps) => {
 
                 const response = await axios.get(`${backendUrl}/user_file`, {
                     params: { file_path: selectedFile?.path },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
                 });
                 console.info(response.data.content)
                 handleCodeChange(response.data.content); // Adjust according to your API response structure

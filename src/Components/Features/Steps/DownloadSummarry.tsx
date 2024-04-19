@@ -5,6 +5,9 @@ import {DownloadSummaryProps} from "@/InterFaces/Steps/DownloadSummaryProps";
 import Tooltip from "@/Components/Features/ToolTip";
 
 const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
+    let token: string| null;
+    if(typeof localStorage != undefined)
+        token = localStorage.getItem('token');
     const [success, ] = useState("")
     const [error, ] = useState("")
     // Helper function to initiate the download process
@@ -19,6 +22,9 @@ const DownloadSummary: React.FC<DownloadSummaryProps> = ({ stepData }) => {
             const response = await axios.get(`${backendUrl}/download_project`, {
                 params: { username, projectName },
                 responseType: "blob",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             console.info(response.data);
 

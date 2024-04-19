@@ -21,17 +21,14 @@ const UserProfile = () => {
     const [loading, setLoading] = useState(true);
     const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] = useState(false);
     const [isRemoveConfirmModalOpen, setIsRemoveConfirmModalOpen] = useState(false);
-    const [isErrorConfirmModalOpen, setIsErrorConfirmModalOpen] = useState(false);
     const [,setIsDeleteConfirmed] = useState(false);
     const [,setIsRemoveConfirmed] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const openDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(true);
     const openRemoveConfirmModal = () => setIsRemoveConfirmModalOpen(true);
-    const openErrorConfirmModal = () => setIsErrorConfirmModalOpen(true);
     const closeDeleteConfirmModal = () => setIsDeleteConfirmModalOpen(false);
     const closeRemoveConfirmModal = () => setIsRemoveConfirmModalOpen(false);
-    const closeErrorConfirmModal = () => setIsErrorConfirmModalOpen(false);
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const githubClientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
 
@@ -41,7 +38,6 @@ const UserProfile = () => {
             if (!token) {
                 setError('No token found. User is not logged in.');
                 setLoading(false);
-                openErrorConfirmModal();
                 return;
             }
 
@@ -67,25 +63,15 @@ const UserProfile = () => {
                     setData(null);
                 } else {
                     setError('Failed to fetch user data.');
+                    setData(null);
                 }
-                openErrorConfirmModal();
             } finally {
                 setLoading(false);
             }
         };
-
-        if (error) {
-            openErrorConfirmModal();
-        }if (error) {
-            openErrorConfirmModal();
-        }
         fetchUserData();
     }, [error]); // Only re-run the effect if 'token' changes
 
-    const handleConfirmErrorModal = () =>{
-        if (typeof window !== 'undefined')
-            window.location.href = "/";
-    }
     const handleConfirmAccountDelete = async () => {
         // Logic to execute when confirmed
         if (!token) {
@@ -127,8 +113,9 @@ const UserProfile = () => {
                     // Attempt to modify the directory first
                     await axios.post(`${backendUrl}/user_file/modify_storage`, formData, {
                         headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': `Bearer ${token}`,
+                        },
                     });
 
                     // If directory modification is successful, proceed to update the username
@@ -345,13 +332,6 @@ const UserProfile = () => {
                     onClose={closeRemoveConfirmModal}
                     onConfirm={handleConfirmRemoveGithub}
                     message="Do you really want to perform this action? You will need to reconnect Github."
-                />
-                <ConfirmModal
-                    isOpen={isErrorConfirmModalOpen}
-                    onClose={closeErrorConfirmModal}
-                    onConfirm={handleConfirmErrorModal}
-                    message={error}
-                    noNo={true}
                 />
             </div>
         </div>
