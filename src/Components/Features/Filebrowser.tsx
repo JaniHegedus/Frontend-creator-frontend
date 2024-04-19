@@ -202,13 +202,18 @@ const FileBrowser: React.FC<{
                 {getCurrentFiles().map((file, index) => (
                     <li
                         key={index}
-                        className="py-2 px-4 bg-gray-300 dark:bg-gray-700 hover:bg-blue-400 dark:hover:bg-blue-800 rounded-md mt-1 cursor-pointer"
+                        className="py-2 px-4 bg-gray-300 dark:bg-gray-700 hover:bg-blue-400 dark:hover:bg-blue-800 rounded-md mt-1 flex justify-between items-center"
                     >
-                        {getFileIcon(file)}
-                        <span className="ml-2 dark:text-white">
-                            <button onClick={() => navigateTo(file)}>{file.name}</button>
+                        <span className="flex items-center">
+                            {getFileIcon(file)}
+                            <button className="ml-2 dark:text-white"
+                                    onClick={() => navigateTo(file)}>{file.name}</button>
                         </span>
-                        {downloadable ? <button onClick={() => download(file)} ><FaDownload/></button> : <></>}
+                        {downloadable && (
+                            <button onClick={() => download(file)} className="text-right">
+                                <FaDownload/>
+                            </button>
+                        )}
                     </li>
                 ))}
             </ul>
