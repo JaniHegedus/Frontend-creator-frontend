@@ -60,6 +60,7 @@ const UserProfile = () => {
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response?.status === 401) {
                     setError('Session Expired. You have to log in again.');
+                    localStorage.removeItem('token')
                     setData(null);
                 } else {
                     setError('Failed to fetch user data.');
