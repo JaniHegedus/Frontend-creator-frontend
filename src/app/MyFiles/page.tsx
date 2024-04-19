@@ -5,7 +5,7 @@ import MyFiles from "@/Components/Features/MyFiles";
 const FilesPage = () => {
     return (
         <div>
-            <MyFiles />
+            <MyFiles downloadable={true}/>
         </div>
     );
 };

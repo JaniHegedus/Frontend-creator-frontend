@@ -5,7 +5,7 @@ import FileBrowser from "@/Components/Features/Filebrowser";
 import Loading from "@/Components/Common/Loading";
 import {MyFileProps} from "@/InterFaces/MyFileProps";
 
-const MyFiles = ({setSelected, selectable, location} : MyFileProps) => {
+const MyFiles = ({setSelected, selectable, location, downloadable} : MyFileProps) => {
     const { data: userData } = useAuth();
     const [files, setFiles] = useState(null);
     const [error, setError] = useState('');
@@ -51,7 +51,7 @@ const MyFiles = ({setSelected, selectable, location} : MyFileProps) => {
             isLoading?
                 <Loading/>
                 :
-                <FileBrowser files={files} setSelected={setSelected} selectable={selectable} location={location}/>
+                <FileBrowser files={files} setSelected={setSelected} selectable={selectable} location={location} downloadable={downloadable}/>
         }</>
         );
 };
