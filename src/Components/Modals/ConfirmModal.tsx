@@ -19,7 +19,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
 
                         <>
                             <button
-                                onClick={() => {handleConfirm}}
+                                onClick={() => {handleConfirm()}}
                                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
                             >
                                 OK
@@ -34,7 +34,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
                                 No
                             </button>
                             <button
-                                onClick={() => {handleConfirm}}
+                                onClick={() => {handleConfirm()}}
                                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
                             >
                                 Yes

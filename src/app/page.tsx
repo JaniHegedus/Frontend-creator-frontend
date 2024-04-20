@@ -7,17 +7,8 @@ import axios from "axios";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
 
 export default function Home() {
-    let token: string| null;
-    if(typeof localStorage != undefined)
-        token = localStorage.getItem('token');
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-    const [isErrorConfirmModalOpen, setIsErrorConfirmModalOpen] = useState(false);
-    const openErrorConfirmModal = () => setIsErrorConfirmModalOpen(true);
-    const [error, setError] = useState('');
-    const closeErrorConfirmModal = () => setIsErrorConfirmModalOpen(false);
     const [theme, setTheme] = useState<boolean>()
     const user = useAuth();
-    const { setData } = useAuth();
     const [HEROImage, setHEROImage] =useState("/CodeEditor_Dark.jpg");
 
 
@@ -31,41 +22,9 @@ export default function Home() {
         if(localStorage.getItem('themeE')) {
             setTheme(localStorage.getItem('themeE') === 'monokai');
         }
-        const checkTOKEN = async () => {
-            try{
-                await axios.get(`${backendUrl}/token`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                })
-            }
-            catch (error)
-            {
-                if (axios.isAxiosError(error) && error.response?.status === 401) {
-                    setError('Session Expired. You have to log in again.');
-                    localStorage.removeItem('token');
-                    setData(null);
-                } else {
-                    setError('Failed to validate token.');
-                    localStorage.removeItem('token');
-                    setData(null);
-                }openErrorConfirmModal();
-            }
-        };
-        // Run checkTOKEN immediately when component mounts
-        checkTOKEN();
 
-        // Set up the interval to run checkTOKEN every 10 minutes
-        const intervalId = setInterval(checkTOKEN, 600000); // 600,000 ms = 10 minutes
-
-        // Clear the interval on component unmount
-        return () => clearInterval(intervalId);
     }, []); // Dependencies for useEffect
 
-    const handleConfirmErrorModal = () =>{
-        if (typeof window !== 'undefined')
-            window.location.href = "/";
-    }
     useEffect(() => {
         // Safely access localStorage and update theme state
         if(localStorage && localStorage.getItem('themeE'))
@@ -124,13 +83,7 @@ export default function Home() {
                 <FeatureCard title="Github Integration"
                              description="Your created pages can be directly exported to your github repositories!"/>
             </div>
-            <ConfirmModal
-            isOpen={isErrorConfirmModalOpen}
-            onClose={closeErrorConfirmModal}
-            onConfirm={handleConfirmErrorModal}
-            message={error}
-            noNo={true}
-            />
+
         </div>
 
     );

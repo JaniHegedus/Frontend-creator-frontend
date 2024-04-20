@@ -59,21 +59,22 @@ export default function RootLayout({ children }: {children: React.ReactNode})
 
     return (
         <html>
-            <head>
-                <title>Frontend Creator</title>
-            </head>
+        <head>
+            <title>Frontend Creator</title>
+        </head>
+        <body className="font-sans bg-blue-100 text-black dark:bg-slate-900 dark:text-gray-600">
             <AuthProvider>
                 <ModalProvider>
-                    <body className="font-sans bg-blue-100 text-black dark:bg-slate-900 dark:text-gray-600">
-                        <ToastContainer position="top-right"/>
-                            <Header/>
-                            <div className="center-content flex justify-center items-center mb-20">
-                                {children}
-                            </div>
-                        <Footer darkMode={darkmode} toggleDarkMode={toggleDarkMode}/>
-                    </body>
+                    <ToastContainer position="top-right"/>
+                    <Header/>
+                    <div className="center-content flex justify-center items-center mb-20">
+                        {children}
+                    </div>
+                    <Footer darkMode={darkmode} toggleDarkMode={toggleDarkMode}/>
                 </ModalProvider>
             </AuthProvider>
-        </html>
-    );
+        </body>
+</html>
+)
+    ;
 }
