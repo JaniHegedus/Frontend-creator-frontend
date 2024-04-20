@@ -13,6 +13,7 @@ const Inputfield: FC<InputFieldProps> = ({
                                              max,
                                              minLength,
                                              maxLength,
+                                             autocomplete,
                                          }) => {
     const [error, setError] = useState<string | null>(null);
 
@@ -71,6 +72,7 @@ const Inputfield: FC<InputFieldProps> = ({
                 placeholder={placeholder}
                 className={`${className} ${error ? 'border-red-500' : ''}`}
                 required={required}
+                autoComplete={autocomplete}
                 {...(type === 'number' && { min, max })}
                 {...(['text', 'password'] && { minLength, maxLength })} // Adjusted to apply minLength and maxLength to both text and password types
             />

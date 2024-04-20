@@ -1,3 +1,5 @@
+import {HTMLInputAutoCompleteAttribute} from "react";
+
 export interface InputFieldProps {
     id?: string;
     type: string;
@@ -10,4 +12,5 @@ export interface InputFieldProps {
     max?: number;
     minLength?: number;
     maxLength?: number;
+    autocomplete?: HTMLInputAutoCompleteAttribute;
 }
