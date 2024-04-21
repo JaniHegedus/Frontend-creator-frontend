@@ -4,7 +4,7 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { FooterProps } from "@/InterFaces/Layout/FooterProps";
 
 const Footer = ({ darkMode, toggleDarkMode }: FooterProps) => {
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 

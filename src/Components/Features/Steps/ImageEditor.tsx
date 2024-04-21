@@ -12,6 +12,7 @@ import Inputfield from "@/Components/Common/Inputfield";
 import {toast} from "react-toastify";
 import {ImageEditorProps} from "@/InterFaces/Steps/ImageEditorProps";
 import Tooltip from "@/Components/Features/ToolTip";
+import {NotifyMessage} from "@/Components/Common/ToastNotification/Notification";
 
 const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => {
     let token: string| null;
@@ -100,9 +101,12 @@ const ImageEditor = ({ nextStep, prevStep, addToStepData }:ImageEditorProps) => 
     const handleSubmit = () => {
         setLoading(true);
         if(newImageSource)
+        {
+            toast.info('Image Imported');
             setImageSource(newImageSource);
+        }
         else
-            toast.error("No Url given!")
+            toast.error('No URL Given');
         setLoading(false);
     };
 

@@ -43,11 +43,15 @@ export const AuthProvider = ({ children } : AuthProviderProps) => {
                     if (axios.isAxiosError(error) && error.response?.status === 401) {
                         setError('Session Expired. You have to log in again.');
                         token=null;
+                        localStorage.removeItem('token')
                         setData(null);
+                        localStorage.removeItem('user');
                     } else {
                         setError('Failed to validate token.');
                         token=null;
+                        localStorage.removeItem('token')
                         setData(null);
+                        localStorage.removeItem('user');
                     }
                     openErrorConfirmModal();
                 }
@@ -63,8 +67,6 @@ export const AuthProvider = ({ children } : AuthProviderProps) => {
 
 
     const handleConfirmErrorModal = () =>{
-        console.info("click")
-        localStorage.removeItem('token')
         closeErrorConfirmModal();
         if (typeof window !== 'undefined')
             window.location.href = "/";

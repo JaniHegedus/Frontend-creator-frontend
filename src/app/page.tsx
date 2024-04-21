@@ -5,6 +5,7 @@ import { useAuth } from "@/Components/Contexts/AuthContext";
 import FeatureCard from "@/Components/Common/FeatureCard";
 import axios from "axios";
 import ConfirmModal from "@/Components/Modals/ConfirmModal";
+import {toast} from "react-toastify";
 
 export default function Home() {
     const [theme, setTheme] = useState<boolean>()
@@ -50,7 +51,6 @@ export default function Home() {
     }
     return (
         <div className="flex flex-col bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white">
-
             {/* Hero Section with Image */}
             <div className="flex flex-col lg:flex-row justify-between items-center bg-gray-300 dark:bg-gray-700 p-4 lg:p-10">
                 <div className="text-center lg:text-left lg:ml-10">

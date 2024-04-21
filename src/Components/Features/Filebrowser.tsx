@@ -201,7 +201,7 @@ const FileBrowser: React.FC<{
     }
     return (
         <div className="p-4">
-            <Button onClick={() => downloadAll()} label={"Download Drive Content"}/>
+            {downloadable && <Button onClick={() => downloadAll()} label={"Download Drive Content"}/>}
             {currentPath.length > 0 && (
                 <button
                     onClick={navigateUp}
