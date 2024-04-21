@@ -179,7 +179,7 @@ const UserProfile = () => {
 
     };
     const handleGitHubLogin = () => {
-        const redirectUri = `http://localhost:3000/auth/github`;
+        const redirectUri = `${backendUrl}:3000/auth/github`;
         if (typeof window !== 'undefined')
             window.location.href = `https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUri}&scope=read:user`;
     };
