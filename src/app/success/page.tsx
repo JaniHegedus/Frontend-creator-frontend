@@ -4,7 +4,7 @@ import {useEffect} from "react";
 
 export default function Home() {
     useEffect(() => {
-        setTimeout(window.location.href='/',1000)
+        setTimeout(()=>{window.location.href='/'},1000)
     }, []);
     return (
         <>
