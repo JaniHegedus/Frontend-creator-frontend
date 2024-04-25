@@ -1,0 +1,8 @@
+{
+  "environment": "development",
+  "port": 3000,
+  "apiBaseUrl": "http://localhost:3000/api",
+  "featureFlags": {
+    "enableFeatureX": true
+  }
+}
