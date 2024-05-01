@@ -63,7 +63,7 @@ const GitHubCallbackPage = () => {
                 if (typeof window !== 'undefined')
                     // @ts-ignore
                     window.location.href = `/?error=${encodeURIComponent(err.message)}`;
-            }
+		}
         };
 
         if (code && !sent.current) {
