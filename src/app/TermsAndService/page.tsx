@@ -6,14 +6,14 @@ const TermsOfService = () => {
             <div className="flex flex-col justify-center items-center bg-gray-300 dark:bg-gray-700 p-4 lg:p-10">
                 <div className="text-center lg:text-left lg:ml-10">
                     <h1 className="text-4xl lg:text-6xl font-bold mb-4">Terms of Service</h1>
-                    <p className="mb-6">Last updated: [Insert date]</p>
+                    <p className="mb-6">Last updated: 2024.05.01</p>
                 </div>
             </div>
 
             <div className="px-4 lg:px-10 py-6">
-                <h2 className="text-2xl font-bold mt-4">Welcome to [Your Application's Name]!</h2>
+                <h2 className="text-2xl font-bold mt-4">Welcome to Frontend Creator!</h2>
                 <p>
-                    I outline the rules and regulations for the use of my Website, located at [Your Website's URL].
+                    I outline the rules and regulations for the use of my Website, located at <a href={"https://frontend-creator.hu/"}>frontend-creator.hu</a>.
                 </p>
 
                 <h2 className="text-2xl font-bold mt-4">GitHub Data Integration</h2>
@@ -49,11 +49,12 @@ const TermsOfService = () => {
 
                 <h2 className="text-2xl font-bold mt-4">Contact Me</h2>
                 <p>
-                    If you have any questions about these Terms of Service, please contact me at [Your Contact Information].
+                    If you have any questions about these Terms of Service, please contact me at <a href="mailto:hegedusjanos2002@gmail.com" className="text-blue-500 hover:text-blue-700">
+                    hegedusjanos2002@gmail.com</a>.
                 </p>
             </div>
         </div>
-    );
+);
 };
 
 export default TermsOfService;
