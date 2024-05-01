@@ -3,9 +3,6 @@ import React, {useEffect, useState} from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "@/Components/Contexts/AuthContext";
 import FeatureCard from "@/Components/Common/FeatureCard";
-import axios from "axios";
-import ConfirmModal from "@/Components/Modals/ConfirmModal";
-import {toast} from "react-toastify";
 
 export default function Home() {
     const [theme, setTheme] = useState<boolean>()

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Inputfield from "@/Components/Common/Inputfield";
+import Link from "next/link";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -59,9 +60,11 @@ const Register = () => {
                 <h1 className="mb-6 text-3xl font-bold text-center text-gray-900 dark:text-white">Register</h1>
                 {success && <div className="p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">{success}</div>}
                 {error && <div className="p-4 mb-4 text-sm text-red-800 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">{error}</div>}
-                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 dark:bg-gray-800">
+                <form onSubmit={handleSubmit}
+                      className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 dark:bg-gray-800">
                     <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email:</label>
+                        <label htmlFor="email"
+                               className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email:</label>
                         <Inputfield
                             type="email"
                             id="email"
@@ -72,7 +75,8 @@ const Register = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username:</label>
+                        <label htmlFor="username"
+                               className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Username:</label>
                         <Inputfield
                             type="username"
                             id="username"
@@ -83,7 +87,8 @@ const Register = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password:</label>
+                        <label htmlFor="password"
+                               className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Password:</label>
                         <Inputfield
                             type="password"
                             id="password"
@@ -94,7 +99,9 @@ const Register = () => {
                         />
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="passwordConfirmation" className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Confirm Password:</label>
+                        <label htmlFor="passwordConfirmation"
+                               className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Confirm
+                            Password:</label>
                         <Inputfield
                             type="password"
                             id="passwordConfirmation"
@@ -105,7 +112,8 @@ const Register = () => {
                         />
                     </div>
                     <div className="flex items-center justify-between">
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <button type="submit"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Register
                         </button>
                         <button
@@ -115,6 +123,11 @@ const Register = () => {
                         >Register via Github
                         </button>
                     </div>
+                    <p className="text-gray-800 dark:text-white mt-4">
+                        By Clicking Register you also agree with the <Link href={"/TermsAndService"}
+                                                                           className="text-blue-500 hover:text-blue-700">Terms
+                        and service</Link>
+                    </p>
                 </form>
             </div>
         </div>
